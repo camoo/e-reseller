@@ -1,6 +1,8 @@
 {
     "require": {
-        "camoo/framework": "dev-master"
+        "camoo/framework": "dev-master",
+        "camoo/hosting": "^1.0",
+        "josegonzalez/dotenv": "^3.2"
     },
     "autoload": {
         "psr-4": {
