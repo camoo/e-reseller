@@ -5,15 +5,14 @@
             <div class="row">
                 <div class="col-xl-5 col-md-8">
                     <div class="support_info">
-                        <h3>24h Dedicated Support</h3>
-                        <p>Our set he for firmament morning sixth subdue darkness creeping gathered divide our let god
-                            moving. Moving in fourth air night bring upon you’re it beast.</p>
+                        <h3>Support 7j/7</h3>
+                        <p>Notre équipe technique repond à toutes vos préocupations dans les bref délais.</p>
                         <div class="get_started">
                             <a class="boxed_btn_green" href="#">
-                                <span>Get Start Now</span>
+                                <span>Demandez une assistance</span>
                             </a>
                             <a href="#" class="phone_num">
-                                +10 267 367 678 2678
+                                {{ siteConfig.company_tel }}
                             </a>
                         </div>
 

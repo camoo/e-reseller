@@ -16,9 +16,6 @@ class Pagescontroller extends AppController
 
     public function overview()
     {
-        $this->set('title', 'Welcome to Camoo');
-        $this->set('description', 'Camoo Sarl PHP Framework');
-        $this->set('keywords', 'Web hosting api, Reseller api, Hebergement web');
         $this->render();
     }
 }

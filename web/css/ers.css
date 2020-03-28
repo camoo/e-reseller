@@ -1,0 +1,7 @@
+.copy-right_text .copy_right a {
+    color: transparent !important;
+}
+.right{float:right !important;}
+.left{float:left !important;}
+
+.invisible{display:none; visibility:hidden;}

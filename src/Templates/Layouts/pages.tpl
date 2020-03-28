@@ -31,10 +31,7 @@
         <div id="header">
 			{% include 'Layouts/Blocks/Layouts/header.tpl' %}
         </div>
-		<div id="rs-slider">{% include 'Layouts/Blocks/Layouts/slider.tpl' %}</div>
-		<div id="rs-prising">{% include 'Layouts/Blocks/Layouts/prising.tpl' %}</div>
-		<div id="rs-features">{% include 'Layouts/Blocks/Layouts/features.tpl' %}</div>
-		<div id="rs-support">{% include 'Layouts/Blocks/Layouts/support.tpl' %}</div>
+		<div id="rs-bradcam">{% include 'Layouts/Blocks/Layouts/bradcam.tpl' %}</div>
         <div id="content">{% block content %}{% endblock %}</div>
 		<div id="rs-footer">{% include 'Layouts/Blocks/Layouts/footer.tpl' %}</div>
 	{% include 'Layouts/Blocks/Layouts/js.tpl' %}

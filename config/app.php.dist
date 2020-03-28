@@ -30,6 +30,11 @@ return [
             'prefix'    => 'orm_',
             'path'      => CACHE . 'persistent/model/',
         ],
+        '_camoo_hosting_conf' => [
+            'className' => 'CAMOO\Cache\Filesystem',
+            'duration' => '+ 2 weeks',
+            'serialize' => true,
+        ],
     ],
     'Session' => [
         'name' => 'CAMOOFMW',

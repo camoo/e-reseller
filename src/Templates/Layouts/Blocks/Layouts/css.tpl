@@ -10,5 +10,6 @@
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/slicknav.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/ers.css">
     <!-- <link rel="stylesheet" href="/css/responsive.css"> -->
 {% endblock %}

@@ -11,9 +11,9 @@
                                     <img src="img/logo.png" alt="">
                                 </a>
                             </div>
-                            <p class="footer_text doanar"> <a class="first" href="#">+10 783 467 3789
+                            <p class="footer_text doanar"> <a class="first" href="#">{{ siteConfig.company_tel }}
                                 </a> <br>
-                                <a href="#">hostza@support.com</a></p>
+                                <a href="#">{{ siteConfig.contact_email }}</a></p>
                             <div class="socail_links">
                                 <ul>
                                     <li>
@@ -84,7 +84,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <p class="copy_right text-center">
-                &copy; Copyright {{ "now"|date('Y', "Africa/Douala") }} by CamooSarl. Template by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                &copy; Copyright {{ "now"|date('Y', "Africa/Douala") }} by {{ siteConfig.company_name }}. <a class="right" href="https://colorlib.com" target="_blank">Colorlib</a></span>
                         </p>
                     </div>
                 </div>
