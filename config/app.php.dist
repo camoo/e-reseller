@@ -39,7 +39,7 @@ return [
     'Session' => [
         'name' => 'CAMOOFMW',
         'cookie' => [
-            'expire' => 14400,
+            'lifetime' => 14400,
             'path' => '/',
             'domain' => '.camoo.cm',
             'secure' => true,

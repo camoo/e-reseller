@@ -7,8 +7,8 @@
                     <div class="row align-items-center no-gutters">
                         <div class="col-xl-2 col-lg-2">
                             <div class="logo-img">
-                                <a href="index.html">
-                                    <img src="img/logo.png" alt="">
+                                <a href="/">
+                                    <img src="/img/logo.png" alt="">
                                 </a>
                             </div>
                         </div>
@@ -16,7 +16,7 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a class="active" href="index.html">home</a></li>
+                                        <li><a class="{{ pages_active }}" href="/">Accueil</a></li>
                                         <li><a href="package.html">Package</a></li>
                                         <li><a href="#">blog <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
@@ -31,7 +31,7 @@
                                         </li>
                                         <li><a href="Support.html">Support</a></li>
                                         <li><a href="about.html">About</a></li>
-                                        <li><a href="/contact">Contact</a></li>
+                                        <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
                                     </ul>
                                 </nav>
                             </div>
