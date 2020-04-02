@@ -8,7 +8,7 @@ use CAMOO\Event\Event;
 
 class Pagescontroller extends AppController
 {
-    public function initialize()
+    public function initialize() : void
     {
         parent::initialize();
         $this->loadModel('Users');

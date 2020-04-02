@@ -2,7 +2,10 @@
 return [
     'debug' => true,
     'App' => [
-        'some_config' => 'here',
+		'namespace' => 'App',
+    ],
+    'Security' => [
+        'csrf_lifetime' => 1800, // 30 min
     ],
     'Database' => [
         'default' => [

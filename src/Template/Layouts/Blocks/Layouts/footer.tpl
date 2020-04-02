@@ -69,10 +69,10 @@
                                 Newsletter
                             </h3>
                             <form action="#" class="newsletter_form">
-                                <input type="text" placeholder="Enter your mail">
-                                <button type="submit">Sign Up</button>
+                                <input type="text" placeholder="Votre E-mail">
+                                <button type="submit">S'abonner</button>
                             </form>
-                            <p class="newsletter_text">Subscribe newsletter to get updates</p>
+                            <p class="newsletter_text">Abonnez-vous à notre newsletter pour ne pas rater nos dernières publications</p>
                         </div>
                     </div>
                 </div>
@@ -128,26 +128,47 @@
     <form id="test-form2" class="white-popup-block mfp-hide">
         <div class="popup_box ">
             <div class="popup_inner">
-                <div class="logo text-center">
-                    <a href="#">
-                        <img src="/img/logo.png" alt="">
-                    </a>
-                </div>
-                <h3>Registration</h3>
+                <h3>Enreigistrez-vous</h3>
                 <form action="#">
                     <div class="row">
-                        <div class="col-xl-12 col-md-12">
-                            <input type="email" placeholder="Enter email">
-                        </div>
-                        <div class="col-xl-12 col-md-12">
-                            <input type="password" placeholder="Password">
-                        </div>
-                        <div class="col-xl-12 col-md-12">
-                            <input type="Password" placeholder="Confirm password">
-                        </div>
+<div class="col-md-6 col-sm-6 col-xs-12">                     
+  <div class="div_form_add">
+    <div class="input text required">
+      <input type="text" name="name" placeholder="Votre nom" required="required" id="name">
+    </div>  
+    <div class="input password required">
+      <input type="password" name="password" placeholder="Mot de passe" id="password">
+    </div>   
+      <div class="input email required">
+      <input type="email" name="email" required="required" placeholder="Email *" id="email">
+    </div>
+    <div class="input text required">
+      <input type="text" name="city" placeholder="Votre ville" required="required" id="city">
+    </div> 
+  </div>
+</div>
+
+<div class="col-md-6 col-sm-6 col-xs-12">                     
+  <div class="div_form_add">
+    <div class="input text required">
+      <input type="text" name="fistname" placeholder="Votre présom" required="required" id="firstname">
+    </div>  
+    <div class="input text">
+      <input type="password" name="password_confirm" placeholder="Confirmez votre mot de passe" id="password_confirm">
+    </div>   
+      <div class="input phone required">
+      <input type="number" name="phone" required="required" placeholder="Votre téléphone" id="phone">
+    </div>
+    <div class="input text required">
+      <input type="text" name="address" placeholder="Votre adresse" required="required" id="address">
+    </div> 
+  </div>
+</div>
                         <div class="col-xl-12">
-                            <button type="submit" class="boxed_btn_green">Sign Up</button>
+                            <button type="submit" class="boxed_btn_green">Créer votre compte</button>
                         </div>
+
+
                     </div>
                 </form>
             </div>

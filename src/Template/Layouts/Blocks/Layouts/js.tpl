@@ -3,7 +3,8 @@
     <!-- script src="/js/vendor/jquery-1.12.4.min.js"></script -->
 	<script src="/js/jquery-3.3.1.min.js"></script><!-- jQuery Library -->
     <script src="/js/popper.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <!-- script src="/js/bootstrap.min.js"></script -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/isotope.pkgd.min.js"></script>
     <script src="/js/ajax-form.js"></script>

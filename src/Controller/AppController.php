@@ -7,7 +7,7 @@ use CAMOO\Utils\Configure;
 
 class AppController extends BaseController
 {
-    public function initialize()
+    public function initialize() : void
     {
         parent::initialize();
         // debug(Configure::read('RESELLER_SITE'));
