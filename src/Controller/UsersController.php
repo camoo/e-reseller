@@ -33,13 +33,10 @@ class UsersController extends AppController
                 'password' => $this->request->getData('passwd'),
             ];
             $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'login']);
-            if ($xRet = $oNewRequest->send(['::customers', 'getById'], false)) {
+            if ($xRet = $oNewRequest->send(['::customers', 'auth'])) {
                 $this->doLogin($xRet);
                 return $this->redirect('/');
             }
-            debug($xRet);
-            // debug($oNewRequest->send(['::customers', 'auth']));
-            die;
         }
     }
 
