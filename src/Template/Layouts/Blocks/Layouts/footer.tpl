@@ -1,6 +1,7 @@
 {% block footer %}
     <!-- footer -->
     <footer class="footer">
+	<div class="camoo-loading invisible"></div>
         <div class="footer_top">
             <div class="container">
                 <div class="row">
@@ -94,8 +95,9 @@
     <!-- footer -->
     <!-- link that opens popup -->
 
+	{% if is_loggedin() == false %}
     <!-- form itself end-->
-    <form id="test-form" class="white-popup-block mfp-hide">
+    <section id="test-form" class="white-popup-block mfp-hide">
         <div class="popup_box ">
             <div class="popup_inner">
                 <div class="logo text-center">
@@ -103,47 +105,50 @@
                         <img src="/img/logo.png" alt="">
                     </a>
                 </div>
-                <h3>Sign in</h3>
-                <form action="#">
+                <h3>Connexion au compte</h3>
+				{{ form_start('login', {'url':'/login', 'class' : 'camoo-form-spining'})|raw}}
                     <div class="row">
                         <div class="col-xl-12 col-md-12">
-                            <input type="email" placeholder="Enter email">
+							{{ form_input('username', {'type': 'email', 'placeholder' : 'Votre E-Mail'})|raw }}
+
                         </div>
                         <div class="col-xl-12 col-md-12">
-                            <input type="password" placeholder="Password">
+							{{ form_input('passwd', {'type' : 'password', 'placeholder' : 'Mot de passe'})|raw }}
                         </div>
                         <div class="col-xl-12">
-                            <button type="submit" class="boxed_btn_green">Sign in</button>
+							{{ form_input('submit', {'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Se connecter'}) |raw}}
                         </div>
                     </div>
-                </form>
-                <p class="doen_have_acc">Don’t have an account? <a class="dont-hav-acc" href="#test-form2">Sign Up</a>
+				{{ form_end() |raw}}
+                <p class="doen_have_acc">Pas encore un compte? <a class="dont-hav-acc" href="#test-form2">S'enregistrer</a>
                 </p>
             </div>
         </div>
-    </form>
+    </section>
     <!-- form itself end -->
+	{% endif %}
 
+	{% if is_loggedin() == false %}
     <!-- form itself end-->
-    <form id="test-form2" class="white-popup-block mfp-hide">
+    <section id="test-form2" class="white-popup-block mfp-hide">
         <div class="popup_box ">
             <div class="popup_inner">
-                <h3>Enreigistrez-vous</h3>
-                <form action="#">
+                <h3>Enregistrez-vous</h3>
+				{{ form_start('join', {'url':'/join', 'class': 'camoo-form-spining'})|raw}}
                     <div class="row">
 <div class="col-md-6 col-sm-6 col-xs-12">                     
   <div class="div_form_add">
     <div class="input text required">
-      <input type="text" name="name" placeholder="Votre nom" required="required" id="name">
+	  {{ form_input('name', {'placeholder' : 'Votre Nom', 'required' : 'required'})|raw }}
     </div>  
     <div class="input password required">
-      <input type="password" name="password" placeholder="Mot de passe" id="password">
+	  {{ form_input('password', {'placeholder' : 'Mot de passe', 'required' : 'required'})|raw }}
     </div>   
       <div class="input email required">
-      <input type="email" name="email" required="required" placeholder="Email *" id="email">
+	  {{ form_input('email', {'placeholder' : 'Votre E-mail', 'required' : 'required'})|raw }}
     </div>
     <div class="input text required">
-      <input type="text" name="city" placeholder="Votre ville" required="required" id="city">
+	  {{ form_input('city', {'placeholder' : 'Votre ville', 'required' : 'required'})|raw }}
     </div> 
   </div>
 </div>
@@ -151,28 +156,27 @@
 <div class="col-md-6 col-sm-6 col-xs-12">                     
   <div class="div_form_add">
     <div class="input text required">
-      <input type="text" name="fistname" placeholder="Votre présom" required="required" id="firstname">
+	  {{ form_input('firstname', {'placeholder' : 'Votre Prénom', 'required' : 'required'})|raw }}
     </div>  
-    <div class="input text">
-      <input type="password" name="password_confirm" placeholder="Confirmez votre mot de passe" id="password_confirm">
+    <div class="input password">
+	  {{ form_input('confirm_password', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'})|raw }}
     </div>   
       <div class="input phone required">
-      <input type="number" name="phone" required="required" placeholder="Votre téléphone" id="phone">
+	  {{ form_input('phone', {'type':'number', 'placeholder' : 'Votre téléphone', 'required' : 'required'})|raw }}
     </div>
     <div class="input text required">
-      <input type="text" name="address" placeholder="Votre adresse" required="required" id="address">
+	  {{ form_input('address', {'placeholder' : 'Votre adresse (Rue/Quartier)', 'required' : 'required'})|raw }}
     </div> 
   </div>
 </div>
                         <div class="col-xl-12">
                             <button type="submit" class="boxed_btn_green">Créer votre compte</button>
                         </div>
-
-
                     </div>
-                </form>
+				{{ form_end() |raw}}
             </div>
         </div>
-    </form>
+    </section>
     <!-- form itself end -->
+	{% endif %}
 {% endblock %}

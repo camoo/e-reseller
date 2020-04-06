@@ -1,7 +1,23 @@
 .copy-right_text .copy_right a {
-    color: transparent !important;
+	color: transparent !important;
 }
 .right{float:right !important;}
 .left{float:left !important;}
 
+.camoo-loading {
+	display:    none;
+	position:   fixed;
+	z-index:    1000;
+	top:        0;
+	left:       0;
+	height:     100%;
+	width:      100%;
+	background: rgba( 255, 255, 255, .8 )
+	url('/img/loading.gif')
+	50% 50%
+	no-repeat;
+}
+
+body.loading .camoo-loading {overflow: hidden;}
+body.loading .camoo-loading {display: block;}
 .invisible{display:none; visibility:hidden;}

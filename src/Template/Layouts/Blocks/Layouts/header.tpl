@@ -38,16 +38,23 @@
                         </div>
                         <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                             <div class="log_chat_area d-flex align-items-center">
-                                <a href="#test-form" class="login popup-with-form">
-                                    <i class="flaticon-user"></i>
-                                    <span>log in</span>
+								{% if is_loggedin() %}
+                                <a href="/logout" class="login">
+                                    <i class="flaticon-lock"></i>
+                                    <span id="logout">Déconnexion</span>
                                 </a>
                                 <div class="live_chat_btn">
-                                    <a class="boxed_btn_green" href="#">
-                                        <i class="flaticon-chat"></i>
-                                        <span>Live Chat</span>
+                                    <a class="boxed_btn_green" href="#" id="camoo-dashbord">
+                                        <i class="flaticon-browser"></i>
+                                        <span>cPanel</span>
                                     </a>
                                 </div>
+								{% else %}
+                                <a href="#test-form" class="login popup-with-form">
+                                    <i class="flaticon-user"></i>
+                                    <span id="login">Connexion</span>
+                                </a>
+								{% endif %}
                             </div>
                         </div>
                         <div class="col-12">

@@ -6,6 +6,7 @@ return [
     ],
     'Security' => [
         'csrf_lifetime' => 1800, // 30 min
+        'csrf_single_once' => true, // one csrf Token for each request instead of session token
     ],
     'Database' => [
         'default' => [

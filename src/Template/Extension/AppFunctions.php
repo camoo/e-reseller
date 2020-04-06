@@ -11,9 +11,8 @@ use CAMOO\Template\Extension\Functions;
  */
 class AppFunctions extends Functions
 {
-	
     public function initialize() : void
     {
-		//$this->load('Foo');
+        $this->load('Users');
     }
 }

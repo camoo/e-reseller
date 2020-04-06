@@ -31,4 +31,7 @@
 
     <script src="/js/main.js"></script>
 	<script src="/js/script.js"></script><!-- Library -->
+	{% if is_loggedin() %}
+      <script src="/js/Users/script.js"></script>
+	{% endif %}
 {% endblock %}
