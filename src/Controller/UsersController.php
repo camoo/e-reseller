@@ -17,8 +17,24 @@ class UsersController extends AppController
         /** @var Model\Rest\AppRest */
         $this->loadRest('UsersRest');
     }
+
     public function join()
     {
+        $this->request->allowMethod(['post']);
+        $data = $this->request->getData();
+        $data['user_ip'] = $this->request->getRemoteIp();
+        $oNewRequest = $this->UsersRest->newRequest($data, true, ['action' => 'add']);
+
+        if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'add']))) {
+            if (!empty($xRet['id'])) {
+                $oNewRequest = $this->UsersRest->newRequest([$xRet['id']], false);
+                if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
+                    $this->doLogin($hUser);
+                    return $this->redirect('/');
+                }
+            }
+        }
+        throw new Exception('Error !');
     }
 
     public function login()
@@ -33,10 +49,11 @@ class UsersController extends AppController
                 'password' => $this->request->getData('passwd'),
             ];
             $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'login']);
-            if ($xRet = $oNewRequest->send(['::customers', 'auth'])) {
+            if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'auth']))) {
                 $this->doLogin($xRet);
                 return $this->redirect('/');
             }
+            throw new Exception('Error !');
         }
     }
 
@@ -61,6 +78,7 @@ class UsersController extends AppController
 
     public function getSSO()
     {
+        $this->request->allowMethod(['get']);
         if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
             if ($this->request->is('ajax')) {
                 $status = false;

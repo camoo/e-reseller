@@ -159,7 +159,7 @@
 	  {{ form_input('firstname', {'placeholder' : 'Votre Prénom', 'required' : 'required'})|raw }}
     </div>  
     <div class="input password">
-	  {{ form_input('confirm_password', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'})|raw }}
+	  {{ form_input('password_confirm', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'})|raw }}
     </div>   
       <div class="input phone required">
 	  {{ form_input('phone', {'type':'number', 'placeholder' : 'Votre téléphone', 'required' : 'required'})|raw }}
