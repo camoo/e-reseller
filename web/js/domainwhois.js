@@ -1,4 +1,4 @@
-var Users=(function($){
+var DomainWhois=(function($){
 	"use strict";
 	var me = {
 		initialized: false,
@@ -21,9 +21,9 @@ var Users=(function($){
 		 */
 		registerEvents: function() {
 
-			$('#camoo-dashbord').on('click', function(evt){
+			$('#domainwhois').on('submit', function(evt){
 				showSpinner();
-				me.getSSO();
+				me.whois();
 				evt.preventDefault();
 			});
 		},
@@ -39,19 +39,22 @@ var Users=(function($){
 		/**
 		 * @return {void}
 		 */
-		getSSO: function() {
+		whois: function() {
 			showSpinner();
-			var url = '/sso';
+			var url = '/domain-whois';
+			var token = $('#domainwhois').find('input[name=__csrf_Token]').val();
+				var jsonData = {'domain' : $('#domain').val(), '__csrf_Token' : token};
 			$.ajax({
 				url : url,
-				type  : 'get',
+				type  : 'POST',
 				dataType : 'JSON',
 				cache: false,
 				async:true,
-				data : {},
+				data : jsonData,
 				success : function (data) {
 					if ( data.status === true ) {
-						me.openInNewTab(data.sso_link);
+						console.log(data);
+						//me.openInNewTab(data.sso_link);
 					} else {
 						//location.reload();
 					}
@@ -75,7 +78,7 @@ var Users=(function($){
 })(jQuery);
 
 $(function(){
-	if($('#camoo-dashbord').length > 0) {
-		Users.initialize();
+	if($('#domainwhois').length > 0) {
+		DomainWhois.initialize();
 	}
 });

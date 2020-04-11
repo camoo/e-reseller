@@ -39,6 +39,12 @@ return [
             'duration' => '+ 2 weeks',
             'serialize' => true,
         ],
+        '_camoo_hosting_tariff' => [
+            'className' => 'CAMOO\Cache\Filesystem',
+            'duration' => '+ 12 hours',
+            'serialize' => true,
+        ],
+
     ],
     'Session' => [
         'name' => 'CAMOOFMW',

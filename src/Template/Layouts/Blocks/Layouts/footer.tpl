@@ -109,14 +109,14 @@
 				{{ form_start('login', {'url':'/login', 'class' : 'camoo-form-spining'})|raw}}
                     <div class="row">
                         <div class="col-xl-12 col-md-12">
-							{{ form_input('username', {'type': 'email', 'placeholder' : 'Votre E-Mail'})|raw }}
+							{{ form_input('username', {'type': 'email', 'placeholder' : 'Votre E-Mail', 'required' : 'required'})|raw }}
 
                         </div>
                         <div class="col-xl-12 col-md-12">
-							{{ form_input('passwd', {'type' : 'password', 'placeholder' : 'Mot de passe'})|raw }}
+							{{ form_input('passwd', {'type' : 'password', 'placeholder' : 'Mot de passe', 'required': 'required'})|raw }}
                         </div>
                         <div class="col-xl-12">
-							{{ form_input('submit', {'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Se connecter'}) |raw}}
+							{{ form_input('submit', {'id':'user-login','type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Se connecter'}) |raw}}
                         </div>
                     </div>
 				{{ form_end() |raw}}
@@ -170,7 +170,7 @@
   </div>
 </div>
                         <div class="col-xl-12">
-                            <button type="submit" class="boxed_btn_green">Créer votre compte</button>
+							{{ form_input('submit', {'id': 'user-join', 'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Créer votre compte'}) |raw}}
                         </div>
                     </div>
 				{{ form_end() |raw}}

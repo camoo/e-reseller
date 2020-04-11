@@ -5,5 +5,6 @@ $oRouteDispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollecto
     $route->addRoute('POST', '/join', ['controller' => 'Users', 'action' => 'join']);
     $route->addRoute('GET', '/logout', ['controller' => 'Users', 'action' => 'logout']);
     $route->addRoute('GET', '/sso', ['controller' => 'Users', 'action' => 'getSSO']);
+    $route->addRoute('POST', '/domain-whois', ['controller' => 'Domains', 'action' => 'domainSearch']);
     // ..
 });

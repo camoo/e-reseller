@@ -34,4 +34,5 @@
 	{% if is_loggedin() %}
       <script src="/js/Users/script.js"></script>
 	{% endif %}
+      <script src="/js/domainwhois.js"></script>
 {% endblock %}

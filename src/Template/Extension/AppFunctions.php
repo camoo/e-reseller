@@ -14,5 +14,7 @@ class AppFunctions extends Functions
     public function initialize() : void
     {
         $this->load('Users');
+        $this->load('Tariffs');
+        $this->load('Flash');
     }
 }
