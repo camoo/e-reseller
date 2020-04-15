@@ -26,6 +26,17 @@ var DomainWhois=(function($){
 				me.whois();
 				evt.preventDefault();
 			});
+
+			$('#domain-whois-results .disable').on('click', function(evt){
+				evt.preventDefault();
+			});
+
+
+			$('#domain-whois-results .add-to-basket').on('click', function(evt){
+				evt.preventDefault();
+			});
+
+
 		},
 
 		/**
@@ -54,9 +65,9 @@ var DomainWhois=(function($){
 				success : function (data) {
 					if ( data.status === true ) {
 						console.log(data);
-						//me.openInNewTab(data.sso_link);
+						me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
 					} else {
-						//location.reload();
+						location.reload();
 					}
 				},
 				error: function ( jqXHR, textStatus,  errorThrown ) {

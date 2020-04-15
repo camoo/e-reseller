@@ -106,20 +106,20 @@
                     </a>
                 </div>
                 <h3>Connexion au compte</h3>
-				{{ form_start('login', {'url':'/login', 'class' : 'camoo-form-spining'})|raw}}
+				{{ form_start('login', {'url':'/login', 'class' : 'camoo-form-spining'})}}
                     <div class="row">
                         <div class="col-xl-12 col-md-12">
-							{{ form_input('username', {'type': 'email', 'placeholder' : 'Votre E-Mail', 'required' : 'required'})|raw }}
+							{{ form_input('username', {'type': 'email', 'placeholder' : 'Votre E-Mail', 'required' : 'required'}) }}
 
                         </div>
                         <div class="col-xl-12 col-md-12">
-							{{ form_input('passwd', {'type' : 'password', 'placeholder' : 'Mot de passe', 'required': 'required'})|raw }}
+							{{ form_input('passwd', {'type' : 'password', 'placeholder' : 'Mot de passe', 'required': 'required'}) }}
                         </div>
                         <div class="col-xl-12">
-							{{ form_input('submit', {'id':'user-login','type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Se connecter'}) |raw}}
+							{{ form_input('submit', {'id':'user-login','type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Se connecter'}) }}
                         </div>
                     </div>
-				{{ form_end() |raw}}
+				{{ form_end() }}
                 <p class="doen_have_acc">Pas encore un compte? <a class="dont-hav-acc" href="#test-form2">S'enregistrer</a>
                 </p>
             </div>
@@ -134,21 +134,21 @@
         <div class="popup_box ">
             <div class="popup_inner">
                 <h3>Enregistrez-vous</h3>
-				{{ form_start('join', {'url':'/join', 'class': 'camoo-form-spining'})|raw}}
+				{{ form_start('join', {'url':'/join', 'class': 'camoo-form-spining'})}}
                     <div class="row">
 <div class="col-md-6 col-sm-6 col-xs-12">                     
   <div class="div_form_add">
     <div class="input text required">
-	  {{ form_input('name', {'placeholder' : 'Votre Nom', 'required' : 'required'})|raw }}
+	  {{ form_input('name', {'placeholder' : 'Votre Nom', 'required' : 'required'}) }}
     </div>  
     <div class="input password required">
-	  {{ form_input('password', {'placeholder' : 'Mot de passe', 'required' : 'required'})|raw }}
+	  {{ form_input('password', {'placeholder' : 'Mot de passe', 'required' : 'required'}) }}
     </div>   
       <div class="input email required">
-	  {{ form_input('email', {'placeholder' : 'Votre E-mail', 'required' : 'required'})|raw }}
+	  {{ form_input('email', {'placeholder' : 'Votre E-mail', 'required' : 'required'}) }}
     </div>
     <div class="input text required">
-	  {{ form_input('city', {'placeholder' : 'Votre ville', 'required' : 'required'})|raw }}
+	  {{ form_input('city', {'placeholder' : 'Votre ville', 'required' : 'required'}) }}
     </div> 
   </div>
 </div>
@@ -156,24 +156,24 @@
 <div class="col-md-6 col-sm-6 col-xs-12">                     
   <div class="div_form_add">
     <div class="input text required">
-	  {{ form_input('firstname', {'placeholder' : 'Votre Prénom', 'required' : 'required'})|raw }}
+	  {{ form_input('firstname', {'placeholder' : 'Votre Prénom', 'required' : 'required'}) }}
     </div>  
     <div class="input password">
-	  {{ form_input('password_confirm', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'})|raw }}
+	  {{ form_input('password_confirm', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'}) }}
     </div>   
       <div class="input phone required">
-	  {{ form_input('phone', {'type':'number', 'placeholder' : 'Votre téléphone', 'required' : 'required'})|raw }}
+	  {{ form_input('phone', {'type':'number', 'placeholder' : 'Votre téléphone', 'required' : 'required'}) }}
     </div>
     <div class="input text required">
-	  {{ form_input('address', {'placeholder' : 'Votre adresse (Rue/Quartier)', 'required' : 'required'})|raw }}
+	  {{ form_input('address', {'placeholder' : 'Votre adresse (Rue/Quartier)', 'required' : 'required'}) }}
     </div> 
   </div>
 </div>
                         <div class="col-xl-12">
-							{{ form_input('submit', {'id': 'user-join', 'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Créer votre compte'}) |raw}}
+							{{ form_input('submit', {'id': 'user-join', 'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : 'Créer votre compte'}) }}
                         </div>
                     </div>
-				{{ form_end() |raw}}
+				{{ form_end() }}
             </div>
         </div>
     </section>

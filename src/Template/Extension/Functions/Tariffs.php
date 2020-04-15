@@ -5,7 +5,7 @@ namespace App\Template\Extension\Functions;
 
 use CAMOO\Template\Extension\FunctionHelper;
 use CAMOO\Utils\Configure;
-use CAMOO\Utils\Inflector;;
+use CAMOO\Utils\Inflector;
 
 /**
  * Class Tariffs
@@ -16,7 +16,7 @@ class Tariffs extends FunctionHelper
     public function getFunctions() : array
     {
         return [
-            $this->add('hosting_plans', [$this, 'getHostingPlans']),
+            $this->add('hosting_plans', [$this, 'getHostingPlans'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -139,21 +139,21 @@ class Tariffs extends FunctionHelper
     private function _ipr($key)
     {
         $ipr = [
-            "lang_max_ftp" => "Comptes FTP",
-            "lang_max_mysql" => 'Bases de données MySQL',
-            'lang_max_pop' => 'Comptes e-mail',
-            'lang_max_pop_list' => 'Mailinglists',
-            'lang_max_subdomain' => 'Sous-domaines',
-            'lang_bwlimit' => 'Bande passante',
-            'lang_unlimited_max_ftp' => 'Comptes FTP illimités',
-            'lang_unlimited_max_mysql' => 'Bases de données MySQL illimitées',
-            'lang_unlimited_max_pop' => 'Comptes e-mail illimités',
-            'lang_unlimited_max_pop_list' => 'Mailinglist illimitée',
+            "lang_max_ftp"                 => "Comptes FTP",
+            "lang_max_mysql"               => 'Bases de données MySQL',
+            'lang_max_pop'                 => 'Comptes e-mail',
+            'lang_max_pop_list'            => 'Mailinglists',
+            'lang_max_subdomain'           => 'Sous-domaines',
+            'lang_bwlimit'                 => 'Bande passante',
+            'lang_unlimited_max_ftp'       => 'Comptes FTP illimités',
+            'lang_unlimited_max_mysql'     => 'Bases de données MySQL illimitées',
+            'lang_unlimited_max_pop'       => 'Comptes e-mail illimités',
+            'lang_unlimited_max_pop_list'  => 'Mailinglist illimitée',
             'lang_unlimited_max_subdomain' => 'Sous-domaines illimités',
-            'lang_unlimited_bwlimit' => 'Bande passante illimitée',
-            'lang_unlimited_ram' => 'RAM illimitée',
-            'lang_ram_quota' => 'Ram',
-            'lang_unlimited_ram_quota' => 'RAM illimitée',
+            'lang_unlimited_bwlimit'       => 'Bande passante illimitée',
+            'lang_unlimited_ram'           => 'RAM illimitée',
+            'lang_ram_quota'               => 'Ram',
+            'lang_unlimited_ram_quota'     => 'RAM illimitée',
         ];
         return array_key_exists($key, $ipr)? $ipr[$key] : $key;
     }

@@ -18,6 +18,8 @@
 	no-repeat;
 }
 
+.domain-taken{color:#ff0000 !important;}
+.domain-available{color:green !important;}
 body.loading .camoo-loading {overflow: hidden;}
 body.loading .camoo-loading {display: block;}
 .invisible{display:none; visibility:hidden;}

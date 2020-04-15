@@ -11,33 +11,33 @@
                         <h2 class="contact-title">Contactez-nous</h2>
                     </div>
                     <div class="col-lg-8">
-					{{ form_start() |raw}}
+					{{ form_start() }}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-									{{ form_input('message', {'type' : 'textarea', 'class' : 'form-control w-100', 'placeholder' : 'Votre Message', 'cols' : 30, 'rows' : 9 }) |raw }}
+									{{ form_input('message', {'type' : 'textarea', 'class' : 'form-control w-100', 'placeholder' : 'Votre Message', 'cols' : 30, 'rows' : 9, 'required' : 'required' })  }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-									{{ form_input('name', {'class' : 'form-control valid', 'placeholder' : 'Votre nom' }) |raw }}
+									{{ form_input('name', {'required' : 'required','class' : 'form-control valid', 'placeholder' : 'Votre nom' })  }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-									{{ form_input('email', {'class' : 'form-control valid', 'placeholder' : 'Votre E-mail' }) |raw }}
+									{{ form_input('email', {'required' : 'required','class' : 'form-control valid', 'placeholder' : 'Votre E-mail' })  }}
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-									{{ form_input('subject', {'class' : 'form-control valid', 'placeholder' : 'L\'object' }) |raw }}
+									{{ form_input('subject', {'required' : 'required','class' : 'form-control valid', 'placeholder' : 'L\'object' })  }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mt-3">
                                 <button type="submit" class="button button-contactForm boxed-btn">Envoyez</button>
                             </div>
-						{{ form_end() |raw}}
+						{{ form_end() }}
                     </div>
                     <div class="col-lg-3 offset-lg-1">
                         <div class="media contact-info">

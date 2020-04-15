@@ -10,7 +10,8 @@ class AppController extends BaseController
     public function initialize() : void
     {
         parent::initialize();
- //       debug(Configure::read('RESELLER_TARIFFS'));
+        //       debug(Configure::read('RESELLER_TARIFFS'));
         $this->set('siteConfig', Configure::read('RESELLER_SITE'));
     }
+
 }
