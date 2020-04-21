@@ -15,7 +15,7 @@ class Basket extends FunctionHelper
     /**
      * @return BasketRepository
      */
-    public function getBasketRepository() : BasketRepository
+    private function getBasketRepository() : BasketRepository
     {
         return call_user_func($this->_basket, $this->request);
     }
@@ -23,8 +23,13 @@ class Basket extends FunctionHelper
     public function getFunctions() : array
     {
         return [
-           // $this->add('domainwhois_results', [$this, 'getDomainWhoisResult'], ['is_safe' => ['html']]),
+           $this->add('get_basket', [$this, 'get']),
         ];
     }
 
+
+	public function get() : BasketRepository
+	{
+		return $this->getBasketRepository();
+	}
 }

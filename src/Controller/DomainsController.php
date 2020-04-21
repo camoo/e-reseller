@@ -109,6 +109,10 @@ class DomainsController extends AppController
                 if ($hDomain = $xRet[$domainBasket]) {
                     $status = true;
                     $hDomain['price'] = $hDomain['price']['addnewdomain'];
+                    $hDomain['basket_icon'] = 'flaticon-hosting';
+                    $hDomain['description'] = 'Nom de domaine';
+					// other
+                    //$hDomain['basket_icon'] = 'flaticon-servers';
                     $oBasket->addItem($domainBasket, $hDomain);
                 }
             }

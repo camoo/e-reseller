@@ -13,4 +13,5 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/ers.css">
     <!-- <link rel="stylesheet" href="/css/responsive.css"> -->
+	  {{ html_fetch('css') }}
 {% endblock %}

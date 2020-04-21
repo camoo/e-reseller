@@ -18,4 +18,9 @@ class Pagescontroller extends AppController
     {
         $this->render();
     }
+
+	public function showBasket()
+	{
+		$this->set('page_title', 'Votre panier');
+	}
 }
