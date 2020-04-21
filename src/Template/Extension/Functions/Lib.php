@@ -11,6 +11,8 @@ use CAMOO\Cache\Cache;
  */
 class Lib extends FunctionHelper
 {
+	public $functions = ['Basket'];
+
     public function getFunctions() : array
     {
         return [
@@ -23,7 +25,7 @@ class Lib extends FunctionHelper
         $result = '';
         if (($xRet = Cache::read($inp, '_camoo_hosting_1hour')) !== false) {
             foreach ($xRet as $domain => $value) {
-                $class = 'available domain-available';
+                $class = 'available domain-available add-to-basket';
                 $word = 'Disponible';
                 $cmd = 'add-to-basket';
                 if ($value['status'] === 'N') {
@@ -37,9 +39,9 @@ class Lib extends FunctionHelper
                             <h4>'.$domain.'</h4>
                         </div>
                         <div class="prising_content">
-                            <a class="premium %s" href="#">%s</a>
+                            <a data-domain="'.$domain.'" data-price="'.$value['price']['addnewdomain'].'" class="premium %s" href="#">%s</a>
                             <a href="#">XAF '.$value['price']['addnewdomain'].'/an</a> 
-                            <a class="boxed_btn_green %s" href="#">Je commande</a>
+                            <a data-domain="'.$domain.'" data-price="'.$value['price']['addnewdomain'].'" class="boxed_btn_green %s" href="#">Je commande</a>
                         </div>
                     </div>', $class, $word, $cmd);
             }

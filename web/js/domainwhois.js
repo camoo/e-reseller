@@ -33,11 +33,82 @@ var DomainWhois=(function($){
 
 
 			$('#domain-whois-results .add-to-basket').on('click', function(evt){
+				me.addToBasket(this);
 				evt.preventDefault();
 			});
 
-
 		},
+
+		addToBasket: function(src)
+		{
+			var domain = $(src).data('domain');
+			showSpinner();
+			var url = '/domain-add-to-basket';
+			var token = $('#domainwhois').find('input[name=__csrf_Token]').val();
+				var jsonData = {'domain' : domain, '__csrf_Token' : token};
+			$.ajax({
+				url : url,
+				type  : 'POST',
+				dataType : 'JSON',
+				cache: false,
+				async:true,
+				data : jsonData,
+				success : function (data) {
+					if ( data.status === true ) {
+						console.log(data);
+					//	me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
+					} else {
+					///	location.reload();
+					}
+				},
+				error: function ( jqXHR, textStatus,  errorThrown ) {
+					hideSpinner();
+					console.log("ERROR");
+					console.log(textStatus);
+					console.log(jqXHR.responseText)
+					console.log(errorThrown)
+				},
+				complete:function (jqXHR) {
+					hideSpinner();
+				}
+			});
+		},
+
+		removeFromBasket: function(src)
+		{
+			var domain = $(src).data('domain');
+			showSpinner();
+			var url = '/domain-remove-basket';
+			var token = $('#domainwhois').find('input[name=__csrf_Token]').val();
+				var jsonData = {'domain' : domain, '__csrf_Token' : token};
+			$.ajax({
+				url : url,
+				type  : 'POST',
+				dataType : 'JSON',
+				cache: false,
+				async:true,
+				data : jsonData,
+				success : function (data) {
+					if ( data.status === true ) {
+						console.log(data);
+					//	me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
+					} else {
+					///	location.reload();
+					}
+				},
+				error: function ( jqXHR, textStatus,  errorThrown ) {
+					hideSpinner();
+					console.log("ERROR");
+					console.log(textStatus);
+					console.log(jqXHR.responseText)
+					console.log(errorThrown)
+				},
+				complete:function (jqXHR) {
+					hideSpinner();
+				}
+			});
+		},
+
 
 		/**
 		 * @param {string} url
