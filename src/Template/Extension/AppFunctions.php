@@ -16,5 +16,6 @@ class AppFunctions extends Functions
         $this->load('Users');
         $this->load('Tariffs');
         $this->load('Lib');
+        $this->load('Basket');
     }
 }

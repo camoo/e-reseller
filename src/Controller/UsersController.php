@@ -22,26 +22,30 @@ class UsersController extends AppController
 
     public function join()
     {
-        $this->request->allowMethod(['post']);
-        $data = $this->request->getData();
-        $data['user_ip'] = $this->request->getRemoteIp();
-        $oNewRequest = $this->UsersRest->newRequest($data, true, ['action' => 'add']);
+        $this->request->allowMethod(['post', 'get']);
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $data['user_ip'] = $this->request->getRemoteIp();
+            $oNewRequest = $this->UsersRest->newRequest($data, true, ['action' => 'add']);
 
-        if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'add']))) {
-            if (!empty($xRet['id'])) {
-                $oNewRequest = $this->UsersRest->newRequest([$xRet['id']], false);
-                if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
-                    $this->doLogin($hUser);
-                    return $this->redirect('/');
+            if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'add']))) {
+                if (!empty($xRet['id'])) {
+                    $oNewRequest = $this->UsersRest->newRequest([$xRet['id']], false);
+                    if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
+                        $this->doLogin($hUser);
+                        return $this->redirect('/');
+                    }
                 }
             }
+        } elseif ($this->request->is('get')) {
+            return $this->redirect('/#join');
         }
         throw new Exception('Error !');
     }
 
     public function login()
     {
-        $this->request->allowMethod(['post']);
+        $this->request->allowMethod(['post', 'get']);
         if ($this->request->is('post')) {
             if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
                 return $this->redirect('/');
@@ -56,6 +60,8 @@ class UsersController extends AppController
                 return $this->redirect('/');
             }
             throw new Exception('Error !');
+        } elseif ($this->request->is('get')) {
+            return $this->redirect('/#login');
         }
     }
 

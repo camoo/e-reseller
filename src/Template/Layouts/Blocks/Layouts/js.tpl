@@ -33,6 +33,8 @@
 	<script src="/js/script.js"></script><!-- Library -->
 	{% if is_loggedin() %}
       <script src="/js/Users/script.js"></script>
+	  {% else %}
+      <script src="/js/Users/getin.js"></script>
 	{% endif %}
       <script src="/js/domainwhois.js"></script>
 	  {{ html_fetch('script') }}

@@ -1,0 +1,29 @@
+{% extends "Layouts/pages.tpl" %}
+{% block content %}
+    <!-- search_area_start -->
+    <div class="search_area">
+        <div class="container">
+                <!-- .row start -->
+                <div class="row section-info">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h2 class="section-title normal-case">Oops la!</h2>
+                        <div class="big-divider"></div>
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <p class="section-description">{{message}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- .row end -->
+
+                <!-- .row start -->
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <a href="/" class="boxed_btn_green">Page d’accueil</a>
+                    </div>
+                </div><!-- .row end -->
+				<div class="row"></div>
+
+        </div>
+    </div>
+{% endblock %}

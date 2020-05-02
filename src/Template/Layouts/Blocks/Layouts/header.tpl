@@ -32,6 +32,17 @@
                                         <li><a href="Support.html">Support</a></li>
                                         <li><a href="about.html">About</a></li>
                                         <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
+										{% if basket_counter() > 0%}
+										<li> 
+										<div class="icon-cart" style="float: left">
+<div class="cart-line-1" style="background-color: #C5BFB6"></div>
+<div class="cart-line-2" style="background-color: #C5BFB6"></div>
+<div class="cart-line-3" style="background-color: #C5BFB6"></div>
+<div class="cart-wheel" style="background-color: #C5BFB6"></div>
+<span style="margin-left: 24px;" id="cart-count" class="w3-badge w3-red">{{ basket_counter() }}</span>
+</div>
+										</li>
+										{% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -39,7 +50,7 @@
                         <div class="col-xl-3 col-lg-3 d-none d-lg-block">
                             <div class="log_chat_area d-flex align-items-center">
 								{% if is_loggedin() %}
-                                <a href="/logout" class="login">
+                                <a href="/logout" id="camoo-logout" class="login">
                                     <i class="flaticon-lock"></i>
                                     <span id="logout">Déconnexion</span>
                                 </a>
@@ -50,7 +61,7 @@
                                     </a>
                                 </div>
 								{% else %}
-                                <a href="#test-form" class="login popup-with-form">
+                                <a href="#test-form" id="camoo-login" class="login popup-with-form">
                                     <i class="flaticon-user"></i>
                                     <span id="login">Connexion</span>
                                 </a>

@@ -23,13 +23,12 @@ class Basket extends FunctionHelper
     public function getFunctions() : array
     {
         return [
-           $this->add('get_basket', [$this, 'get']),
+           $this->add('basket_counter', [$this, 'getCount']),
         ];
     }
 
-
-	public function get() : BasketRepository
+	public function getCount() : int
 	{
-		return $this->getBasketRepository();
+		return $this->getBasketRepository()->count();
 	}
 }
