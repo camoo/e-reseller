@@ -10,9 +10,9 @@ use CAMOO\Cache\Cache;
  * Class Lib
  * @author CamooSarl
  */
-class Lib extends FunctionHelper
+final class Lib extends FunctionHelper
 {
-	public $functions = ['Basket'];
+    public $functions = ['Basket'];
 
     public function getFunctions() : array
     {
@@ -23,28 +23,35 @@ class Lib extends FunctionHelper
 
     public function getDomainWhoisResult($inp)
     {
+        $oBasket = $this->Basket->getItems();
         $result = '';
         if (($xRet = Cache::read($inp, '_camoo_hosting_1hour')) !== false) {
             foreach ($xRet as $domain => $value) {
                 $class = 'available domain-available add-to-basket';
                 $word = 'Disponible';
+                $takeIt = 'Je commande';
                 $cmd = 'add-to-basket';
+                if ($oBasket->has($domain)) {
+                    $cmd .=' disable';
+                    $takeIt = $word = 'Dans le panier';
+                }
+
                 if ($value['status'] === 'N') {
                     $class = 'disable domain-taken';
                     $word = 'déjà pris';
-                $cmd = 'disable';
+                    $cmd = 'disable';
                 }
                 $result .= sprintf('
                     <div class="single_search d-flex justify-content-between align-items-center">
                         <div class="name_title">
                             <h4>'.$domain.'</h4>
                         </div>
-                        <div class="prising_content">
-                            <a data-domain="'.$domain.'" data-price="'.$value['price']['addnewdomain'].'" class="premium %s" href="#">%s</a>
+                        <div class="prising_content single-domain-item">
+                            <a data-domain="'.$domain.'" data-price="'.$value['price']['addnewdomain'].'" class="trigger-domain premium %s" href="#">%s</a>
                             <a href="#">XAF '.$value['price']['addnewdomain'].'/an</a> 
-                            <a data-domain="'.$domain.'" data-price="'.$value['price']['addnewdomain'].'" class="boxed_btn_green %s" href="#">Je commande</a>
+                            <a data-domain="'.$domain.'" data-price="'.$value['price']['addnewdomain'].'" class="trigger-domain boxed_btn_green %s" href="#">%s</a>
                         </div>
-                    </div>', $class, $word, $cmd);
+                    </div>', $class, $word, $cmd, $takeIt);
             }
         }
         return $result;

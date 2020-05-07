@@ -46,7 +46,7 @@
 												</li>
                                                {% endfor %}
 											   <li class="kasse">
-                                    			  <a class="boxed_btn_green" href="#" id="camoo-kasse"><span>à la caise</span></a>
+                                    			  <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>à la caise</span></a>
 											   </li>
 											</ul>
 

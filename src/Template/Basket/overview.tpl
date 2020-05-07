@@ -9,7 +9,7 @@
    {% for key,item in basket %}
   <div class="item">
     <div class="buttons">
-      <span class="delete-btn"></span>
+      <span title="Supprimer" data-sku="{{key}}" class="delete-btn delete-cart-item"></span>
     </div>
  
     <div class="image">

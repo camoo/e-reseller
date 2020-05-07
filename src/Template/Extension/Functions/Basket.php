@@ -1,14 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Template\Extension\Functions;
 
 use CAMOO\Utils\Cart as BasketRepository;
 use CAMOO\Template\Extension\FunctionHelper;
+
 /**
  * Class Basket
  * @author CamooSarl
  */
-class Basket extends FunctionHelper
+final class Basket extends FunctionHelper
 {
     private $_basket = [\CAMOO\Utils\Cart::class, 'create'];
 
@@ -28,14 +30,13 @@ class Basket extends FunctionHelper
         ];
     }
 
-	public function getCount() : int
-	{
-		return $this->getBasketRepository()->count();
-	}
+    public function getCount() : int
+    {
+        return $this->getBasketRepository()->count();
+    }
 
-	public function getItems()
-	{
-		return $this->getBasketRepository();
-	}
-
+    public function getItems()
+    {
+        return $this->getBasketRepository();
+    }
 }

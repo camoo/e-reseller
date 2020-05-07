@@ -37,5 +37,6 @@
       <script src="/js/Users/getin.js"></script>
 	{% endif %}
       <script src="/js/domainwhois.js"></script>
+      <script src="/js/Basket/script.js"></script>
 	  {{ html_fetch('script') }}
 {% endblock %}

@@ -33,6 +33,9 @@ var DomainWhois=(function($){
 
 
 			$('#domain-whois-results .add-to-basket').on('click', function(evt){
+				if ($(this).hasClass('disable')) {
+					return false;
+				}
 				me.addToBasket(this);
 				evt.preventDefault();
 			});
@@ -55,9 +58,10 @@ var DomainWhois=(function($){
 				data : jsonData,
 				success : function (data) {
 					if ( data.status === true ) {
-						console.log(data);
 						// Show basket
 						me.updateBasket(true);
+						var $div = $(src).closest('div');
+						$($div).find('.trigger-domain').addClass('disable').html('Dans le panier');
 					//	me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
 					} else {
 					///	location.reload();
@@ -92,7 +96,6 @@ var DomainWhois=(function($){
 				data : jsonData,
 				success : function (data) {
 					if ( data.status === true ) {
-						console.log(data);
 						me.updateBasket(false);
 					//	me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
 					} else {
@@ -118,7 +121,7 @@ var DomainWhois=(function($){
 			var iCount = xCount.replace(/^\s*|\s*$/g, '') === ''? 0 : parseInt(xCount);
 
 			if (bIncrement) {
-				$('line-cart').removeClass('invisible');
+				$('#line-cart').removeClass('invisible');
 				iCount++;
 			}else {
 				iCount--;
