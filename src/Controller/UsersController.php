@@ -6,7 +6,7 @@ namespace App\Controller;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Configure;
 use CAMOO\Cache\Cache;
-use App\Lib\Utils\Basket;
+use CAMOO\Utils\Cart;
 
 /**
  * Class UsersController
@@ -80,12 +80,12 @@ class UsersController extends AppController
 
     private function doLogin(array $user) : void
     {
-        /** @var Basket */
+        /** @var Cart */
         $basket = null;
 
         if (!empty($this->request->getSession()->check('Basket'))) {
             $basket = Cache::read($this->request->getSession()->read('Basket'));
-            if ($basket instanceof Basket) {
+            if ($basket instanceof Cart) {
                 Cache::delete($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
             }
         }
@@ -93,7 +93,7 @@ class UsersController extends AppController
         $this->request->getSession()->write('Auth.User', $user);
         $this->request->getSession()->write('loggedin', true);
 
-        if (null !== $basket && $basket instanceof Basket) {
+        if (null !== $basket && $basket instanceof Cart) {
             $Object->save();
         }
     }

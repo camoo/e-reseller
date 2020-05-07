@@ -32,17 +32,32 @@
                                         <li><a href="Support.html">Support</a></li>
                                         <li><a href="about.html">About</a></li>
                                         <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
-										{% if basket_counter() > 0%}
-										<li> 
-										<div class="icon-cart" style="float: left">
-<div class="cart-line-1" style="background-color: #C5BFB6"></div>
-<div class="cart-line-2" style="background-color: #C5BFB6"></div>
-<div class="cart-line-3" style="background-color: #C5BFB6"></div>
-<div class="cart-wheel" style="background-color: #C5BFB6"></div>
-<span style="margin-left: 24px;" id="cart-count" class="w3-badge w3-red">{{ basket_counter() }}</span>
-</div>
+										<li id="line-cart" class="ti-angle-down rs-pointer{% if basket_counter() < 1%} invisible{% endif %}">
+										<a href="#">&nbsp;</a>
+											<ul class="submenu ul-basket">
+												<li class="title">Votre Panier</li>
+                                               {% for key,item in basket_items() %}
+												<li class="cart-item">
+                                                   <div class="cart-item-description">
+                                                      <span title="{{key}}" class="cart-key"><strong>{{ key }}</strong></span>
+                                                      <span> XAF {{ item.price }}</span>
+													  <span title="Supprimer" data-sku="{{key}}" class="delete-btn delete-cart-item"></span>
+                                                     </div>
+												</li>
+                                               {% endfor %}
+											   <li class="kasse">
+                                    			  <a class="boxed_btn_green" href="#" id="camoo-kasse"><span>à la caise</span></a>
+											   </li>
+											</ul>
+
+										<div class="icon-cart" style="float: left;">
+											<div class="cart-line-1" style="background-color: #C5BFB6"></div>
+											<div class="cart-line-2" style="background-color: #C5BFB6"></div>
+											<div class="cart-line-3" style="background-color: #C5BFB6"></div>
+											<div class="cart-wheel" style="background-color: #C5BFB6"></div>
+											<span style="margin-left: 15px;" id="cart-count" class="w3-badge w3-red">{{ basket_counter() }}</span>
+										</div>
 										</li>
-										{% endif %}
                                     </ul>
                                 </nav>
                             </div>

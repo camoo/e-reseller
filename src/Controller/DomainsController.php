@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use CAMOO\Cache\Cache;
-use App\Lib\Utils\Basket;
+use CAMOO\Utils\Cart;
 use CAMOO\Event\Event;
 
 /**
@@ -95,7 +95,7 @@ class DomainsController extends AppController
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
-            /** @var Basket **/
+            /** @var Cart **/
             $oBasket = $this->getBasketRepository();
             $status = false;
             $iUserId = (int) $this->request->getSession()->read('Auth.User.id');
@@ -128,7 +128,7 @@ class DomainsController extends AppController
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
-            /** @var Basket **/
+            /** @var Cart **/
             $oBasket = $this->getBasketRepository();
             $status = true;
             $domain = $this->request->getData('domain');

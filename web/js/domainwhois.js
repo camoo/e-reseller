@@ -56,6 +56,8 @@ var DomainWhois=(function($){
 				success : function (data) {
 					if ( data.status === true ) {
 						console.log(data);
+						// Show basket
+						me.updateBasket(true);
 					//	me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
 					} else {
 					///	location.reload();
@@ -91,6 +93,7 @@ var DomainWhois=(function($){
 				success : function (data) {
 					if ( data.status === true ) {
 						console.log(data);
+						me.updateBasket(false);
 					//	me.openInNewTab('/domain?d='+ data.domain + '#domain-whois-results');
 					} else {
 					///	location.reload();
@@ -109,6 +112,24 @@ var DomainWhois=(function($){
 			});
 		},
 
+		updateBasket: function(bIncrement)
+		{
+			var xCount = $('span#cart-count').html();
+			var iCount = xCount.replace(/^\s*|\s*$/g, '') === ''? 0 : parseInt(xCount);
+
+			if (bIncrement) {
+				$('line-cart').removeClass('invisible');
+				iCount++;
+			}else {
+				iCount--;
+			}
+			if ( iCount < 1 ) {
+				$('span#cart-count').html(0);
+				$('line-cart').addClass('invisible');
+			} else{
+				$('span#cart-count').html(iCount);
+			}
+		},
 
 		/**
 		 * @param {string} url
