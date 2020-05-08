@@ -8,12 +8,15 @@ use CAMOO\Utils\Cart;
 
 class AppController extends BaseController
 {
-    private $_basket = [\CAMOO\Utils\Cart::class, 'create'];
+
+    /** @var array $_basket */
+    private $_basket = [Cart::class, 'create'];
 
     public function initialize() : void
     {
         parent::initialize();
-        //       debug(Configure::read('RESELLER_TARIFFS'));
+        //debug(Configure::read('RESELLER_TARIFFS'));
+        //debug($this->getPackageById());
         $this->set('siteConfig', Configure::read('RESELLER_SITE'));
         $this->loadComponent('Security');
     }
@@ -27,6 +30,19 @@ class AppController extends BaseController
         if ($this->request->getSession()->check('loggedin')) {
             $cart->setUserId($this->request->getSession('Auth.User.id'));
         }
+        $cart->refresh();
         return $cart;
+    }
+
+    protected function getPackageById(int $id) : ?array
+    {
+        $ahTariffs  = Configure::read('RESELLER_TARIFFS');
+        $tariff = array_filter($ahTariffs['tariffs'], static function ($hTariff) use ($id) {
+            if ($id === $hTariff['id']) {
+                return $hTariff;
+            }
+        });
+        $tariff = array_values($tariff);
+        return array_shift($tariff)??null;
     }
 }

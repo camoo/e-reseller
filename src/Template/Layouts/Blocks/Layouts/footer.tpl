@@ -9,7 +9,7 @@
                         <div class="footer_widget">
                             <div class="footer_logo">
                                 <a href="#">
-                                    <img src="img/logo.png" alt="">
+                                    <img src="/img/logo.png" alt="">
                                 </a>
                             </div>
                             <p class="footer_text doanar"> <a class="first" href="#">{{ siteConfig.company_tel }}

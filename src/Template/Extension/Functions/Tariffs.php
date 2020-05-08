@@ -46,7 +46,7 @@ class Tariffs extends FunctionHelper
         }
         $html .='
                         <p class="prise"> Coûts <span>'.$hTariff['price'].'/an</span></p>
-                        <a href="#" class="boxed_btn_green2">Je commande</a>
+                        <a data-belongs="'.$this->getBelongsTo($hTariff).'" data-sku="'.$hTariff['id'].'" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
                     </div>
                 </div>';
         return $html;
@@ -136,7 +136,7 @@ class Tariffs extends FunctionHelper
         return round(pow(1000, $base - floor($base)), $precision) . $suffixes[floor($base)];
     }
 
-    private function _ipr($key)
+    private function _ipr(string $key) : string
     {
         $ipr = [
             "lang_max_ftp"                 => "Comptes FTP",
@@ -157,4 +157,21 @@ class Tariffs extends FunctionHelper
         ];
         return array_key_exists($key, $ipr)? $ipr[$key] : $key;
     }
+
+	private function getBelongsTo(array $tariff) : ?string 
+	{
+		if (array_key_exists('package_group', $tariff)) {
+			return $tariff['package_group']['name'];
+		}
+		return null;
+	}
+
+	private function getTypeName(array $tariff) : ?string 
+	{
+		if (array_key_exists('package_type', $tariff)) {
+			return $tariff['package_type']['name'];
+		}
+		return null;
+	}
+
 }

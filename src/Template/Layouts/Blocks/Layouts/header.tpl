@@ -37,6 +37,18 @@
 											<ul class="submenu ul-basket">
 												<li class="title">Votre Panier</li>
                                                {% for key,item in basket_items() %}
+											    {% if key == "hosting" %}
+												  {% for idex,hash in item %}
+												<li class="cart-item" id="{{hash.id}}">
+                                                   <div class="cart-item-description">
+                                                      <span title="{{hash.name}}" class="cart-key"><strong>{{ hash.human_name }}</strong></span>
+                                                      <span> XAF {{ hash.price }}</span>
+													  <span title="Supprimer" data-id="{{hash.id}}" data-type="hosting" data-sku="{{hash.sku}}" class="delete-btn delete-cart-item"></span>
+                                                     </div>
+												</li>
+												  {% endfor %}
+
+												{% else %}
 												<li class="cart-item">
                                                    <div class="cart-item-description">
                                                       <span title="{{key}}" class="cart-key"><strong>{{ key }}</strong></span>
@@ -44,6 +56,7 @@
 													  <span title="Supprimer" data-sku="{{key}}" class="delete-btn delete-cart-item"></span>
                                                      </div>
 												</li>
+												{% endif %}
                                                {% endfor %}
 											   <li class="kasse">
                                     			  <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>à la caise</span></a>

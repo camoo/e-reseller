@@ -12,7 +12,9 @@ use CAMOO\Template\Extension\FunctionHelper;
  */
 final class Basket extends FunctionHelper
 {
-    private $_basket = [\CAMOO\Utils\Cart::class, 'create'];
+
+    /** @var array $_basket */
+    private $_basket = [BasketRepository::class, 'create'];
 
     /**
      * @return BasketRepository
@@ -22,6 +24,9 @@ final class Basket extends FunctionHelper
         return call_user_func($this->_basket, $this->request);
     }
 
+    /**
+     * @return array
+     */
     public function getFunctions() : array
     {
         return [
@@ -30,12 +35,18 @@ final class Basket extends FunctionHelper
         ];
     }
 
+    /**
+     * @return int
+     */
     public function getCount() : int
     {
         return $this->getBasketRepository()->count();
     }
 
-    public function getItems()
+    /**
+     * @return BasketRepository
+     */
+    public function getItems() : BasketRepository
     {
         return $this->getBasketRepository();
     }

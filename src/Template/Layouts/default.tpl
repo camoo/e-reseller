@@ -23,6 +23,7 @@
             <meta name="Author" content="Camoo Sarl">
             <meta name="Robots" content="Noindex">
             <meta name="generator" content="CAMOO SARL"/>
+			<!-- meta http-equiv="Content-Security-Policy" content="default-src 'self'" -->
             <!-- link rel="stylesheet" type="text/css" href="/css/style.css" / -->
 			{% include 'Layouts/Blocks/Layouts/css.tpl' %}
         {% endblock %}

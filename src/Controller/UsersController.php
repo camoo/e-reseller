@@ -94,7 +94,8 @@ class UsersController extends AppController
         $this->request->getSession()->write('loggedin', true);
 
         if (null !== $basket && $basket instanceof Cart) {
-            $Object->save();
+            $basket->setUserId($user['id']);
+            $basket->save();
         }
     }
 

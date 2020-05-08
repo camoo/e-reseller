@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use CAMOO\Event\Event;
+use CAMOO\Exception\Exception;
+use CAMOO\Utils\Inflector;
 
 /**
  * Class BasketController
@@ -37,14 +39,35 @@ final class BasketController extends AppController
             /** @var Cart **/
             $oBasket = $this->getBasketRepository();
             $status = true;
-            $domain = $this->request->getData('domain');
-            $domain = strtolower($domain);
-            $oBasket->removeItem($domain);
+            $sku = $this->request->getData('sku');
+            $keyItem = $this->request->getData('key');
+            $type = $this->request->getData('type');
 
-            return $this->_jsonResponse([
-                        'status' => $status,
-                        'item' => $domain
-                    ]);
+            $package = $this->getPackageById((int) $sku);
+            $ahCartTypeItems = !$oBasket->has($type)? [] : $oBasket->get($type);
+            $ahCartTypeItems[] = [
+                'belongs'     => $keyItem,
+                'sku'         => $sku,
+                'id'          => uniqid($sku, false),
+                'price'       => $package['price'],
+                'basket_icon' => 'flaticon-servers',
+                'human_name'  => Inflector::classify($package['name']),
+                'name'        => $package['name'],
+                'description' => $package['desc_short'],
+                'package'     => $package,
+            ];
+           
+            try {
+                // REMOVE OLD KEY
+                $oBasket->removeItem($type);
+
+                // UPDATE KEY
+                $oBasket->addItem($type, $ahCartTypeItems);
+            } catch (Exception $exception) {
+                $status = false;
+            }
+
+            return $this->_jsonResponse(['status' => $status,]);
         }
     }
 
@@ -56,12 +79,69 @@ final class BasketController extends AppController
             $oBasket = $this->getBasketRepository();
             $status = true;
             $sku = $this->request->getData('sku');
-            $oBasket->removeItem($sku);
 
+            $id = $this->request->getData('id');
+            $type = $this->request->getData('type');
+            if (!empty($id) && !empty($type) && $type === 'hosting') {
+                $itemKey = $this->getItemKeyId($id); // key might be 0 as well
+                $ahCartTypeItems = $oBasket->get('hosting');
+                unset($ahCartTypeItems[$itemKey]);
+ 
+                // REMOVE OLD KEY
+                $oBasket->removeItem('hosting');
+
+                if (!empty($ahCartTypeItems)) {
+                    // UPDATE KEY
+                    $oBasket->addItem($type, $ahCartTypeItems);
+                }
+            } else {
+                $oBasket->removeItem($sku);
+            }
+
+            return $this->_jsonResponse(['status' => $status]);
+        }
+    }
+
+    public function addDomainToHosting()
+    {
+        $this->request->allowMethod(['post']);
+        if ($this->request->is('ajax')) {
+            /** @var Cart **/
+            $oBasket = $this->getBasketRepository();
+            $status = true;
+            $id = $this->request->getData('id');
+            $domain = $this->request->getData('domain');
+            if ($itemKey = $this->getItemKeyId($id)) {
+                $ahCartTypeItems = $oBasket->get('hosting');
+                $ahCartTypeItems[$itemKey]['on_domain'] = $domain;
+                // UPDATE KEY
+                $oBasket->addItem($type, $ahCartTypeItems);
+            }
             return $this->_jsonResponse([
                         'status' => $status,
-                        'item' => $sku,
+                        //'item' => $sku,
                     ]);
         }
+    }
+
+    protected function getItemKeyId(string $id, string $type='hosting') : ?int
+    {
+        /** @var Cart **/
+        $oBasket = $this->getBasketRepository();
+ 
+        if (!$oBasket->has($type)) {
+            return [];
+        }
+            
+        $ahCartTypeItems = $oBasket->get($type);
+        $cartItem = array_filter($ahCartTypeItems, static function ($item) use ($id) {
+            if ($id === $item['id']) {
+                return $item;
+            }
+        });
+        if ($cartItem && ($key = array_key_first($cartItem)) !== null) {
+            return $key;
+        }
+        return null;
     }
 }
