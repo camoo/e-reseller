@@ -10,7 +10,7 @@
                             <p>Nous sommes le meilleur fournisseur de nom de domaine et Hébergeur Web au Cameroun</p>
                             <h3>Trouvez votre domaine</h3>
                             <div class="find_dowmain">
-							{{ form_start('join', {'id':'domainwhois', 'class': 'find_dowmain_form'}) }}
+							{{ form_start('domain-lookup', {'id':'domainwhois', 'class': 'find_dowmain_form'}) }}
 	                        {{ form_input('domain', {'placeholder' : 'Rechercher votre nom de domaine', 'required' : 'required'}) }}
 							{{ form_input('submit', {'type' : 'submit', 'value' : 'Lancer', 'id' : 'finddomain'}) }}
 							{{ form_end() }}

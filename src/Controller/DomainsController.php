@@ -7,7 +7,6 @@ use CAMOO\Cache\Cache;
 use CAMOO\Utils\Cart;
 use CAMOO\Event\Event;
 use CAMOO\Exception\Exception;
-use CAMOO\Exception\Http\ForbiddenException;
 
 /**
  * Class DomainsController
@@ -25,7 +24,7 @@ class DomainsController extends AppController
     public function beforeAction(Event $event)
     {
         parent::beforeAction($event);
-        $this->Security->setConfig('unlockedActions', ['addToBasket', 'removeFromBasket', 'isValid']);
+        $this->Security->setConfig('unlockedActions', ['domainSearch','addToBasket', 'removeFromBasket', 'isValid']);
     }
 
     /** @var array $allowedExtensions */
@@ -150,6 +149,11 @@ class DomainsController extends AppController
     public function decision()
     {
         $this->set('page_title', 'Indiquez un nom de domaine');
+        $itemKeyId = $this->request->getQuery('kid');
+        if (empty($itemKeyId)) {
+            return $this->redirect('/');
+        }
+        $this->set('item_key', $itemKeyId);
         $this->render();
     }
 
@@ -160,25 +164,18 @@ class DomainsController extends AppController
             $status = false;
             $iUserId = (int) $this->request->getSession()->read('Auth.User.id');
 
-            // CHECK TO ENSURE REFERRER URL IS ON THIS DOMAIN
-            if (strpos($this->request->getEnv('HTTP_REFERER'), $this->request->getEnv('HTTP_HOST')) === false) {
-                throw new ForbiddenException('Bad Referrer !');
-            }
-
             $domain = $this->request->getData('domain');
-            $asDomainCheck = explode('.', $domain);
-            if (count($asDomainCheck) > 1) {
-                $domain = count($asDomainCheck) > 1? array_shift($asDomainCheck) : $asDomainCheck[0];
+
+            $status = substr_count($domain, '.') > 0;
+            if ($status === true) {
+                $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
+                $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
+                $status = empty($oNewRequest->getErrors());
             }
-
-            $domain = strtolower($domain);
-
-            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
-            $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
     
             return $this->_jsonResponse([
-                        'status' => empty($oNewRequest->getErrors()),
-                        'result' => $oNewRequest->getErrors()
+                        'status' => $status,
+                        //'result' => $oNewRequest->getErrors()
                     ]);
         }
         throw new Exception('Unknow error !');

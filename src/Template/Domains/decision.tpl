@@ -12,6 +12,12 @@
                             <div class="col-md-12">
                                 <p class="p_choice">
                                     <input type="hidden" name="chose_domain" value=""><label for="btn_new_domain"><input type="radio" name="chose_domain" value="0" checked="checked" id="btn_new_domain">Je veux un nouveau nom de domaine</label><label for="btn_already_domain"><input type="radio" name="chose_domain" value="1" style="margin-left:20px" id="btn_already_domain">J’ai déjà un nom de domaine</label>                                </p>
+
+							{{ form_start('domain-lookup', {'id':'domainwhois', 'class': 'find_dowmain_form', 'style' : 'display:none;'}) }}
+	                        {{ form_input('domain', {'placeholder' : 'Rechercher votre nom de domaine', 'required' : 'required'}) }}
+							{{ form_input('submit', {'type' : 'submit', 'value' : 'Lancer', 'id' : 'finddomain'}) }}
+							{{ form_end() }}
+
                             </div>
                         </div>
                         <div class="form-group">

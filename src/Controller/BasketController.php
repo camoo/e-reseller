@@ -45,10 +45,11 @@ final class BasketController extends AppController
 
             $package = $this->getPackageById((int) $sku);
             $ahCartTypeItems = !$oBasket->has($type)? [] : $oBasket->get($type);
+            $sNewId = uniqid($sku, false);
             $ahCartTypeItems[] = [
                 'belongs'     => $keyItem,
                 'sku'         => $sku,
-                'id'          => uniqid($sku, false),
+                'id'          => $sNewId,
                 'price'       => $package['price'],
                 'basket_icon' => 'flaticon-servers',
                 'human_name'  => Inflector::classify($package['name']),
@@ -67,7 +68,7 @@ final class BasketController extends AppController
                 $status = false;
             }
 
-            return $this->_jsonResponse(['status' => $status,]);
+            return $this->_jsonResponse(['status' => $status, 'id' => $sNewId]);
         }
     }
 
@@ -124,6 +125,11 @@ final class BasketController extends AppController
         }
     }
 
+    /**
+     * @param string $id
+     * @param string $type
+     * @return null|int
+     */
     protected function getItemKeyId(string $id, string $type='hosting') : ?int
     {
         /** @var Cart **/

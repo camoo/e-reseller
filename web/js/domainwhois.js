@@ -180,6 +180,7 @@ var DomainWhois=(function($){
 	};
 	return {
 		'initialize' : me.initialize,
+		'lookup' : me.whois,
 	};
 })(jQuery);
 

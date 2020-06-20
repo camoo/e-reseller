@@ -48,9 +48,9 @@
   </div>
   {% endif %}
 {% endfor %}
-<div class="col-xl-12">
-							<button id="user-join" type="submit" class="boxed_btn_green">Créer votre compte</button>
-                        </div>
+      <div class="col-xl-12">
+          <button id="user-join" type="submit" class="boxed_btn_green">Créer votre compte</button>
+      </div>
   </div>
 </div>
 {% endblock %}

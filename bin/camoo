@@ -5,6 +5,13 @@
 #
 # -------------------------------------------------------------------------
 
+VARIABLE=$@
+
+if [ -z "$VARIABLE" ]; then
+	echo "Parameter is missing"
+	exit 0
+fi
+
 getShellDir() {
 	NAME="$1"
 	if [ -f "$NAME" ]
@@ -50,21 +57,21 @@ if [ -z "$PHP" ]; then
 	PHP=$(php_cli)
 fi
 
-if [ "$@" == "cleanup:core" ]; then
+if [ "$VARIABLE" == "cleanup:core" ]; then
 	echo "Clear Core cache..."
 	rm -rf $APP/tmp/cache/persistent/persistent/*
 	echo "[DONE]"
 	exit 0
 fi
 
-if [ "$@" == "cleanup:tpl" ]; then
+if [ "$VARIABLE" == "cleanup:tpl" ]; then
 	echo "Clear Template's cache..."
 	rm -rf $APP/tmp/cache/tpl/*
 	echo "[DONE]"
 	exit 0
 fi
 
-if [ "$@" == "cleanup:all" ]; then
+if [ "$VARIABLE" == "cleanup:all" ]; then
 	echo "Clear ALL caches..."
 	rm -rf $APP/tmp/cache/persistent/persistent/*
 	rm -rf $APP/tmp/cache/tpl/*

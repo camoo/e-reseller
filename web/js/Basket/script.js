@@ -2,6 +2,9 @@ var Cart=(function($){
 	"use strict";
 	var me = {
 		initialized: false,
+		isValidDomain: false,
+		READY : 'already',
+		NEW : 'new',
 
 		/**
 		 * @return {void}
@@ -55,25 +58,41 @@ var Cart=(function($){
 					alert('Renseignez votre nom de domaine');
 					return;
 				}
-			console.log(me.isValidDomain(val));	
+			//	console.log(me.getDomainDecision());
+				me.validateDomain(val);
+			//	if (me.getDomainDecision() === me.READY && me.validateDomain(val) === true ) {
+			//		// ADD Domain To Hosting
+			//	}
 
 			});
-
 		},
 
-		isValidDomain : function(domain)
+		getDomainDecision : function()
 		{
-			var isValid = false;
+			return $('#domain-decision').attr('data-active');
+		},
+
+		/**
+		 * @param {string} domain
+		 * @return {void}
+		 */
+		validateDomain : function(domain)
+		{
+			showSpinner();
 			$.ajax({
 				url : '/domains/is-valid',
 				type  : 'POST',
 				dataType : 'JSON',
 				cache: false,
-				async:true,
 				data : {'domain' : domain},
 				success : function (data) {
-					isValid = data.status;
+					if (me.getDomainDecision() === me.READY) {
+						// ADD Domain To Hosting
 						console.log(data);
+					 } else{
+						$('#domain').val(domain);
+						 DomainWhois.lookup();
+					 }
 				},
 				error: function ( jqXHR, textStatus,  errorThrown ) {
 					hideSpinner();
@@ -86,9 +105,6 @@ var Cart=(function($){
 					hideSpinner();
 				}
 			});
-
-			return isValid;
-
 		},
 
 		addItem: function(src)
@@ -108,10 +124,10 @@ var Cart=(function($){
 					async:true,
 					data : jsonData,
 					success : function (data) {
-						if ( data.status === true ) {
+						if ( data.status === true && typeof(data.id) !== 'undefined') {
 							// ADD Domain if not yet
+							window.location = '/domains/decision/?kid='+ data.id;
 						}
-						console.log(data);
 					},
 					error: function ( jqXHR, textStatus,  errorThrown ) {
 						hideSpinner();
