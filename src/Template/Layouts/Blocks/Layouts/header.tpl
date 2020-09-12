@@ -83,7 +83,7 @@
                                     <span id="logout">Déconnexion</span>
                                 </a>
                                 <div class="live_chat_btn">
-                                    <a class="boxed_btn_green" href="#" id="camoo-dashbord">
+                                    <a class="boxed_btn_green goto-cpanel" href="#" id="camoo-dashbord">
                                         <i class="flaticon-browser"></i>
                                         <span>cPanel</span>
                                     </a>

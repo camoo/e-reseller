@@ -48,9 +48,11 @@
   </div>
   {% endif %}
 {% endfor %}
-      <div class="col-xl-12">
-          <button id="user-join" type="submit" class="boxed_btn_green">Créer votre compte</button>
+{% if not is_loggedin() %}
+      <div class="col-xl-12 cart-goto-login">
+	  	  <a id="user-join" href="/#login" class="boxed_btn_green">Se connecter ou créer un compte</a>
       </div>
+{% endif %}
   </div>
 </div>
 {% endblock %}

@@ -50,15 +50,18 @@ class UsersController extends AppController
             if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
                 return $this->redirect('/');
             }
+
             $data = [
                 'email'    => $this->request->getData('username'),
                 'password' => $this->request->getData('passwd'),
             ];
+
             $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'login']);
             if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'auth']))) {
                 $this->doLogin($xRet);
                 return $this->redirect('/');
             }
+
             throw new Exception('Error !');
         } elseif ($this->request->is('get')) {
             return $this->redirect('/#login');
@@ -83,15 +86,17 @@ class UsersController extends AppController
         /** @var Cart */
         $basket = null;
 
+        $this->request->getSession()->write('Auth.User', $user);
+        $this->request->getSession()->write('loggedin', true);
+
         if (!empty($this->request->getSession()->check('Basket'))) {
-            $basket = Cache::read($this->request->getSession()->read('Basket'));
+            $basket = Cache::read($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
             if ($basket instanceof Cart) {
+                $basket->addRequest($this->request);
                 Cache::delete($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
             }
         }
 
-        $this->request->getSession()->write('Auth.User', $user);
-        $this->request->getSession()->write('loggedin', true);
 
         if (null !== $basket && $basket instanceof Cart) {
             $basket->setUserId($user['id']);

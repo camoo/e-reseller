@@ -28,7 +28,7 @@ class AppController extends BaseController
     {
         $cart = call_user_func($this->_basket, $this->request);
         if ($this->request->getSession()->check('loggedin')) {
-            $cart->setUserId($this->request->getSession('Auth.User.id'));
+            $cart->setUserId($this->request->getSession()->read('Auth.User.id'));
         }
         $cart->refresh();
         return $cart;
