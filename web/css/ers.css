@@ -353,6 +353,12 @@ body.loading .camoo-loading {display: block;}
 	color: #212529 !important;
 }
 
+.flash-resp{
+	margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .dedicated_support .support_info h3{color: #2e004b !important;}
 .dedicated_support .support_info .get_started .phone_num {color: #212529 !important;}
 .goto-cpanel{padding: 4px 25px !important;}

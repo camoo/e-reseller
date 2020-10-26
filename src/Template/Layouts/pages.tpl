@@ -32,6 +32,7 @@
 			{% include 'Layouts/Blocks/Layouts/header.tpl' %}
         </div>
 		<div id="rs-bradcam">{% include 'Layouts/Blocks/Layouts/bradcam.tpl' %}</div>
+		<div class="flash-resp">{{ 'flash'|show_flash }}</div>
         <div id="content">{% block content %}{% endblock %}</div>
 		<div id="rs-footer">{% include 'Layouts/Blocks/Layouts/footer.tpl' %}</div>
 	{% include 'Layouts/Blocks/Layouts/js.tpl' %}

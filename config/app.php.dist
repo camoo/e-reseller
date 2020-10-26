@@ -51,6 +51,16 @@ return [
         ]
 
     ],
+    'SmtpTransport' => [
+        'default' => [
+            'host' => 'ssl://smtp.gmail.com',
+            'port' => 465,
+            'timeout' => 30,
+            'username' => 'email@gmail.com',
+            'password' => 'gkhfhk3497859',
+            'secure' => 'tls',
+        ],
+	],
     'Session' => [
         'name' => 'CAMOOFMW',
         'cookie' => [

@@ -1,7 +1,7 @@
 {% extends "Layouts/pages.tpl" %}
 {% block content %}
 	    <!-- ================ contact section start ================= -->
-    <section class="contact-section">
+    <section class="contact-section-1">
             <div class="container">
                 <div class="d-none d-sm-block mb-5 pb-4">
                 </div>
