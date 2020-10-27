@@ -8,19 +8,6 @@ return [
         'csrf_lifetime' => 1800, // 30 min
         'csrf_single_once' => true, // one csrf Token for each request instead of session token
     ],
-    'Database' => [
-        'default' => [
-            'database' => 'my_db',
-            'username' => 'my_dbuser',
-            'password' => 'secret',
-            'host' => 'localhost',
-            'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Mysql',
-            'cacheMetadata' => true,
-            'quoteIdentifiers' => false,
-            // 'port' => '3306',
-        ],
-    ],
     'Cache' => [
         /**
          * Configure the cache for model and datasource caches. This cache
@@ -53,7 +40,7 @@ return [
     ],
     'SmtpTransport' => [
         'default' => [
-            'host' => 'ssl://smtp.gmail.com',
+            'host' => 'smtp.gmail.com',
             'port' => 465,
             'timeout' => 30,
             'username' => 'email@gmail.com',

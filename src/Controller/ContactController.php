@@ -42,17 +42,17 @@ class ContactController extends AppController
         $subject = $this->request->getData('subject');
         $name = $this->request->getData('name');
         $replyTo = $this->request->getData('email');
-        $oEmail = new Mailer();
+        $mailer = new Mailer();
         $baseUrl = $this->request->getEnv('HTTP_HOST');
 
         $message .= "\n\n\n*************************************************\n\n" . Configure::read('RESELLER_SITE.title_for_layout') ."\n" .
             $baseUrl. "\n\n Contact us \n\n*************************************************";
 
-		$adminEmail = Configure::read('RESELLER_SITE.contact_email');
-        $oEmail->addTo($adminEmail)
+        $adminEmail = Configure::read('RESELLER_SITE.contact_email');
+        $mailer->addTo($adminEmail)
                     ->setSubject($subject)
                     ->addReplyTo($replyTo)
                     ->setBody($message);
-        $oEmail->send();
+        $mailer->send();
     }
 }
