@@ -82,6 +82,7 @@ class UsersController extends AppController
             $this->request->getSession()->delete('Auth');
             $this->request->getSession()->delete('loggedin');
             $this->request->getSession()->clear();
+            $this->request->Flash->success('Déconnecté avec succès');
         }
         return $this->redirect('/');
     }
@@ -107,6 +108,7 @@ class UsersController extends AppController
             $basket->setUserId($user['id']);
             $basket->save();
         }
+        $this->request->Flash->success('Connecté avec succès');
     }
 
     public function getSSO()
