@@ -45,4 +45,30 @@ class AppController extends BaseController
         $tariff = array_values($tariff);
         return array_shift($tariff)??null;
     }
+
+    /**
+     * @param \CAMOO\Model\AppModel|\CAMOO\Interfaces\RestInterface $model
+     * @param string $flashType
+     *
+     * @return void
+     */
+    protected function showValidateErrors($model, string $flashType = 'error') : void
+    {
+        if (empty($model)) {
+            return;
+        }
+        $ahErrors = $model->getErrors();
+        $asFields = [];
+        if (!empty($ahErrors)) {
+            foreach ($ahErrors as $sField => $ahError) {
+                $asFields[] = $sField;
+                foreach ($ahError as $sMessage) {
+                    $this->request->Flash->{$flashType}($sMessage);
+                }
+            }
+            if (count($asFields)>0) {
+                $this->set('errorFields', $asFields);
+            }
+        }
+    }
 }

@@ -132,33 +132,33 @@
   <div class="div_form_add">
     <div class="input text required">
 	  {{ form_input('name', {'placeholder' : 'Votre Nom', 'required' : 'required'}) }}
-    </div>  
-    <div class="input password required">
-	  {{ form_input('password', {'placeholder' : 'Mot de passe', 'required' : 'required'}) }}
-    </div>   
-      <div class="input email required">
-	  {{ form_input('email', {'placeholder' : 'Votre E-mail', 'required' : 'required'}) }}
     </div>
     <div class="input text required">
-	  {{ form_input('city', {'placeholder' : 'Votre ville', 'required' : 'required'}) }}
-    </div> 
+	  {{ form_input('firstname', {'placeholder' : 'Votre Prénom', 'required' : 'required'}) }}
+    </div>
+    <div class="input password required">
+	  {{ form_input('password', {'placeholder' : 'Mot de passe', 'required' : 'required'}) }}
+    </div>
+    <div class="input password">
+	  {{ form_input('password_confirm', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'}) }}
+    </div>
   </div>
 </div>
 
 <div class="col-md-6 col-sm-6 col-xs-12">                     
   <div class="div_form_add">
+    <div class="input email required">
+	  {{ form_input('email', {'placeholder' : 'Votre E-mail', 'required' : 'required'}) }}
+    </div>
     <div class="input text required">
-	  {{ form_input('firstname', {'placeholder' : 'Votre Prénom', 'required' : 'required'}) }}
-    </div>  
-    <div class="input password">
-	  {{ form_input('password_confirm', {'type': 'password', 'placeholder' : 'Confirmer votre Mot de passe', 'required' : 'required'}) }}
-    </div>   
-      <div class="input phone required">
+	  {{ form_input('city', {'placeholder' : 'Votre ville', 'required' : 'required'}) }}
+    </div>
+    <div class="input phone required">
 	  {{ form_input('phone', {'type':'number', 'placeholder' : 'Votre téléphone', 'required' : 'required'}) }}
     </div>
     <div class="input text required">
 	  {{ form_input('address', {'placeholder' : 'Votre adresse (Rue/Quartier)', 'required' : 'required'}) }}
-    </div> 
+    </div>
   </div>
 </div>
                         <div class="col-xl-12">
