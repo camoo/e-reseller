@@ -67,6 +67,7 @@ class UsersController extends AppController
 
             $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'login']);
             if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'auth']))) {
+                $this->doLogin($xRet);
                 return $this->redirect('/');
             }
             $this->request->Flash->error('Nom d\'utilisateur ou mot de passe incorrect');
@@ -81,10 +82,8 @@ class UsersController extends AppController
             $this->request->getSession()->delete('Auth');
             $this->request->getSession()->delete('loggedin');
             $this->request->getSession()->clear();
-
-            return $this->redirect('/');
         }
-        throw new Exception('User not loggedIn !');
+        return $this->redirect('/');
     }
 
     private function doLogin(array $user) : void
