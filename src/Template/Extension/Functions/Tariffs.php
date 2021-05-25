@@ -115,7 +115,7 @@ class Tariffs extends FunctionHelper
             if (!empty($hTariffs[$sOption]) && $hTariffs[$sOption]  < 1000) {
                 if ($sOption === 'max_ssh') {
                     $sTxt = $hTariffs[$sOption] > 1? $this->_ipr(sprintf('lang_%s', $sOption. '_s')) : $this->_ipr(sprintf('lang_%s', $sOption));
-                    return $this->Html->tag('p', $hTariffs[$sOption] .' '.$sTxt);
+                    return sprintf('<p>%s</p>', $hTariffs[$sOption] .' '.$sTxt);
                 }
                 $sLI = "<p>".$hTariffs[$sOption] . " ".$this->_ipr(sprintf('lang_%s', $sOption))."</p>";
             } else {
@@ -139,8 +139,10 @@ class Tariffs extends FunctionHelper
     private function _ipr(string $key) : string
     {
         $ipr = [
-            "lang_max_ftp"                 => "Comptes FTP",
-            "lang_max_mysql"               => 'Bases de données MySQL',
+            'lang_max_ftp'                 => 'Comptes FTP',
+            'lang_max_ssh'                 => 'Compte SSH/SFTP',
+            'lang_max_ssh_s'               => 'Comptes SSH/SFTP',
+            'lang_max_mysql'               => 'Bases de données MySQL',
             'lang_max_pop'                 => 'Comptes e-mail',
             'lang_max_pop_list'            => 'Mailinglists',
             'lang_max_subdomain'           => 'Sous-domaines',
@@ -158,20 +160,19 @@ class Tariffs extends FunctionHelper
         return array_key_exists($key, $ipr)? $ipr[$key] : $key;
     }
 
-	private function getBelongsTo(array $tariff) : ?string 
-	{
-		if (array_key_exists('package_group', $tariff)) {
-			return $tariff['package_group']['name'];
-		}
-		return null;
-	}
+    private function getBelongsTo(array $tariff) : ?string
+    {
+        if (array_key_exists('package_group', $tariff)) {
+            return $tariff['package_group']['name'];
+        }
+        return null;
+    }
 
-	private function getTypeName(array $tariff) : ?string 
-	{
-		if (array_key_exists('package_type', $tariff)) {
-			return $tariff['package_type']['name'];
-		}
-		return null;
-	}
-
+    private function getTypeName(array $tariff) : ?string
+    {
+        if (array_key_exists('package_type', $tariff)) {
+            return $tariff['package_type']['name'];
+        }
+        return null;
+    }
 }
