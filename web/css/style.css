@@ -1151,7 +1151,7 @@ h3 {
 
 /* line 5, C:/Users/SPN Graphics/Desktop/cl sep/HTML/scss/_slider.scss */
 .slider_area .single_slider {
-  height: 100vh;
+  height: 50vh;
   background-size: cover;
   background-repeat: no-repeat;
 }

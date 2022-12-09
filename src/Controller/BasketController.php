@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -9,15 +10,11 @@ use CAMOO\Utils\Inflector;
 
 /**
  * Class BasketController
+ *
  * @author CamooSarl
  */
 final class BasketController extends AppController
 {
-    public function initialize() : void
-    {
-        parent::initialize();
-    }
-
     public function beforeAction(Event $event)
     {
         $this->Security->setConfig('unlockedActions', ['add', 'delete']);
@@ -26,38 +23,38 @@ final class BasketController extends AppController
 
     public function overview()
     {
-        $this->set('page_title', 'Votre Panier');
+        $this->set('page_title', __('Votre Panier'));
         $cart = $this->getBasketRepository();
+        //dd($cart);
         $this->set('basket', $cart);
         $this->render();
     }
 
-    public function add()
+    public function add(): void
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
-            /** @var Cart **/
             $oBasket = $this->getBasketRepository();
             $status = true;
             $sku = $this->request->getData('sku');
             $keyItem = $this->request->getData('key');
             $type = $this->request->getData('type');
 
-            $package = $this->getPackageById((int) $sku);
-            $ahCartTypeItems = !$oBasket->has($type)? [] : $oBasket->get($type);
+            $package = $this->getPackageById((int)$sku);
+            $ahCartTypeItems = !$oBasket->has($type) ? [] : $oBasket->get($type);
             $sNewId = uniqid($sku, false);
             $ahCartTypeItems[] = [
-                'belongs'     => $keyItem,
-                'sku'         => $sku,
-                'id'          => $sNewId,
-                'price'       => $package['price'],
+                'belongs' => $keyItem,
+                'sku' => $sku,
+                'id' => $sNewId,
+                'price' => $package['price'],
                 'basket_icon' => 'flaticon-servers',
-                'human_name'  => Inflector::classify($package['name']),
-                'name'        => $package['name'],
+                'human_name' => Inflector::classify($package['name']),
+                'name' => $package['name'],
                 'description' => $package['desc_short'],
-                'package'     => $package,
+                'package' => $package,
             ];
-           
+
             try {
                 // REMOVE OLD KEY
                 $oBasket->removeItem($type);
@@ -68,17 +65,15 @@ final class BasketController extends AppController
                 $status = false;
             }
 
-            return $this->_jsonResponse(['status' => $status, 'id' => $sNewId]);
+            $this->_jsonResponse(['status' => $status, 'id' => $sNewId]);
         }
     }
 
-    public function delete()
+    public function delete(): void
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
-            /** @var Cart **/
             $oBasket = $this->getBasketRepository();
-            $status = true;
             $sku = $this->request->getData('sku');
 
             $id = $this->request->getData('id');
@@ -87,7 +82,7 @@ final class BasketController extends AppController
                 $itemKey = $this->getItemKeyId($id); // key might be 0 as well
                 $ahCartTypeItems = $oBasket->get('hosting');
                 unset($ahCartTypeItems[$itemKey]);
- 
+
                 // REMOVE OLD KEY
                 $oBasket->removeItem('hosting');
 
@@ -99,55 +94,52 @@ final class BasketController extends AppController
                 $oBasket->removeItem($sku);
             }
 
-            return $this->_jsonResponse(['status' => $status]);
+            $this->_jsonResponse(['status' => true]);
         }
     }
 
     public function addDomainToHosting()
     {
         $this->request->allowMethod(['post']);
-        if ($this->request->is('ajax')) {
-            /** @var Cart **/
-            $oBasket = $this->getBasketRepository();
-            $status = true;
-            $id = $this->request->getData('id');
-            $domain = $this->request->getData('domain');
-            if ($itemKey = $this->getItemKeyId($id)) {
-                $ahCartTypeItems = $oBasket->get('hosting');
-                $ahCartTypeItems[$itemKey]['on_domain'] = $domain;
-                // UPDATE KEY
-                $oBasket->addItem($type, $ahCartTypeItems);
-            }
-            return $this->_jsonResponse([
-                        'status' => $status,
-                        //'item' => $sku,
-                    ]);
+        if (!$this->request->is('ajax')) {
+            throw new Exception('Invalid Action');
         }
+        $type = 'domain';
+        $oBasket = $this->getBasketRepository();
+
+        $id = $this->request->getData('id');
+        $domain = $this->request->getData('domain');
+        if ($itemKey = $this->getItemKeyId($id)) {
+            $ahCartTypeItems = $oBasket->get('hosting');
+            $ahCartTypeItems[$itemKey]['on_domain'] = $domain;
+            // UPDATE KEY
+            $oBasket->addItem($type, $ahCartTypeItems);
+        }
+        $this->_jsonResponse([
+            'status' => true,
+        ]);
     }
 
-    /**
-     * @param string $id
-     * @param string $type
-     * @return null|int
-     */
-    protected function getItemKeyId(string $id, string $type='hosting') : ?int
+    protected function getItemKeyId(string $id, string $type = 'hosting'): ?int
     {
-        /** @var Cart **/
         $oBasket = $this->getBasketRepository();
- 
+
         if (!$oBasket->has($type)) {
-            return [];
+            return null;
         }
-            
+
         $ahCartTypeItems = $oBasket->get($type);
-        $cartItem = array_filter($ahCartTypeItems, static function ($item) use ($id) {
-            if ($id === $item['id']) {
+        $cartItem = array_filter($ahCartTypeItems, static function (array $item) use ($id) {
+            if ($id === $item['id'] ?? null) {
                 return $item;
             }
+
+            return null;
         });
         if ($cartItem && ($key = array_key_first($cartItem)) !== null) {
             return $key;
         }
+
         return null;
     }
 }

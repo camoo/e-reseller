@@ -1,34 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\ControllerException;
 use CAMOO\Cache\Cache;
-use CAMOO\Utils\Cart;
 use CAMOO\Event\Event;
 use CAMOO\Exception\Exception;
 
 /**
  * Class DomainsController
+ *
  * @author CamooSarl
  */
 class DomainsController extends AppController
 {
-    public function initialize() : void
-    {
-        /** @var Model\Rest\AppRest */
-        parent::initialize();
-        $this->loadRest('DomainsRest');
-    }
-
-    public function beforeAction(Event $event)
-    {
-        parent::beforeAction($event);
-        $this->Security->setConfig('unlockedActions', ['domainSearch','addToBasket', 'removeFromBasket', 'isValid']);
-    }
-
-    /** @var array $allowedExtensions */
-    private $allowedExtensions = [
+    private array $allowedExtensions = [
         'cm',
         'com',
         'net',
@@ -37,36 +25,46 @@ class DomainsController extends AppController
         'biz',
         'site',
         'pro',
-        'host'
+        'host',
     ];
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadRest('DomainsRest');
+    }
+
+    public function beforeAction(Event $event)
+    {
+        parent::beforeAction($event);
+        $this->Security->setConfig('unlockedActions', ['domainSearch', 'addToBasket', 'removeFromBasket', 'isValid']);
+    }
 
     public function domainSearch()
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
             $status = false;
-            $iUserId = (int) $this->request->getSession()->read('Auth.User.id');
-
             $domain = $this->request->getData('domain');
             $asDomainCheck = explode('.', $domain);
             if (count($asDomainCheck) > 1) {
-                $domain = count($asDomainCheck) > 1? array_shift($asDomainCheck) : $asDomainCheck[0];
+                $domain = count($asDomainCheck) > 1 ? array_shift($asDomainCheck) : $asDomainCheck[0];
             }
 
             $domain = strtolower($domain);
 
             $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
             $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
-    
+
             if (!empty($oNewRequest->getErrors())) {
                 $this->showValidateErrors($oNewRequest);
-                    
-                return $this->_jsonResponse([
-                        'status' => $status,
-                        'result' => $oNewRequest->getErrors()
-                    ]);
+
+                $this->_jsonResponse([
+                    'status' => false,
+                    'result' => $oNewRequest->getErrors(),
+                ]);
             }
-   
+
             if (($xRet = Cache::read($domain, '_camoo_hosting_1hour')) === false) {
                 $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
                 Cache::write($domain, $xRet, '_camoo_hosting_1hour');
@@ -76,20 +74,23 @@ class DomainsController extends AppController
                 $status = true;
             }
 
-            return $this->_jsonResponse([
-                        'status' => $status,
-                        'domain' => $domain
-                    ]);
+            $this->_jsonResponse([
+                'status' => $status,
+                'domain' => $domain,
+            ]);
+
+            return;
         }
-        throw new Exception('Unknow error !');
+        throw new Exception('Unknown error !');
     }
 
     public function overview()
     {
-        //debug($this->Security);
         $domain = $this->request->getQuery('d');
         if (empty($domain)) {
-            return $this->redirect('/');
+            $this->redirect('/');
+
+            return;
         }
         $this->set('domain', $domain);
         $this->render();
@@ -98,52 +99,50 @@ class DomainsController extends AppController
     public function addToBasket()
     {
         $this->request->allowMethod(['post']);
-        if ($this->request->is('ajax')) {
-            /** @var Cart **/
-            $oBasket = $this->getBasketRepository();
-            $status = false;
-            $iUserId = (int) $this->request->getSession()->read('Auth.User.id');
-            $domain = $domainBasket = strtolower($this->request->getData('domain'));
-            $asDomainCheck = explode('.', $domain);
-            if (count($asDomainCheck) > 1) {
-                $domain = count($asDomainCheck) > 1? array_shift($asDomainCheck) : $asDomainCheck[0];
-            }
-
-            if (($xRet = Cache::read($domain, '_camoo_hosting_1hour')) !== false) {
-                if ($hDomain = $xRet[$domainBasket]) {
-                    $status = true;
-                    $hDomain['price'] = $hDomain['price']['addnewdomain'];
-                    $hDomain['basket_icon'] = 'flaticon-hosting';
-                    $hDomain['description'] = 'Nom de domaine';
-                    // other
-                    //$hDomain['basket_icon'] = 'flaticon-servers';
-                    $oBasket->addItem($domainBasket, $hDomain);
-                }
-            }
-
-            return $this->_jsonResponse([
-                        'status' => $status,
-                        'item' => $hDomain
-                    ]);
+        if (!$this->request->is('ajax')) {
+            throw new ControllerException('Invalid Request type');
         }
+        $oBasket = $this->getBasketRepository();
+        $status = false;
+        $domain = $domainBasket = strtolower($this->request->getData('domain'));
+        $asDomainCheck = explode('.', $domain);
+        if (count($asDomainCheck) > 1) {
+            $domain = count($asDomainCheck) > 1 ? array_shift($asDomainCheck) : $asDomainCheck[0];
+        }
+        $xRet = Cache::read($domain, '_camoo_hosting_1hour');
+        $hDomain = [];
+        if ($xRet !== false && ($hDomain = $xRet[$domainBasket])) {
+            $status = true;
+            $hDomain['price'] = $hDomain['price']['addnewdomain'];
+            $hDomain['basket_icon'] = 'flaticon-hosting';
+            $hDomain['description'] = 'Nom de domaine';
+            // other
+            //$hDomain['basket_icon'] = 'flaticon-servers';
+            $oBasket->addItem($domainBasket, $hDomain);
+        }
+
+        $this->_jsonResponse([
+            'status' => $status,
+            'item' => $hDomain,
+        ]);
     }
 
     public function removeFromBasket()
     {
         $this->request->allowMethod(['post']);
-        if ($this->request->is('ajax')) {
-            /** @var Cart **/
-            $oBasket = $this->getBasketRepository();
-            $status = true;
-            $domain = $this->request->getData('domain');
-            $domain = strtolower($domain);
-            $oBasket->removeItem($domain);
-
-            return $this->_jsonResponse([
-                        'status' => $status,
-                        'item' => $domain
-                    ]);
+        if (!$this->request->is('ajax')) {
+            throw new ControllerException('Invalid request');
         }
+
+        $oBasket = $this->getBasketRepository();
+        $domain = $this->request->getData('domain');
+        $domain = strtolower($domain);
+        $oBasket->removeItem($domain);
+
+        $this->_jsonResponse([
+            'status' => true,
+            'item' => $domain,
+        ]);
     }
 
     public function decision()
@@ -151,7 +150,9 @@ class DomainsController extends AppController
         $this->set('page_title', 'Indiquez un nom de domaine');
         $itemKeyId = $this->request->getQuery('kid');
         if (empty($itemKeyId)) {
-            return $this->redirect('/');
+            $this->redirect('/');
+
+            return;
         }
         $this->set('item_key', $itemKeyId);
         $this->render();
@@ -160,24 +161,21 @@ class DomainsController extends AppController
     public function isValid()
     {
         $this->request->allowMethod(['post']);
-        if ($this->request->is('ajax')) {
-            $status = false;
-            $iUserId = (int) $this->request->getSession()->read('Auth.User.id');
-
-            $domain = $this->request->getData('domain');
-
-            $status = substr_count($domain, '.') > 0;
-            if ($status === true) {
-                $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
-                $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
-                $status = empty($oNewRequest->getErrors());
-            }
-    
-            return $this->_jsonResponse([
-                        'status' => $status,
-                        //'result' => $oNewRequest->getErrors()
-                    ]);
+        if (!$this->request->is('ajax')) {
+            throw new Exception('Unknown error !');
         }
-        throw new Exception('Unknow error !');
+
+        $domain = $this->request->getData('domain');
+
+        $status = substr_count($domain, '.') > 0;
+        if ($status === true) {
+            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
+            $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
+            $status = empty($oNewRequest->getErrors());
+        }
+
+        $this->_jsonResponse([
+            'status' => $status,
+        ]);
     }
 }

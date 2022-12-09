@@ -1,58 +1,63 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Controller;
 
+use App\Lib\Traits\UserDataTrait;
+use App\Model\Rest\DomainsRest;
 use CAMOO\Controller\AppController as BaseController;
-use CAMOO\Utils\Configure;
+use CAMOO\Controller\Component\SecurityComponent;
+use CAMOO\Interfaces\RestInterface;
+use CAMOO\Model\AppModel;
 use CAMOO\Utils\Cart;
+use CAMOO\Utils\Configure;
 
+/**
+ * @property SecurityComponent $Security
+ * @property DomainsRest       $DomainsRest
+ */
 class AppController extends BaseController
 {
+    use UserDataTrait;
 
-    /** @var array $_basket */
-    private $_basket = [Cart::class, 'create'];
+    private array $_basket = [Cart::class, 'create'];
 
-    public function initialize() : void
+    public function initialize(): void
     {
         parent::initialize();
-        //debug(Configure::read('RESELLER_TARIFFS'));
-        //debug($this->getPackageById());
         $this->set('siteConfig', Configure::read('RESELLER_SITE'));
         $this->loadComponent('Security');
     }
 
-    /**
-     * @return Cart
-     */
-    protected function getBasketRepository() : Cart
+    protected function getBasketRepository(): Cart
     {
         $cart = call_user_func($this->_basket, $this->request);
         if ($this->request->getSession()->check('loggedin')) {
-            $cart->setUserId($this->request->getSession()->read('Auth.User.id'));
+            $cart->setUserId($this->getUserId());
         }
         $cart->refresh();
+
         return $cart;
     }
 
-    protected function getPackageById(int $id) : ?array
+    protected function getPackageById(int $id): ?array
     {
-        $ahTariffs  = Configure::read('RESELLER_TARIFFS');
-        $tariff = array_filter($ahTariffs['tariffs'], static function ($hTariff) use ($id) {
+        $ahTariffs = Configure::read('RESELLER_TARIFFS');
+        $tariff = array_filter($ahTariffs['tariffs'], static function (array $hTariff) use ($id) {
             if ($id === $hTariff['id']) {
                 return $hTariff;
             }
+
+            return null;
         });
         $tariff = array_values($tariff);
-        return array_shift($tariff)??null;
+
+        return array_shift($tariff) ?? null;
     }
 
-    /**
-     * @param \CAMOO\Model\AppModel|\CAMOO\Interfaces\RestInterface $model
-     * @param string $flashType
-     *
-     * @return void
-     */
-    protected function showValidateErrors($model, string $flashType = 'error') : void
+    /** @param AppModel|RestInterface $model */
+    protected function showValidateErrors($model, string $flashType = 'error'): void
     {
         if (empty($model)) {
             return;
@@ -66,7 +71,7 @@ class AppController extends BaseController
                     $this->request->Flash->{$flashType}($sMessage);
                 }
             }
-            if (count($asFields)>0) {
+            if (!empty($asFields)) {
                 $this->set('errorFields', $asFields);
             }
         }

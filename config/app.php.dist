@@ -3,6 +3,9 @@ return [
     'debug' => true,
     'App' => [
 		'namespace' => 'App',
+		'paths' => [
+            'locales' => APP . 'Locale' . DS,
+        ],
     ],
     'Security' => [
         'csrf_lifetime' => 1800, // 30 min
@@ -36,7 +39,6 @@ return [
             'duration' => '+ 1 hours',
             'serialize' => true,
         ]
-
     ],
     'SmtpTransport' => [
         'default' => [

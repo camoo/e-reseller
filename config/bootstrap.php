@@ -1,16 +1,20 @@
 <?php
 declare(strict_types=1);
 
-require_once dirname(__DIR__). '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/paths.php';
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
-if (file_exists(CONFIG. '.env') && is_readable(CONFIG.'.env')) {
-    (new \josegonzalez\Dotenv\Loader(CONFIG.'.env'))->parse()->define();
-}
+
+
 use Camoo\Hosting\Modules;
 use CAMOO\Cache\Cache;
 use CAMOO\Utils\Configure;
 use CAMOO\Exception\Exception as AppException;
+use josegonzalez\Dotenv\Loader;
+
+if (file_exists(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
+    (new Loader(CONFIG . '.env'))->parse()->define();
+}
 
 if (($xConfigHosting = Cache::read('hosting_conf', '_camoo_hosting_conf')) === false) {
     $xConfig = new Modules\Configurations();
@@ -22,7 +26,7 @@ if (($xConfigHosting = Cache::read('hosting_conf', '_camoo_hosting_conf')) === f
     if (!array_key_exists('result', $xConfigHostingRaw)) {
         throw new AppException('Site configuration Result cannot be read!');
     }
-    $xConfigHosting =  $xConfigHostingRaw['result'];
+    $xConfigHosting = $xConfigHostingRaw['result'];
     Cache::write('hosting_conf', $xConfigHosting, '_camoo_hosting_conf');
 }
 
@@ -43,7 +47,7 @@ if (($xTariffsHosting = Cache::read('hosting_tariffs', '_camoo_hosting_tariff'))
     if (!array_key_exists('result', $xTariffsHostingRaw)) {
         throw new AppException('Site configuration Result cannot be read!');
     }
-    $xTariffsHosting =  $xTariffsHostingRaw['result'];
+    $xTariffsHosting = $xTariffsHostingRaw['result'];
     Cache::write('hosting_tariffs', $xTariffsHosting, '_camoo_hosting_tariff');
 }
 

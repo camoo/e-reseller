@@ -7,7 +7,7 @@ if (!defined('DS')) {
 }
 
 /**
- * These defines should only be edited if you have cake installed in
+ * This defines should only be edited if you have cake installed in
  * a directory layout other than the way it is distributed.
  * When using custom settings be sure to use the DS and do not add a trailing DS.
  */
@@ -21,50 +21,52 @@ define('ROOT', dirname(__DIR__));
  * The actual directory name for the application directory. Normally
  * named 'src'.
  */
-define('APP_DIR', 'src');
+const APP_DIR = 'src';
 
 /**
  * Path to the application's directory.
  */
-define('APP', ROOT . DS . APP_DIR . DS);
+const APP = ROOT . DS . APP_DIR . DS;
 
 /**
  * Path to the config directory.
  */
-define('CONFIG', ROOT . DS . 'config' . DS);
+const CONFIG = ROOT . DS . 'config' . DS;
 
 /**
- * Path to the temporary files directory.
+ * Path to the temporary files' directory.
  */
-define('TMP', ROOT . DS . 'tmp' . DS);
+const TMP = ROOT . DS . 'tmp' . DS;
 
 /**
- * Path to the logs directory.
+ * Path to the logs' directory.
  */
-define('LOGS', ROOT . DS . 'logs' . DS);
+const LOGS = ROOT . DS . 'logs' . DS;
 
 /**
  * Path to the Web directory.
  */
-define('WEB', ROOT . DS . 'web' . DS);
+const WEB = ROOT . DS . 'web' . DS;
 
 /**
  * The actual directory name for the application directory. Normally
  * named 'src'.
  */
-define('APP_WEB', 'web');
+const APP_WEB = 'web';
 
-define('DATABASE', 'domain');
+const DATABASE = 'domain';
 
-define('CAMOO_CORE_INCLUDE_PATH', ROOT . DS . 'vendor' . DS . 'camoo' . DS . 'framework');
+const CAMOO_CORE_INCLUDE_PATH = ROOT . DS . 'vendor' . DS . 'camoo' . DS . 'framework';
 
 /**
  * Path to the cake directory.
  */
-define('CORE_PATH', CAMOO_CORE_INCLUDE_PATH . DS);
-define('CAMOO', CORE_PATH . 'src' . DS);
+const CORE_PATH = CAMOO_CORE_INCLUDE_PATH . DS;
+const CAMOO = CORE_PATH . 'src' . DS;
 
 /**
  * Path to the cache files directory.
  */
-define('CACHE', ROOT . DS . 'tmp' . DS. 'cache' .DS);
+const CACHE = ROOT . DS . 'tmp' . DS . 'cache' . DS;
+
+const AUTH_USER_ID = 'Auth.User.id';

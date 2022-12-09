@@ -17,7 +17,7 @@
                                 <nav>
                                     <ul id="navigation">
                                         <li><a class="{{ pages_active }}" href="/">Accueil</a></li>
-                                        <li><a href="package.html">Package</a></li>
+                                        <li><a href="/packages">Package</a></li>
                                         <li><a href="#">blog <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
                                                 <li><a href="blog.html">blog</a></li>
@@ -29,8 +29,8 @@
                                                 <li><a href="elements.html">elements</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="Support.html">Support</a></li>
-                                        <li><a href="about.html">About</a></li>
+                                        <li><a href="/support">Support</a></li>
+                                        <li><a href="/aboutUs">About</a></li>
                                         <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
 										<li id="line-cart" class="ti-angle-down rs-pointer{% if basket_counter() < 1%} invisible{% endif %}">
 										<a href="#">&nbsp;</a>
