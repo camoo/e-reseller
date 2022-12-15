@@ -1,15 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/paths.php';
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
-
-use Camoo\Hosting\Modules;
 use CAMOO\Cache\Cache;
-use CAMOO\Utils\Configure;
 use CAMOO\Exception\Exception as AppException;
+use Camoo\Hosting\Modules;
+use CAMOO\Utils\Configure;
 use josegonzalez\Dotenv\Loader;
 
 if (file_exists(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
@@ -33,7 +33,6 @@ if (($xConfigHosting = Cache::read('hosting_conf', '_camoo_hosting_conf')) === f
 if (!empty($xConfigHosting)) {
     Configure::write('RESELLER_SITE', $xConfigHosting);
 }
-
 
 // TARIFFS
 

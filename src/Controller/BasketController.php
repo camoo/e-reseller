@@ -33,16 +33,29 @@ final class BasketController extends AppController
     public function add(): void
     {
         $this->request->allowMethod(['post']);
-        if ($this->request->is('ajax')) {
-            $oBasket = $this->getBasketRepository();
-            $status = true;
-            $sku = $this->request->getData('sku');
-            $keyItem = $this->request->getData('key');
-            $type = $this->request->getData('type');
 
-            $package = $this->getPackageById((int)$sku);
-            $ahCartTypeItems = !$oBasket->has($type) ? [] : $oBasket->get($type);
-            $sNewId = uniqid($sku, false);
+        if (!$this->request->is('ajax')) {
+            throw new \RuntimeException('Invalid Request type');
+        }
+        $oBasket = $this->getBasketRepository();
+        $status = true;
+        $sku = $this->request->getData('sku');
+        $keyItem = $this->request->getData('key');
+        $type = $this->request->getData('type');
+        $actionKey = $this->request->getData('action_key');
+
+        $package = $this->getPackageById((int)$sku);
+        $ahCartTypeItems = !$oBasket->has($type) ? [] : $oBasket->get($type);
+        $sNewId = uniqid($sku, false);
+        if (null !== $actionKey && !empty($ahCartTypeItems)) {
+            foreach ($ahCartTypeItems as &$cartItem) {
+                if ($cartItem['sku'] !== $sku) {
+                    continue;
+                }
+                $sNewId = $cartItem['id'];
+                $cartItem[$actionKey] = $keyItem;
+            }
+        } else {
             $ahCartTypeItems[] = [
                 'belongs' => $keyItem,
                 'sku' => $sku,
@@ -54,19 +67,19 @@ final class BasketController extends AppController
                 'description' => $package['desc_short'],
                 'package' => $package,
             ];
-
-            try {
-                // REMOVE OLD KEY
-                $oBasket->removeItem($type);
-
-                // UPDATE KEY
-                $oBasket->addItem($type, $ahCartTypeItems);
-            } catch (Exception $exception) {
-                $status = false;
-            }
-
-            $this->_jsonResponse(['status' => $status, 'id' => $sNewId]);
         }
+
+        try {
+            // REMOVE OLD KEY
+            $oBasket->removeItem($type);
+
+            // UPDATE KEY
+            $oBasket->addItem($type, $ahCartTypeItems);
+        } catch (Exception $exception) {
+            $status = false;
+        }
+
+        $this->_jsonResponse(['status' => $status, 'id' => $sNewId]);
     }
 
     public function delete(): void

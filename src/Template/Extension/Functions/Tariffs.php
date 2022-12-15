@@ -69,7 +69,7 @@ class Tariffs extends FunctionHelper
         $html = '
                 <div class="col-xl-4 col-md-6 col-lg-4"">
                     <div class="single_prising">
-                        <div class="prising_header '.$headerClass.'">
+                        <div class="prising_header ' . $headerClass . '">
                             <h3>' . Inflector::humanize($hTariff['name']) . '</h3>
                         </div>
                         
@@ -95,7 +95,7 @@ class Tariffs extends FunctionHelper
                         <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
                         <div class="start_btn text-center">
                         <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] .
-            '" data-type="hosting" href="#" class="boxed_btn_green">Je commande</a>
+            '" data-type="hosting" href="#" class="add2cart boxed_btn_green">Je commande</a>
 
                     </div>
                 </div>

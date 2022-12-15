@@ -1,11 +1,12 @@
-var Cart = (function ($) {
+const Cart = (function ($) {
     "use strict";
-    var me = {
+    const me = {
         initialized: false,
         isValidDomain: false,
         READY: 'already',
         NEW: 'new',
         request: {},
+        'decisionBtn': '#domain-decision',
 
         Request: class Request {
             constructor() {
@@ -45,7 +46,7 @@ var Cart = (function ($) {
 
             $('.delete-cart-item').on('click', function (evt) {
                 showSpinner();
-                var sku = $(this).data('sku');
+                const sku = $(this).data('sku');
 
                 me.removeItem(this);
                 evt.preventDefault();
@@ -57,39 +58,44 @@ var Cart = (function ($) {
                 me.addItem(this);
             });
 
-            $('#btn_new_domain').click(function () {
-                $('#hosting-domain').attr('placeholder', $('#hosting-domain').data('currentplaceholder'));
-                $('#domain-decision').html('Recherchez et ajoutez un domaine');
-                $('#domain-decision').attr('data-active', 'new');
+            $('#btn_new_domain').on('click', function () {
+                $(me.decisionBtn).attr('placeholder', $('#hosting-domain').data('currentplaceholder'));
+                $(me.decisionBtn).html('Recherchez et ajoutez un domaine');
+                $(me.decisionBtn).attr('data-active', 'new');
             });
 
-            $('#btn_already_domain').click(function () {
+            $('#btn_already_domain').on('click', function () {
                 $('#hosting-domain').attr('placeholder', 'Renseignez votre nom de domaine');
-                $('#domain-decision').html('Continuez >>');
-                $('#domain-decision').attr('data-active', 'already');
+                $(me.decisionBtn).html('Continuez >>');
+                $(me.decisionBtn).attr('data-active', 'already');
 
             });
 
-            $('#domain-decision').click(function () {
-                var active = $('#domain-decision').attr('data-active');
-                var val = $('#hosting-domain').val();
+            $(me.decisionBtn).on('click', function (ev) {
+
+                const val = $('#hosting-domain').val();
                 if (val.replace(/^\s*|\s*$/g, '') === '') {
                     alert('Renseignez votre nom de domaine');
                     return;
                 }
 
-                //	console.log(me.getDomainDecision());
-                //var domainValidation = me.validateDomain(val);
-                if (me.getDomainDecision() === me.READY && me.validateDomain(val) === true) {
+                if (me.getDomainDecision() === me.READY) {
+                    me.validateDomain(val);
                     // ADD Domain To Hosting
-                    console.log('Epie');
+                    console.log('Domain added to hosting');
+                }
+
+                if (me.getDomainDecision() === me.NEW) {
+                    $('#domain').val(val);
+                    console.log('lookup');
+                    DomainWhois.lookup();
                 }
 
             });
         },
 
         getDomainDecision: function () {
-            return $('#domain-decision').attr('data-active');
+            return $(me.decisionBtn).attr('data-active');
         },
 
         /**
@@ -106,22 +112,18 @@ var Cart = (function ($) {
                 data: {'domain': domain},
                 success: function (data) {
                     if (me.getDomainDecision() === me.READY) {
+
                         // ADD Domain To Hosting
-                        console.log(data);
                         if (data.status === false) {
                             alert('Invalid domain name');
-                            return;
+                            return false;
                         }
-                        var hid = me.request.getQuery('kid');
-                        var $hosting = $('li#' + hid + ' span[data-id=' + hid + ']');
+                        const hid = me.request.getQuery('kid');
+                        const $hosting = $('li#' + hid + ' span[data-id=' + hid + ']');
+                        console.log($hosting, hid)
 
-                        console.log(me.request);
-                        console.log('li#' + hid + ' span[data-id=' + hid + ']');
                         me.addDomainToHosting($hosting, domain);
 
-                    } else {
-                        $('#domain').val(domain);
-                        DomainWhois.lookup();
                     }
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -139,17 +141,17 @@ var Cart = (function ($) {
 
         addDomainToHosting: function (src, domain) {
             domain = (typeof domain === 'undefined') ? null : domain;
-            var type = $(src).data('type');
+            const type = $(src).data('type');
 
             if (typeof type === 'undefined' || type !== 'hosting') {
                 return;
             }
-
             showSpinner();
-            var sku = $(src).data('sku');
-            var belongsTo = $(src).data('belongs') || domain;
-            var url = '/basket/add';
-            var jsonData = {'sku': sku, 'key': belongsTo, 'type': type};
+            const sku = $(src).data('sku');
+            const belongsTo = $(src).data('belongs') || domain;
+            const url = '/basket/add';
+            const jsonData = {'sku': sku, 'key': belongsTo, 'type': type, 'action_key': 'domain_hosting'};
+
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -159,6 +161,7 @@ var Cart = (function ($) {
                 data: jsonData,
                 success: function (data) {
 
+                    console.log('addDomainToHosting', data);
                     if (data.status === true && typeof (data.id) !== 'undefined') {
 
                         window.location = '/basket';
@@ -179,15 +182,14 @@ var Cart = (function ($) {
 
         },
 
-
         addItem: function (src) {
-            var type = $(src).data('type');
+            const type = $(src).data('type');
             if (typeof type !== 'undefined' && type === 'hosting') {
                 showSpinner();
-                var sku = $(src).data('sku');
-                var belongsTo = $(src).data('belongs');
-                var url = '/basket/add';
-                var jsonData = {'sku': sku, 'key': belongsTo, 'type': type};
+                const sku = $(src).data('sku');
+                const belongsTo = $(src).data('belongs');
+                const url = '/basket/add';
+                const jsonData = {'sku': sku, 'key': belongsTo, 'type': type};
                 $.ajax({
                     url: url,
                     type: 'POST',
@@ -211,7 +213,6 @@ var Cart = (function ($) {
                     }
                 });
             }
-
         },
 
         /**
@@ -219,12 +220,12 @@ var Cart = (function ($) {
          */
         removeItem: function (src) {
             showSpinner();
-            var sku = $(src).data('sku');
-            var url = '/basket/delete';
-            var jsonData = {'sku': sku};
-            var type = $(src).data('type');
+            const sku = $(src).data('sku');
+            const url = '/basket/delete';
+            const jsonData = {'sku': sku};
+            const type = $(src).data('type');
             if (typeof type !== 'undefined' && type === 'hosting') {
-                var id = $(src).data('id');
+                const id = $(src).data('id');
                 if (typeof id !== 'undefined') {
                     if (id) {
                         jsonData.type = 'hosting';

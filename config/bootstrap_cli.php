@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use josegonzalez\Dotenv\Loader;
@@ -9,4 +10,3 @@ require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 if (file_exists(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
     (new Loader(CONFIG . '.env'))->parse()->define();
 }
-

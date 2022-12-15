@@ -1,4 +1,5 @@
 <?php
+
 return [
     FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $route) {
         $route->addRoute('GET', '/', ['controller' => 'Pages', 'action' => 'overview']);
@@ -11,5 +12,5 @@ return [
         $route->addRoute('POST', '/domain-remove-basket', ['controller' => 'Domains', 'action' => 'removeFromBasket']);
         $route->addRoute(['POST', 'GET'], '/domain', ['controller' => 'Domains', 'action' => 'overview']);
         // ..
-    })
+    }),
 ];

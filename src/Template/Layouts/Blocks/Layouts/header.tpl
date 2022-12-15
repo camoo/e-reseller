@@ -8,7 +8,7 @@
                         <div class="col-xl-2 col-lg-2">
                             <div class="logo-img">
                                 <a href="/">
-                                    <img src="/img/logo.png" alt="">
+                                    <img src="/img/logo.png" alt="logo">
                                 </a>
                             </div>
                         </div>
@@ -17,20 +17,20 @@
                                 <nav>
                                     <ul id="navigation">
                                         <li><a class="{{ pages_active }}" href="/">Accueil</a></li>
-                                        <li><a href="/packages">Package</a></li>
-                                        <li><a href="#">blog <i class="ti-angle-down"></i></a>
+                                        <li><a class="{{ packages_active }}" href="/packages">Package</a></li>
+                                        <li><a href="/support">Support <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="blog.html">blog</a></li>
-                                                <li><a href="single-blog.html">single-blog</a></li>
+                                                <li><a href="/support/terms">Terms</a></li>
+                                                <li><a href="/support/privacy">Privacy</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="#">pages <i class="ti-angle-down"></i></a>
+                                        <!-- li><a href="#">pages <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
                                                 <li><a href="elements.html">elements</a></li>
                                             </ul>
-                                        </li>
-                                        <li><a href="/support">Support</a></li>
-                                        <li><a href="/aboutUs">About</a></li>
+                                        </li -->
+                                        <!--li><a class="{{ support_active }}" href="/support">Support</a></li -->
+                                        <li><a class="{{ aboutUs_active }}" href="/aboutUs">About</a></li>
                                         <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
 										<li id="line-cart" class="ti-angle-down rs-pointer{% if basket_counter() < 1%} invisible{% endif %}">
 										<a href="#">&nbsp;</a>

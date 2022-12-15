@@ -7,7 +7,6 @@ if (version_compare(PHP_VERSION, '7.2.0', '<')) {
     exit;
 }
 
-
 try {
     if (!file_exists(dirname(__DIR__) . '/config/bootstrap_cli.php')) {
         throw new Exception('Bootstrap file not found');

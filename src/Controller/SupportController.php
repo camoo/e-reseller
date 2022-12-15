@@ -10,4 +10,17 @@ final class SupportController extends AppController
     {
         $this->render();
     }
+
+    public function terms(): void
+    {
+        $this->set('page_title', __('Terms  and conditions'));
+
+        $this->render();
+    }
+
+    public function privacy(): void
+    {
+        $this->set('page_title', __('Privacy'));
+        $this->render();
+    }
 }
