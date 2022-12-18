@@ -389,7 +389,7 @@ h2.payment-method-heading, #customer_details h3.HeadingActive {
 }
 
 .pay-sepr {
-  background: url(//cdnassets.com/ui/resellerdata/600000_629999/619657/supersite2/supersite/themes/MinimalGreen-MyTheme/images/ver-dot-line.jpg) repeat-y 470px 0;
+  background: url(//cdnassets.com/ui/resellerdata/600000_629999/619657/supersite2/supersite/themes/MinimalGreen-MyTheme/images/ver-dot-line.jpg) repeat-y 540px 0;
 }
 
 .CartSection {
@@ -446,11 +446,11 @@ h2.payment-method-heading, #customer_details h3.HeadingActive {
 .italic_font {
   font-style: italic;
 }
-#pay_gateway_button, #pay_offline_button {
+#pay_gateway_button, #pay-offline-button {
   padding: 8px 15px;
 }
 
-#existing_submit, #new_submit, #pay_gateway_button, #pay_offline_button, #register_submit_id, .domain_action.ui-button, #sub_button, #execute_without_payment_button, #reseller_default_payment_button, #save_nameserver_info_button {
+#existing_submit, #new_submit, #pay_gateway_button, #pay-offline-button, #register_submit_id, .domain_action.ui-button, #sub_button, #execute_without_payment_button, #reseller_default_payment_button, #save_nameserver_info_button {
   background: #077dcf;
   border: 1px solid #1c58d6 !important;
   color: #fff !important;

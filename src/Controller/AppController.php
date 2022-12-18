@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Lib\Traits\UserDataTrait;
 use App\Model\Rest\DomainsRest;
+use App\Model\Rest\OrderRest;
 use CAMOO\Controller\AppController as BaseController;
 use CAMOO\Controller\Component\SecurityComponent;
 use CAMOO\Interfaces\RestInterface;
@@ -16,6 +17,7 @@ use CAMOO\Utils\Configure;
 /**
  * @property SecurityComponent $Security
  * @property DomainsRest       $DomainsRest
+ * @property OrderRest         $OrderRest
  */
 class AppController extends BaseController
 {

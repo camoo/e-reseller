@@ -154,7 +154,8 @@ class UsersRest extends AppRest
      */
     public function afterSend(Event $event, $response): void
     {
-        if ($response->getStatusCode() !== 200 || ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
+        if ($response->getStatusCode() !== 200 ||
+            ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
             throw new Exception((string)$response->getError());
         }
         $this->output = $hResponse['result'];

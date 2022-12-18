@@ -7,6 +7,7 @@ const Cart = (function ($) {
         NEW: 'new',
         request: {},
         'decisionBtn': '#domain-decision',
+        'payOfflineBtn': '#pay-offline-button',
 
         Request: class Request {
             constructor() {
@@ -71,7 +72,7 @@ const Cart = (function ($) {
 
             });
 
-            $(me.decisionBtn).on('click', function (ev) {
+            $(me.decisionBtn).on('click', function () {
 
                 const val = $('#hosting-domain').val();
                 if (val.replace(/^\s*|\s*$/g, '') === '') {
@@ -92,12 +93,38 @@ const Cart = (function ($) {
                 }
 
             });
+
+            $(me.payOfflineBtn).on('click', function () {
+                me.payOffline();
+            });
         },
 
         getDomainDecision: function () {
             return $(me.decisionBtn).attr('data-active');
         },
 
+        payOffline: function () {
+            showSpinner();
+            $.ajax({
+                url: '/orders/pay-offline',
+                type: 'POST',
+                dataType: 'JSON',
+                cache: false,
+                success: function () {
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    hideSpinner();
+                    console.log("ERROR");
+                    console.log(textStatus);
+                    console.log(jqXHR.responseText)
+                    console.log(errorThrown)
+                },
+                complete: function (jqXHR) {
+                    hideSpinner();
+                }
+            });
+        },
         /**
          * @param {string} domain
          * @return {void}

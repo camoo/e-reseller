@@ -3,7 +3,8 @@
         "camoo/framework": "dev-master",
         "camoo/hosting": "dev-master",
         "josegonzalez/dotenv": "^3.2",
-        "jms/serializer": "^3.10"
+        "jms/serializer": "^3.10",
+      "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
