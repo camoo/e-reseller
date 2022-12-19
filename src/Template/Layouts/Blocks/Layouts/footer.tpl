@@ -9,7 +9,7 @@
                         <div class="footer_widget">
                             <div class="footer_logo">
                                 <a href="#">
-                                    <img src="/img/logo.png" alt="">
+                                    <img src="/img/{{ get_logo_name() }}" alt="">
                                 </a>
                             </div>
                             <p class="footer_text doanar"> <a class="first" href="#">{{ siteConfig.company_tel }}
@@ -94,7 +94,7 @@
             <div class="popup_inner">
                 <div class="logo text-center">
                     <a href="#">
-                        <img src="/img/logo.png" alt="">
+                        <img src="/img/{{ get_logo_name() }}" alt="site logo">
                     </a>
                 </div>
                 <h3>Connexion au compte</h3>

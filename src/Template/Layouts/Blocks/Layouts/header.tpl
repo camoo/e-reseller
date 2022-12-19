@@ -8,7 +8,7 @@
                         <div class="col-xl-2 col-lg-2">
                             <div class="logo-img">
                                 <a href="/">
-                                    <img src="/img/logo.png" alt="logo">
+                                    <img src="/img/{{ get_logo_name() }}" alt="logo">
                                 </a>
                             </div>
                         </div>

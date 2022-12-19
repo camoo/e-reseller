@@ -38,5 +38,8 @@
 	{% endif %}
       <script src="/js/domainwhois.js"></script>
       <script src="/js/Basket/script.js?{{ date().timestamp }}"></script>
+{% if add_custom_js() %}
+<script src="/js/custom.js?{{ date().timestamp }}"></script>
+{% endif %}
 	  {{ html_fetch('script') }}
 {% endblock %}

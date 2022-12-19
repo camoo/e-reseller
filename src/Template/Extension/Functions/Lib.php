@@ -20,6 +20,9 @@ final class Lib extends FunctionHelper
     {
         return [
             $this->add('domainwhois_results', [$this, 'getDomainWhoisResult'], ['is_safe' => ['html']]),
+            $this->add('add_custom_css', [$this, 'addCustomCss']),
+            $this->add('add_custom_js', [$this, 'addCustomJs']),
+            $this->add('get_logo_name', [$this, 'getLogoName'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -35,7 +38,7 @@ final class Lib extends FunctionHelper
                 $cmd = 'add-to-basket';
                 if ($oBasket->has($domain)) {
                     $cmd .= ' disable';
-                    $takeIt = $word = 'Dans le panier';
+                    $takeIt = $word = 'Dans le pannier';
                 }
 
                 if ($value['status'] === 'N') {
@@ -58,5 +61,41 @@ final class Lib extends FunctionHelper
         }
 
         return $result;
+    }
+
+    public function addCustomCss(): bool
+    {
+        $cssPath = WEB . 'css' . DS;
+        $filename = 'custom.css';
+        if (!is_file($cssPath . $filename)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function addCustomJs(): bool
+    {
+        $jsPath = WEB . 'js' . DS;
+        $filename = 'custom.js';
+        if (!is_file($jsPath . $filename)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function getLogoName(): string
+    {
+        if (!defined('LOGO_FILE_NAME')) {
+            return 'logo.png';
+        }
+        $imgPath = WEB . 'img' . DS;
+        $filename = LOGO_FILE_NAME;
+        if (!is_file($imgPath . $filename)) {
+            return 'logo.png';
+        }
+
+        return LOGO_FILE_NAME;
     }
 }
