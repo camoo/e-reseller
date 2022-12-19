@@ -1,6 +1,6 @@
 <?php
 return [
-    'debug' => DEV_MODE ?? false,
+    'debug' => defined('DEV_MODE') ? DEV_MODE : false,
     'App' => [
 		'namespace' => 'App',
 		'paths' => [
@@ -42,12 +42,12 @@ return [
     ],
     'SmtpTransport' => [
         'default' => [
-            'host' => SMTP_HOST ?? null,
-            'port' => SMTP_PORT ?? null,
+            'host' => defined('SMTP_HOST') ? SMTP_PORT : null,
+            'port' => defined('SMTP_PORT') ? SMTP_PORT : null,
+            'username' => defined('SMTP_USERNAME') ? SMTP_USERNAME : null,
+            'password' => defined('SMTP_PASSWORD') ? SMTP_PASSWORD : null,
+            'secure' => defined('SMTP_SECURITY') ? SMTP_SECURITY : null,
             'timeout' => 30,
-            'username' => SMTP_USERNAME ?? null,
-            'password' => SMTP_PASSWORD ?? null,
-            'secure' => SMTP_SECURITY ?? null,
         ],
 	],
     'Session' => [
