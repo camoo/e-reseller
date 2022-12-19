@@ -13,7 +13,7 @@
         {% block head %}
             <title>{{ title }}</title>
             <meta charset="utf-8"/>
-            <link href="/favicon.ico" type="image/x-icon" rel="icon"/><link href="/favicon.ico" type="image/x-icon" rel="shortcut icon"/>
+            <link href="/{{ get_favicon_name() }}" type="image/x-icon" rel="icon"/><link href="/{{ get_favicon_name() }}" type="image/x-icon" rel="shortcut icon"/>
             <meta name="copyright" content="Camoo Hosting https://www.camoo.hosting"/>
             <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
             <meta name="description" content="{{ description }}">

@@ -23,6 +23,7 @@ final class Lib extends FunctionHelper
             $this->add('add_custom_css', [$this, 'addCustomCss']),
             $this->add('add_custom_js', [$this, 'addCustomJs']),
             $this->add('get_logo_name', [$this, 'getLogoName'], ['is_safe' => ['html']]),
+            $this->add('get_favicon_name', [$this, 'getFaviconName'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -97,5 +98,19 @@ final class Lib extends FunctionHelper
         }
 
         return LOGO_FILE_NAME;
+    }
+
+    public function getFaviconName(): string
+    {
+        if (!defined('FAVICON_FILE_NAME')) {
+            return 'favicon.ico';
+        }
+        $imgPath = WEB;
+        $filename = FAVICON_FILE_NAME;
+        if (!is_file($imgPath . $filename)) {
+            return 'favicon.ico';
+        }
+
+        return FAVICON_FILE_NAME;
     }
 }
