@@ -42,7 +42,7 @@ return [
     ],
     'SmtpTransport' => [
         'default' => [
-            'host' => defined('SMTP_HOST') ? SMTP_PORT : null,
+            'host' => defined('SMTP_HOST') ? SMTP_HOST : null,
             'port' => defined('SMTP_PORT') ? SMTP_PORT : null,
             'username' => defined('SMTP_USERNAME') ? SMTP_USERNAME : null,
             'password' => defined('SMTP_PASSWORD') ? SMTP_PASSWORD : null,
