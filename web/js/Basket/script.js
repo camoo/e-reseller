@@ -8,6 +8,12 @@ const Cart = (function ($) {
         request: {},
         'decisionBtn': '#domain-decision',
         'payOfflineBtn': '#pay-offline-button',
+        'momoForm': '#momo',
+        'zeroValueCart': '#zeroValueCart',
+        paymentId: null,
+        paymentInterval: null,
+        maxPaymentCheckTime: 600,
+        checkPaymentTime: 0,
 
         Request: class Request {
             constructor() {
@@ -96,6 +102,12 @@ const Cart = (function ($) {
 
             $(me.payOfflineBtn).on('click', function () {
                 me.payOffline();
+            });
+
+            $(me.momoForm).on('submit', function (event) {
+                event.preventDefault();
+                $('.mfp-close').click();
+                me.doMoMo();
             });
         },
 
@@ -205,8 +217,6 @@ const Cart = (function ($) {
                     hideSpinner();
                 }
             });
-
-
         },
 
         addItem: function (src) {
@@ -283,6 +293,87 @@ const Cart = (function ($) {
                 }
             });
 
+        },
+        doMoMo: function () {
+            showSpinner();
+
+            if (me.paymentInterval !== null) {
+                clearInterval(me.paymentInterval);
+            }
+            $(me.zeroValueCart).addClass('invisible');
+            me.paymentId = null;
+            const phoneNumber = $('#phoneNumber').val().replace(/^\s*|\s*$/g, '');
+            $.ajax({
+                url: '/payments/mobile-money',
+                type: 'POST',
+                dataType: 'JSON',
+                cache: false,
+                async: true,
+                data: {'phoneNumber': phoneNumber},
+                success: function (data) {
+                    if (data.status === false) {
+                        $(me.zeroValueCart).removeClass('invisible');
+                        $('.mfp-close').click();
+                        $('#payment-response').addClass('error').html(data.message);
+                        hideSpinner();
+                    } else {
+                        me.paymentId = data.paymentId;
+                        me.paymentInterval = setInterval(function () {
+                            me.checkMoMo();
+                        }, 60000);
+                    }
+                },
+                error: function (jqXHR) {
+                    hideSpinner();
+                    console.log("ERROR");
+                    console.log(jqXHR.responseText)
+                }
+            });
+        },
+        checkMoMo: function () {
+            me.checkPaymentTime += 6;
+            showSpinner();
+            const paymentId = me.paymentId.replace(/^\s*|\s*$/g, '');
+            $.ajax({
+                url: '/payments/check',
+                type: 'GET',
+                dataType: 'JSON',
+                cache: false,
+                async: true,
+                data: {'payment_id': paymentId},
+                success: function (data) {
+                    if (data.status === true) {
+                        clearInterval(me.paymentInterval);
+                        $.ajax({
+                            url: '/orders/pay-with-mobile-wallet',
+                            type: 'POST',
+                            dataType: 'JSON',
+                            cache: false,
+                            data: {'payment_id': paymentId},
+                            success: function () {
+                                location.reload();
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                hideSpinner();
+                                console.log("ERROR");
+                                console.log(textStatus);
+                                console.log(jqXHR.responseText)
+                                console.log(errorThrown)
+                            },
+                            complete: function (jqXHR) {
+                                hideSpinner();
+                            }
+                        });
+                    } else if (me.checkPaymentTime > me.maxPaymentCheckTime && null !== me.paymentInterval) {
+                        clearInterval(me.paymentInterval);
+                        hideSpinner();
+                    }
+                },
+                error: function (jqXHR) {
+                    hideSpinner();
+                    clearInterval(me.paymentInterval);
+                }
+            });
         },
 
         refreshItem: function (bIncrement) {

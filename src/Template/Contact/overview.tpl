@@ -58,7 +58,7 @@
                             <span class="contact-info__icon"><i class="ti-email"></i></span>
                             <div class="media-body">
                                 <h3>{{ siteConfig.contact_email }}</h3>
-                                <p>Contactez-nous à nous moment!</p>
+                                <p>Contactez-nous à tout moment!</p>
                             </div>
                         </div>
                     </div>

@@ -506,4 +506,6 @@ h2.payment-method-heading, #customer_details h3.HeadingActive {
 .dedicated_support .support_info .get_started .phone_num {color: #212529 !important;}
 .goto-cpanel{padding: 4px 25px !important;}
 .cart-goto-login{margin-top:20px !important;}
+.red, .danger, .error {color:#ff0000 !important;}
+.green, .success {color:green !important;}
 .invisible{display:none; visibility:hidden;}

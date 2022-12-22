@@ -1,13 +1,13 @@
-var GetIn=(function($){
+const GetIn = (function ($) {
 	"use strict";
-	var me = {
+	const me = {
 		initialized: false,
 		hash: null,
 
 		/**
-		* @return {void}
-		*/
-		initialize: function (){
+		 * @return {void}
+		 */
+		initialize: function () {
 
 			if (me.initialized === true) {
 				return;
@@ -21,7 +21,7 @@ var GetIn=(function($){
 		/**
 		 * @return {void}
 		 */
-		registerEvents: function() {
+		registerEvents: function () {
 
 			if (me.hash === '#login') {
 				me.showLogin();
@@ -30,25 +30,34 @@ var GetIn=(function($){
 			if (me.hash === '#join') {
 				me.showRegister();
 			}
+
+
+			if (me.hash === '#show-momo') {
+				me.showMoMoForm();
+			}
 		},
 
 		/**
 		 * @return {void}
 		 */
-		showLogin: function() {
+		showLogin: function () {
 			$('span#login').click();
 		},
 
 		/**
 		 * @return {void}
 		 */
-		showRegister: function() {
+		showRegister: function () {
 			$('a.dont-hav-acc').click();
 		},
 
+		showMoMoForm: function (){
+			$('span#show-momo').click();
+		}
+
 	};
 	return {
-		'initialize' : me.initialize,
+		'initialize': me.initialize,
 	};
 })(jQuery);
 

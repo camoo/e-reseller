@@ -33,7 +33,6 @@ class OrderRest extends AppRest
 
     /**
      * @param Response $response
-     *                           return void
      */
     public function afterSend(Event $event, $response): void
     {

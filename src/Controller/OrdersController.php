@@ -54,7 +54,41 @@ final class OrdersController extends AppController
         ]);
     }
 
-    private function buildCartData(Cart $cart): array
+    public function payWithMobileWallet(): void
+    {
+        $this->request->allowMethod(['post']);
+        if (!$this->request->is('ajax')) {
+            throw new Exception('Unknown Error on online payment!');
+        }
+
+        $paymentId = $this->request->getData('payment_id');
+        $cart = $this->getBasketRepository();
+
+        $oderRequest = $this->OrderRest->newRequest(['body' => json_encode($this->buildCartData($cart, $paymentId))]);
+
+        if (!empty($oderRequest->getErrors())) {
+            $this->showValidateErrors($oderRequest);
+
+            $this->_jsonResponse([
+                'status' => false,
+                'result' => $oderRequest->getErrors(),
+            ]);
+        }
+        $response = $oderRequest->send(['::orders', 'online']);
+
+        if (!empty($response['success'])) {
+            $this->request->Flash->success('Commande effectuée avec succès');
+            $cart->delete();
+        } else {
+            $this->request->Flash->error('Échec de commande. Veuillez vérifier votre panier et re-essayer plus tard.');
+        }
+
+        $this->_jsonResponse([
+            'status' => !empty($response['success']),
+        ]);
+    }
+
+    private function buildCartData(Cart $cart, ?string $paymentId = null): array
     {
         $cartData = [];
         foreach ($cart as $type => $items) {
@@ -80,7 +114,10 @@ final class OrdersController extends AppController
         $cartData['total_price'] = $cart->getTotalPrice();
         $cartData['item_count'] = $cart->count();
         $cartData['user'] = $this->getUserId();
-        //dd($cartData);
+        if (null !== $paymentId) {
+            $cartData['payment_id'] = $paymentId;
+        }
+
         return $cartData;
     }
 }
