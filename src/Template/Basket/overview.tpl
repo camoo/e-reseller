@@ -68,10 +68,10 @@
             <h2 class="payment-method-heading">Choisissez un mode de paiement pour finaliser votre achat</h2>
             <div class="CartSection pay-sepr" id="CartSection_paymentOptions">
                 <div class="paymentOption rfloat opt-2" id="paymentOption_offline">
-                    <h3 class="ui-subheading">Options de paiement hors ligne</h3>
-                    <p class="txt-info">Ajoutez votre commande maintenant et payez plus tard par chèque/espèces ou
+                    <h3 class="ui-subheading">Options de paiement</h3>
+                    <p class="txt-info">Ajoutez votre commande maintenant ou payez plus tard par chèque/espèces ou
                         dépôt.</p>
-                    <p class="italic_font">En cliquant sur "Payer hors ligne", vous acceptez les<br><a target="_blank"
+                    <p class="italic_font">En cliquant sur "Payer hors ligne" ou "Payer par Mobile Money", vous acceptez les<br><a target="_blank"
                                                                                                        href="/support/terms">Terms
                             &amp; Conditions</a> + <a href="/support/privacy" target="_blank">associated agreements</a>
                         concernant les produits ci-dessus.</p>
