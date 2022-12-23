@@ -61,21 +61,21 @@ final class Installer
         );
 
         $salt = current($value);
-
-        $username = null;
-        $password = null;
+        $find = ['__TOKEN_SALT_'];
+        $replace = [$salt];
         if ($consoleIO->isInteractive()) {
             $username = $consoleIO->ask('Enter your camoo username: ');
             $password = $consoleIO->askAndHideAnswer('Enter your camoo password: ');
             if (empty($username) || empty($password)) {
                 throw new InvalidArgumentException('Username or Password is missing!');
             }
+            $find[] = '__USERNAME__';
+            $find[] = '__PASSWORD__';
+            $replace[] = $username;
+            $replace[] = $password;
         }
-        $content = str_replace([
-            '__TOKEN_SALT__',
-            '__USERNAME__',
-            '__PASSWORD__',
-        ], [$salt, $username, $password], $content);
+
+        $content = str_replace($find, $replace, $content);
 
         $response = file_put_contents($envFile, $content);
 
