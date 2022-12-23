@@ -1,5 +1,4 @@
 .php_cs.cache
 vendor
-composer.lock
 config/app.php
 config/.env
