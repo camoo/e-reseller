@@ -3,6 +3,7 @@ return [
     'debug' => defined('DEV_MODE') ? DEV_MODE : false,
     'App' => [
 		'namespace' => 'App',
+		'defaultLanguage' => 'fr_CM',
 		'paths' => [
             'locales' => APP . 'Locale' . DS,
         ],

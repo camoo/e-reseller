@@ -13,22 +13,6 @@
  sudo -u user composer install --no-dev
 ```
 
-### configure project
-```shell
- cd /home/user/public_html/config
- 
- sudo -u user cp app.php.dist app.php
- 
- sudo -u user cp .env.dist .env
- sudo -u user vi .env # or use nano
- # And replace the following lines
- export ACCESS_TOKEN_SALT='Your super secret Key here';
- 
-# SET your CAMOO.HOSTING creadentials
-export cm_email='you@gmail.com';
-export cm_passwd='2BSe3@pMRbCnV>J(G';
-```
-
 ### Clear Cache
 ```shell
  cd /home/user/public_html/
@@ -49,13 +33,21 @@ Upload a file with the name `custom.js` into `/home/user/public_html/web/js/`
 
 #### Change logo and favicon
 * Set different name as `logo.png` or `favicon.ico`
+* Upload first you files into `/home/user/public_html/web/img/`
 ```shell
 # edit .env file and replace the following lines
 # WEB
-LOGO_FILE_NAME="logo.png"
-FAVICON_FILE_NAME="favicon.ico"
+LOGO_FILE_NAME="my-site-log.png"
+FAVICON_FILE_NAME="my-site-favicon.ico"
 ```
 
+# Troubleshooting
+in case that you site is displaying only Error.
+Please make sure that:
+* You add the ip-address of your server to our authorized list. To do so you have to login to your dashboard then under the reseller menu find `API`
+* Or check your `config/.env` and make sure that you credentials are correct.
+
+# Examples
 * Home
 ![Home page](https://github.com/camoo/e-reseller/raw/master/Screenshot%20from%202022-12-18%2012-53-48.png)
 
