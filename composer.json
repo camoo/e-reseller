@@ -1,7 +1,7 @@
 {
     "require": {
-        "camoo/framework": "dev-master",
-        "camoo/hosting": "dev-master",
+        "camoo/framework": "v1.0.3",
+        "camoo/hosting": "v1.3.1",
         "josegonzalez/dotenv": "^3.2",
         "jms/serializer": "^3.10",
       "ext-json": "*"

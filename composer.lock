@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4a3af9ef333b36dbde3896c447dd6517",
+    "content-hash": "c960eda7d6080dd6d885d92b8df85750",
     "packages": [
         {
             "name": "aura/intl",
@@ -793,16 +793,16 @@
         },
         {
             "name": "camoo/framework",
-            "version": "dev-master",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/framework.git",
-                "reference": "524842ba18daee78edbc83557d0bd934ea0c35e3"
+                "reference": "318506e83e959b85ec0179573caeac65bf9bd4a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/framework/zipball/524842ba18daee78edbc83557d0bd934ea0c35e3",
-                "reference": "524842ba18daee78edbc83557d0bd934ea0c35e3",
+                "url": "https://api.github.com/repos/camoo/framework/zipball/318506e83e959b85ec0179573caeac65bf9bd4a6",
+                "reference": "318506e83e959b85ec0179573caeac65bf9bd4a6",
                 "shasum": ""
             },
             "require": {
@@ -831,7 +831,7 @@
                 "symfony/console": "^5.1",
                 "symfony/var-dumper": "^4.0",
                 "symfony/yaml": "^4.0",
-                "twig/twig": "^v3.4.3",
+                "twig/twig": "^3.0",
                 "vlucas/valitron": "^1.4"
             },
             "require-dev": {
@@ -840,7 +840,6 @@
             "suggest": {
                 "phpunit/phpunit": "Allows automated tests to be run without system-wide install."
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -868,11 +867,11 @@
                 "issues": "https://gitlab.com/camoo/framework/issues",
                 "source": "https://gitlab.com/camoo/framework"
             },
-            "time": "2022-12-23T08:39:24+00:00"
+            "time": "2022-12-23T08:34:29+00:00"
         },
         {
             "name": "camoo/hosting",
-            "version": "dev-master",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/hosting.git",
@@ -896,7 +895,6 @@
             "suggest": {
                 "phpunit/phpunit": "Allows automated tests to be run without system-wide install."
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -6880,10 +6878,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "camoo/framework": 20,
-        "camoo/hosting": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
