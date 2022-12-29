@@ -51,17 +51,9 @@ final class Installer
         $distFile = $configDir . '.env.dist';
         $content = file_get_contents($distFile);
 
-        $salts = file_get_contents(self::SALT_URL);
-        $saltsExploded = explode("\n", $salts);
-        $saltRaw = current(array_filter($saltsExploded));
+        $salt = hash('sha512', $rootDir . php_uname() . microtime(true));
 
-        $value = array_filter(
-            explode("'", $saltRaw),
-            fn (?string $val) => !empty($val) && strlen($val) > 32 ? $val : null
-        );
-
-        $salt = current($value);
-        $find = ['__TOKEN_SALT_'];
+        $find = ['__TOKEN_SALT__'];
         $replace = [$salt];
         if ($consoleIO->isInteractive()) {
             $username = $consoleIO->ask('Enter your camoo username: ');
