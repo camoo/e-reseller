@@ -2,7 +2,7 @@
 
 # Installation
 ### Requirements
-* PHP version >=7.4
+* PHP version >=8.0
 * Shell access
 
 ### clone project
