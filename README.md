@@ -37,7 +37,7 @@ Upload a file with the name `custom.js` into `/home/user/public_html/web/js/`
 ```shell
 # edit .env file and replace the following lines
 # WEB
-LOGO_FILE_NAME="my-site-log.png"
+LOGO_FILE_NAME="my-site-logo.png"
 FAVICON_FILE_NAME="my-site-favicon.ico"
 ```
 
