@@ -2,3 +2,9 @@
 vendor
 config/app.php
 config/.env
+.php-cs-fixer.cache
+.idea
+logs/
+tmp/
+web/css/custom.css
+web/js/custom.js
