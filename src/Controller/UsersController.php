@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Rest\AppRest;
-use CAMOO\Cache\Cache;
+use Camoo\Cache\Cache;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Cart;
 use CAMOO\Utils\Configure;
@@ -129,10 +129,10 @@ class UsersController extends AppController
         $this->request->getSession()->write('loggedin', true);
 
         if (!empty($this->request->getSession()->check('Basket'))) {
-            $basket = Cache::read($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
+            $basket = Cache::reads($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
             if ($basket instanceof Cart) {
                 $basket->addRequest($this->request);
-                Cache::delete($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
+                Cache::deletes($this->request->getSession()->read('Basket'), '_camoo_hosting_conf');
             }
         }
 

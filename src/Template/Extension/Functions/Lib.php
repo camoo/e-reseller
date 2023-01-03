@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Template\Extension\Functions;
 
-use CAMOO\Cache\Cache;
+use Camoo\Cache\Cache;
 use CAMOO\Template\Extension\FunctionHelper;
 
 /**
@@ -31,7 +31,7 @@ final class Lib extends FunctionHelper
     {
         $oBasket = $this->Basket->getItems();
         $result = '';
-        if (($xRet = Cache::read($inp, '_camoo_hosting_1hour')) !== false) {
+        if (($xRet = Cache::reads($inp, '_camoo_hosting_1hour')) !== false) {
             foreach ($xRet as $domain => $value) {
                 $class = 'available domain-available add-to-basket';
                 $word = 'Disponible';

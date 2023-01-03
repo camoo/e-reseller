@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\ControllerException;
-use CAMOO\Cache\Cache;
+use Camoo\Cache\Cache;
 use CAMOO\Event\Event;
 use CAMOO\Exception\Exception;
 
@@ -65,9 +65,9 @@ class DomainsController extends AppController
                 ]);
             }
 
-            if (($xRet = Cache::read($domain, '_camoo_hosting_1hour')) === false) {
+            if (($xRet = Cache::reads($domain, '_camoo_hosting_1hour')) === false) {
                 $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
-                Cache::write($domain, $xRet, '_camoo_hosting_1hour');
+                Cache::writes($domain, $xRet, '_camoo_hosting_1hour');
             }
 
             if ($xRet) {
@@ -109,7 +109,7 @@ class DomainsController extends AppController
         if (count($asDomainCheck) > 1) {
             $domain = count($asDomainCheck) > 1 ? array_shift($asDomainCheck) : $asDomainCheck[0];
         }
-        $xRet = Cache::read($domain, '_camoo_hosting_1hour');
+        $xRet = Cache::reads($domain, '_camoo_hosting_1hour');
         $hDomain = [];
         if ($xRet !== false && ($hDomain = $xRet[$domainBasket])) {
             $status = true;

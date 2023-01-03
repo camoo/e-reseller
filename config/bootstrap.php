@@ -6,7 +6,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/paths.php';
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
-use CAMOO\Cache\Cache;
+use Camoo\Cache\Cache;
 use CAMOO\Exception\Exception as AppException;
 use Camoo\Hosting\Modules;
 use CAMOO\Utils\Configure;
@@ -16,7 +16,7 @@ if (file_exists(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
     (new Loader(CONFIG . '.env'))->parse()->define();
 }
 
-if (($xConfigHosting = Cache::read('hosting_conf', '_camoo_hosting_conf')) === false) {
+if (($xConfigHosting = Cache::reads('hosting_conf', '_camoo_hosting_conf')) === false) {
     $xConfig = new Modules\Configurations();
     $xConfigResponse = $xConfig->get();
     if ($xConfigResponse->getStatusCode() !== 200) {
@@ -27,7 +27,7 @@ if (($xConfigHosting = Cache::read('hosting_conf', '_camoo_hosting_conf')) === f
         throw new AppException('Site configuration Result cannot be read!');
     }
     $xConfigHosting = $xConfigHostingRaw['result'];
-    Cache::write('hosting_conf', $xConfigHosting, '_camoo_hosting_conf');
+    Cache::writes('hosting_conf', $xConfigHosting, '_camoo_hosting_conf');
 }
 
 if (!empty($xConfigHosting)) {
@@ -36,7 +36,7 @@ if (!empty($xConfigHosting)) {
 
 // TARIFFS
 
-if (($xTariffsHosting = Cache::read('hosting_tariffs', '_camoo_hosting_tariff')) === false) {
+if (($xTariffsHosting = Cache::reads('hosting_tariffs', '_camoo_hosting_tariff')) === false) {
     $xTariffs = new Modules\Tariffs();
     $xTariffsResponse = $xTariffs->get();
     if ($xTariffsResponse->getStatusCode() !== 200) {
@@ -47,7 +47,7 @@ if (($xTariffsHosting = Cache::read('hosting_tariffs', '_camoo_hosting_tariff'))
         throw new AppException('Site configuration Result cannot be read!');
     }
     $xTariffsHosting = $xTariffsHostingRaw['result'];
-    Cache::write('hosting_tariffs', $xTariffsHosting, '_camoo_hosting_tariff');
+    Cache::writes('hosting_tariffs', $xTariffsHosting, '_camoo_hosting_tariff');
 }
 
 if (!empty($xTariffsHosting)) {
