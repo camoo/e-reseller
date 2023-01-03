@@ -74,11 +74,19 @@ if [ "$VARIABLE" == "cleanup:tariff" ]; then
   exit 0
 fi
 
+if [ "$VARIABLE" == "cleanup:di" ]; then
+  echo "Clear DI cache..."
+  rm -rf "$APP"/tmp/cache/persistent/di/*
+  echo "[DONE]"
+  exit 0
+fi
+
 if [ "$VARIABLE" == "cleanup:all" ]; then
   echo "Clear ALL caches..."
   rm -rf "$APP"/tmp/cache/persistent/persistent/*
   rm -rf "$APP"/tmp/cache/tpl/*
   rm -rf "$APP"/tmp/cache/persistent/tariff/*
+  rm -rf "$APP"/tmp/cache/persistent/di/*
   echo "[DONE]"
   exit 0
 fi

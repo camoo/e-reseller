@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Exception\ControllerException;
 use Camoo\Cache\Cache;
-use CAMOO\Event\Event;
+use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 
 /**
@@ -34,7 +34,7 @@ class DomainsController extends AppController
         $this->loadRest('DomainsRest');
     }
 
-    public function beforeAction(Event $event)
+    public function beforeAction(EventInterface $event): void
     {
         parent::beforeAction($event);
         $this->Security->setConfig('unlockedActions', ['domainSearch', 'addToBasket', 'removeFromBasket', 'isValid']);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use CAMOO\Event\Event;
+use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 
 final class PaymentsController extends AppController
@@ -15,7 +15,7 @@ final class PaymentsController extends AppController
         $this->loadRest('PaymentsRest');
     }
 
-    public function beforeAction(Event $event)
+    public function beforeAction(EventInterface $event): void
     {
         $this->Security->setConfig('unlockedActions', ['mobileMoney']);
         parent::beforeAction($event);

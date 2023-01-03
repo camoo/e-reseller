@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use CAMOO\Event\Event;
+use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Inflector;
 
@@ -15,7 +15,7 @@ use CAMOO\Utils\Inflector;
  */
 final class BasketController extends AppController
 {
-    public function beforeAction(Event $event)
+    public function beforeAction(EventInterface $event): void
     {
         $this->Security->setConfig('unlockedActions', ['add', 'delete']);
         parent::beforeAction($event);
@@ -25,7 +25,6 @@ final class BasketController extends AppController
     {
         $this->set('page_title', __('Votre Panier'));
         $cart = $this->getBasketRepository();
-        //dd($cart);
         $this->set('basket', $cart);
         $this->render();
     }

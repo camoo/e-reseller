@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use CAMOO\Event\Event;
+use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Cart;
 
@@ -16,7 +16,7 @@ final class OrdersController extends AppController
         $this->loadRest('OrderRest');
     }
 
-    public function beforeAction(Event $event)
+    public function beforeAction(EventInterface $event): void
     {
         $this->Security->setConfig('unlockedActions', ['payOffline']);
         parent::beforeAction($event);
