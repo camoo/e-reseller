@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<psalm
+
+        findUnusedVariablesAndParams="true"
+        findUnusedPsalmSuppress="true"
+        ignoreInternalFunctionNullReturn="false"
+        cacheDirectory="tmp/cache/psalm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+        errorBaseline="psalm-baseline.xml"
+>
+
+    <projectFiles>
+        <directory name="." />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="tests" />
+            <directory name="tmp" />
+            <directory name="web" />
+            <directory name="logs" />
+            <directory name="src/Template" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+
+        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
+
+        <MissingClosureReturnType errorLevel="info" />
+        <MissingPropertyType errorLevel="info" />
+
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor>
+        </MissingConstructor>
+
+        <RedundantCondition>
+            <errorLevel type="suppress">
+            </errorLevel>
+        </RedundantCondition>
+
+        <DocblockTypeContradiction errorLevel="info" />
+        <RedundantConditionGivenDocblockType errorLevel="info" />
+
+        <UnresolvableInclude errorLevel="info" />
+
+        <!-- level 4 issues - points to possible deficiencies in logic, higher false-positives -->
+
+        <MoreSpecificReturnType errorLevel="info" />
+
+        <PossiblyInvalidArrayAccess errorLevel="info" />
+        <PossiblyInvalidArrayOffset errorLevel="info" />
+        <PossiblyInvalidFunctionCall errorLevel="info" />
+        <PossiblyInvalidIterator errorLevel="info" />
+        <PossiblyInvalidMethodCall errorLevel="info" />
+        <PossiblyInvalidOperand errorLevel="info" />
+        <PossiblyInvalidPropertyAssignment errorLevel="info" />
+        <PossiblyNullArgument errorLevel="info" />
+        <PossiblyNullArrayAccess errorLevel="info" />
+        <PossiblyNullArrayAssignment errorLevel="info" />
+        <PossiblyNullArrayOffset errorLevel="info" />
+        <PossiblyNullOperand errorLevel="info" />
+        <PossiblyNullPropertyAssignment errorLevel="info" />
+        <PossiblyNullPropertyAssignmentValue errorLevel="info" />
+        <PossiblyNullPropertyFetch errorLevel="info" />
+        <PossiblyNullReference errorLevel="info" />
+
+
+        <InvalidScalarArgument errorLevel="info" />
+        <InvalidOperand errorLevel="info" />
+        <NoInterfaceProperties errorLevel="info" />
+        <TypeDoesNotContainType errorLevel="info" />
+        <TypeDoesNotContainNull errorLevel="info" />
+        <ImplementedReturnTypeMismatch errorLevel="info" />
+
+        <NullableReturnStatement>
+            <errorLevel type="suppress">
+            </errorLevel>
+        </NullableReturnStatement>
+
+        <MoreSpecificImplementedParamType errorLevel="info" />
+        <LessSpecificImplementedReturnType errorLevel="info" />
+
+        <!-- level 7 issues - even worse -->
+        <InvalidArgument errorLevel="info" />
+
+        <InvalidPropertyAssignmentValue>
+            <errorLevel type="suppress">
+            </errorLevel>
+        </InvalidPropertyAssignmentValue>
+
+        <!-- CAMOO Specific -->
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+            </errorLevel>
+        </DeprecatedClass>
+
+        <PossiblyUndefinedArrayOffset>
+        </PossiblyUndefinedArrayOffset>
+
+        <UndefinedConstant errorLevel="suppress" />
+        <UndefinedPropertyAssignment>
+        </UndefinedPropertyAssignment>
+
+        <UndefinedPropertyFetch>
+        </UndefinedPropertyFetch>
+
+        <EmptyArrayAccess>
+        </EmptyArrayAccess>
+
+        <LoopInvalidation>
+        </LoopInvalidation>
+
+        <UndefinedClass>
+        </UndefinedClass>
+
+        <UndefinedMethod>
+        </UndefinedMethod>
+
+        <NullReference>
+        </NullReference>
+
+        <PossiblyUndefinedMethod>
+        </PossiblyUndefinedMethod>
+
+        <MixedArgument errorLevel="suppress" />
+        <MixedMethodCall errorLevel="suppress" />
+        <MixedAssignment errorLevel="suppress" />
+        <MixedArrayOffset errorLevel="suppress" />
+        <MixedArrayAccess errorLevel="suppress" />
+        <MixedPropertyFetch errorLevel="suppress" />
+        <MixedReturnStatement errorLevel="suppress" />
+        <MixedReturnTypeCoercion errorLevel="suppress" />
+        <MixedArgumentTypeCoercion errorLevel="suppress" />
+
+        <PossiblyInvalidCast errorLevel="suppress" />
+        <PossiblyNullOperand errorLevel="suppress" />
+        <PossiblyNullArgument errorLevel="suppress" />
+        <PossiblyNullReference errorLevel="suppress" />
+        <PossiblyInvalidOperand errorLevel="suppress" />
+        <PossiblyUndefinedMethod errorLevel="suppress" />
+        <PossiblyInvalidArgument errorLevel="suppress" />
+        <PossiblyInvalidMethodCall errorLevel="suppress" />
+        <PossiblyNullPropertyFetch errorLevel="suppress" />
+
+        <UndefinedClass errorLevel="suppress" />
+        <UndefinedDocblockClass errorLevel="suppress" />
+
+        <InvalidCast errorLevel="suppress" />
+        <InvalidArgument errorLevel="suppress" />
+        <InvalidReturnType errorLevel="suppress" />
+        <InvalidReturnStatement errorLevel="suppress" />
+
+        <UnusedMethodCall errorLevel="suppress" />
+        <MissingParamType errorLevel="suppress" />
+        <MissingReturnType errorLevel="suppress" />
+        <ArgumentTypeCoercion errorLevel="suppress" />
+        <UndefinedMagicMethod errorLevel="suppress" />
+        <MissingClosureParamType errorLevel="suppress" />
+        <ImpureByReferenceAssignment errorLevel="suppress" />
+        <LessSpecificReturnStatement errorLevel="suppress" />
+        <RedundantCastGivenDocblockType errorLevel="suppress" />
+        <UndefinedThisPropertyFetch errorLevel="suppress" />
+
+    </issueHandlers>
+</psalm>
