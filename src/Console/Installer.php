@@ -11,7 +11,6 @@ use InvalidArgumentException;
 
 final class Installer
 {
-    private const SALT_URL = 'https://api.wordpress.org/secret-key/1.1/salt/';
 
     public static function postInstall(Event $event): void
     {

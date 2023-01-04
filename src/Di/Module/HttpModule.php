@@ -8,7 +8,7 @@ use Camoo\Http\Curl\Domain\Client\ClientInterface;
 use Camoo\Http\Curl\Infrastructure\Client;
 use Ray\Di\AbstractModule;
 
-class HttpModule extends AbstractModule
+final class HttpModule extends AbstractModule
 {
     protected function configure()
     {

@@ -21,12 +21,12 @@ getShellDir() {
   while [ -h "$NAME" ]; do
     DIR=$(dirname -- "$NAME")
     SYM=$(readlink "$NAME")
-    NAME=$(cd "$DIR" >/dev/null && cd $(dirname -- "$SYM") >/dev/null && pwd)/$(basename -- "$SYM")
+    NAME=$(cd "$DIR" >/dev/null && cd "$(dirname -- "$SYM")" >/dev/null && pwd)/$(basename -- "$SYM")
   done
   echo "$NAME"
 }
 
-IN_PHP=(php php7.2 php7.3 php7.4 php8.0)
+IN_PHP=(php php8.0 php8.1 php8.2)
 php_cli() {
   for php in "${IN_PHP[@]}"; do
     SAPI=$(echo "<?= PHP_SAPI ?>" | $php 2>/dev/null)
@@ -40,12 +40,12 @@ php_cli() {
 }
 
 # If current path is a symlink, resolve to real path
-realname="$0"
-if [ -L "$realname" ]; then
-  realname=$(readlink -f "$0")
+realName="$0"
+if [ -L "$realName" ]; then
+  realName=$(readlink -f "$0")
 fi
 
-SHELL=$(dirname -- "$(getShellDir "$realname")")
+SHELL=$(dirname -- "$(getShellDir "$realName")")
 APP=$(dirname "$SHELL")
 
 # variable with the correct path in it.
@@ -91,8 +91,8 @@ if [ "$VARIABLE" == "cleanup:all" ]; then
   exit 0
 fi
 
-if [ "$(basename "$realname")" != 'camoo' ]; then
-  exec "$PHP" "$SHELL"/camoo.php "$(basename "$realname")" "$@"
+if [ "$(basename "$realName")" != 'camoo' ]; then
+  exec "$PHP" "$SHELL"/camoo.php "$(basename "$realName")" "$@"
 else
   exec "$PHP" "$SHELL"/camoo.php "$@"
 fi
