@@ -14,8 +14,7 @@ use CAMOO\Utils\Cart as BasketRepository;
  */
 final class Basket extends FunctionHelper
 {
-    /** @var array $_basket */
-    private $_basket = [BasketRepository::class, 'create'];
+    private array $basketRepo = [BasketRepository::class, 'create'];
 
     public function getFunctions(): array
     {
@@ -37,6 +36,6 @@ final class Basket extends FunctionHelper
 
     private function getBasketRepository(): BasketRepository
     {
-        return call_user_func($this->_basket, $this->request);
+        return call_user_func($this->basketRepo, $this->request);
     }
 }

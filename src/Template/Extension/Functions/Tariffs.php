@@ -131,7 +131,8 @@ class Tariffs extends FunctionHelper
         }
         $html .= '
                         <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
-                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] . '" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
+                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] .
+            '" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
                     </div>
                 </div>';
 
@@ -145,7 +146,10 @@ class Tariffs extends FunctionHelper
             return $sLI;
         }
 
-        $sLI = ($hTariffs['nr_domain_included'] > 1) ? sprintf('%d noms de domaine gratuit', $hTariffs['nr_domain_included']) : '1 nom de domaine gratuit';
+        $sLI = ($hTariffs['nr_domain_included'] > 1) ? sprintf(
+            '%d noms de domaine gratuit',
+            $hTariffs['nr_domain_included']
+        ) : '1 nom de domaine gratuit';
 
         return sprintf('<p>%s **</p>', $sLI);
     }
@@ -169,7 +173,8 @@ class Tariffs extends FunctionHelper
             if ($sOption == 'email_quota') {
                 $sLI = '<p>' . $this->formatBytes($hTariffs[$sOption]) . 'o par compte </p>';
             } else {
-                $sLI = '<p>' . $this->formatBytes($hTariffs[$sOption]) . 'o ' . $this->_ipr(sprintf('lang_%s', $sOption)) . '</p>';
+                $sLI = '<p>' . $this->formatBytes($hTariffs[$sOption]) . 'o ' .
+                    $this->_ipr(sprintf('lang_%s', $sOption)) . '</p>';
             }
         } else {
             $sLI = '<p>' . $this->_ipr(sprintf('lang_unlimited_%s', $sOption)) . '</p>';
@@ -199,7 +204,7 @@ class Tariffs extends FunctionHelper
         return $sLI;
     }
 
-    private function formatBytes($size, $precision = 2)
+    private function formatBytes(float $size): string|float
     {
         if (empty($size)) {
             return 0;
@@ -207,7 +212,7 @@ class Tariffs extends FunctionHelper
         $base = log($size, 1000);
         $suffixes = ['', 'M', 'G', 'T'];
 
-        return round(pow(1000, $base - floor($base)), $precision) . $suffixes[floor($base)];
+        return round(pow(1000, $base - floor($base)), 2) . $suffixes[floor($base)];
     }
 
     private function _ipr(string $key): string
@@ -224,7 +229,7 @@ class Tariffs extends FunctionHelper
             'lang_unlimited_max_ftp' => 'Comptes FTP illimités',
             'lang_unlimited_max_mysql' => 'Bases de données MySQL illimitées',
             'lang_unlimited_max_pop' => 'Comptes e-mail illimités',
-            'lang_unlimited_max_pop_list' => 'Mailinglist illimitée',
+            'lang_unlimited_max_pop_list' => 'Mailing list illimitée',
             'lang_unlimited_max_subdomain' => 'Sous-domaines illimités',
             'lang_unlimited_bwlimit' => 'Bande passante illimitée',
             'lang_unlimited_ram' => 'RAM illimitée',
