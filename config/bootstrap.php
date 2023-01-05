@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/paths.php';
-require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 use Camoo\Cache\Cache;
 use CAMOO\Exception\Exception as AppException;
@@ -15,6 +14,7 @@ use josegonzalez\Dotenv\Loader;
 if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
     (new Loader(CONFIG . '.env'))->parse()->define();
 }
+require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 if (($xConfigHosting = Cache::reads('hosting_conf', '_camoo_hosting_conf')) === false) {
     $xConfig = new Modules\Configurations();
