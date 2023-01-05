@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "74db05658cca2f0820b57b0b12fab59e",
+    "content-hash": "caddbd66de848f7ff179ebcfd5fb85ec",
     "packages": [
         {
             "name": "aura/intl",
@@ -956,12 +956,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/framework.git",
-                "reference": "619dcf0f90c36333e77a4896ae22b127a66c83fa"
+                "reference": "110ecb61c021ec14267b52fd54f1df1d0eb6c942"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/framework/zipball/619dcf0f90c36333e77a4896ae22b127a66c83fa",
-                "reference": "619dcf0f90c36333e77a4896ae22b127a66c83fa",
+                "url": "https://api.github.com/repos/camoo/framework/zipball/110ecb61c021ec14267b52fd54f1df1d0eb6c942",
+                "reference": "110ecb61c021ec14267b52fd54f1df1d0eb6c942",
                 "shasum": ""
             },
             "require": {
@@ -1030,7 +1030,7 @@
                 "issues": "https://gitlab.com/camoo/framework/issues",
                 "source": "https://gitlab.com/camoo/framework"
             },
-            "time": "2023-01-04T10:04:58+00:00"
+            "time": "2023-01-05T15:46:18+00:00"
         },
         {
             "name": "camoo/hosting",
@@ -6865,23 +6865,23 @@
         },
         {
             "name": "qossmic/deptrac-shim",
-            "version": "1.0.2",
+            "version": "0.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qossmic/deptrac-shim.git",
-                "reference": "3179a2c4978654add865309e3c280ef3d60f0043"
+                "reference": "2ff8320c94b4fa5cfeaf08b3f98b5679c959cdd2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/3179a2c4978654add865309e3c280ef3d60f0043",
-                "reference": "3179a2c4978654add865309e3c280ef3d60f0043",
+                "url": "https://api.github.com/repos/qossmic/deptrac-shim/zipball/2ff8320c94b4fa5cfeaf08b3f98b5679c959cdd2",
+                "reference": "2ff8320c94b4fa5cfeaf08b3f98b5679c959cdd2",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-tokenizer": "*",
                 "ext-zlib": "*",
-                "php": "^8.1"
+                "php": "^7.4 || 8.0.* || 8.1.*"
             },
             "replace": {
                 "qossmic/deptrac": "self.version"
@@ -6899,11 +6899,9 @@
             ],
             "authors": [
                 {
-                    "name": "Tim Glabisch"
-                },
-                {
                     "name": "Simon Mönch",
-                    "email": "simon.moench@qossmic.com"
+                    "email": "simon.moench@qossmic.com",
+                    "role": "maintainer"
                 },
                 {
                     "name": "Denis Brumann",
@@ -6914,9 +6912,9 @@
             "description": "deptrac phar distribution",
             "support": {
                 "issues": "https://github.com/qossmic/deptrac-shim/issues",
-                "source": "https://github.com/qossmic/deptrac-shim/tree/1.0.2"
+                "source": "https://github.com/qossmic/deptrac-shim/tree/0.24.0"
             },
-            "time": "2022-12-02T11:47:53+00:00"
+            "time": "2022-08-12T10:10:47+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

@@ -59,7 +59,7 @@ return [
         'cookie' => [
             'lifetime' => 14400,
             'path' => '/',
-            'domain' => '.' . (defined('DOMAIN_NAME') ? DOMAIN_NAME : $_SERVER['HTTP_HOST']),
+            'domain' => '.' . (defined('DOMAIN_NAME') ? DOMAIN_NAME : $_SERVER['HTTP_HOST'] ?? ''),
             'secure' => true,
             'httponly' => true,
         ]

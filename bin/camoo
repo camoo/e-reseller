@@ -9,7 +9,7 @@ VARIABLE=$*
 
 if [ -z "$VARIABLE" ]; then
   echo "Parameter is missing"
-  exit 0
+ # exit 0
 fi
 
 getShellDir() {

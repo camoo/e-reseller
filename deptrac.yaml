@@ -11,12 +11,12 @@ deptrac:
     - { name: Domain,          collectors: [ { type: directory, regex: '(.*)?src/Domain' } ] }
     - { name: Infrastructure,  collectors: [ { type: directory, regex: '(.*)?src/Infrastructure' } ] }
     - { name: Controller,  collectors: [ { type: directory, regex: '(.*)?src/Controller' } ] }
-    - { name: AppHelper,  collectors: [ { type: directory, regex: '(.*)?src/View' } ] }
+    - { name: AppExtension,  collectors: [ { type: directory, regex: '(.*)?src/Extension' } ] }
     - { name: AppModel,          collectors: [ { type: directory, regex: '(.*)?src/Model/Table' } ] }
     - { name: AppDi,             collectors: [ { type: directory, regex: '(.*)?src/Di' } ] }
     - { name: AppEntity,          collectors: [ { type: directory, regex: '(.*)?src/Model/Entity' } ] }
     - { name: AppRest,      collectors: [ { type: directory, regex: '(.*)?src/Model/Rest' } ] }
-    - { name: AppRepository,          collectors: [ { type: directory, regex: 'src/Model/Repositories' } ] }
+    - { name: AppRepository,          collectors: [ { type: directory, regex: '(.*)?src/Model/Repositories' } ] }
     - { name: DriverHttp,        collectors: [ { type: className, regex: '^CAMOO\\Http\\Curl\\' } ] }
     - { name: DriverServerRequest,        collectors: [ { type: className, regex: '^(CAMOO\\Http\\ServerRequest\\|Psr\\Http\\Message\\ServerRequestInterface$)' } ] }
     - { name: NativePHP,       collectors: [ { type: className, regex: '^(?!(Locale|Imagick|ImagickException|CurlHandle|stdClass|ArrayObject|Closure|ZipArchive|JsonSerializable|DateTime|Exception|Throwable|RuntimeException|LogicException|InvalidArgumentException|NumberFormatter|IntlDateFormatter))[a-zA-Z0-9_]+$' } ] }
@@ -54,7 +54,7 @@ deptrac:
     Controller: [AppShared, AppEntity, AppModel, AppRest, NativePHP, AppRepository, Application, Domain, DriverServerRequest, DriverShared, DriverEntity, DriverDataSource, Infrastructure]
     AppDi: [ Domain, AppEntity, AppRepository, NativePHP, AppModel, Infrastructure, Application, DriverDataSource, DriverShared, DriverEntity, AppShared, DriverHttp]
     AppEntity: [ DriverLayer, DriverEntity ]
-    AppHelper: [ DriverShared, DriverEntity, AppEntity, Application, Domain, AppShared]
+    AppExtension: [ DriverShared, DriverEntity, AppEntity, Application, Domain, AppShared]
     AppRest: [DriverServerRequest, DriverHttp, DriverShared, AppRepository, AppEntity, VendorPsr, Domain]
     AppShared: [VendorPsr, DriverShared, DriverEntity, DriverDataSource, AppEntity, AppModel, AppRepository, Application, NativePHP, Infrastructure, Domain]
   skip_violations:

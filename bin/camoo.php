@@ -2,9 +2,8 @@
 <?php
 declare(strict_types=1);
 
-if (version_compare(PHP_VERSION, '7.2.0', '<')) {
-    trigger_error('The CAMOO FRAMEWORK Library requires PHP version 7.2.0 or higher', E_USER_ERROR);
-    exit;
+if (version_compare(PHP_VERSION, '8.0', '<')) {
+    trigger_error('The CAMOO FRAMEWORK Library requires PHP version 8.0 or higher', E_USER_ERROR);
 }
 
 try {
@@ -14,10 +13,17 @@ try {
     require_once dirname(__DIR__) . '/config/bootstrap_cli.php';
 } catch (Exception $err) {
     trigger_error($err->getMessage(), E_USER_ERROR);
-    exit;
 }
 
+use CAMOO\Console\CommandFinder;
 use CAMOO\Console\Runner;
 
-$oRunner = new Runner();
-exit($oRunner->run($argv));
+if (count($argv) < 2) {
+    $finder = new CommandFinder();
+    $finder->find();
+    exit(1);
+}
+
+$runner = new Runner($argv);
+$runner->run();
+exit(1);
