@@ -3,7 +3,9 @@ deptrac:
   paths:
     - ./src
   exclude_files:
-    - '#.*test.*#'
+    - '#.*Test\.php$#'
+    - '#.*\.tpl$#'
+    - '#.*\.ctpl$#'
     - src/Application.php
   layers:
     - { name: '#',                collectors: [ { type: directory, regex: 'this/directory/does/not/exist' } ] }
@@ -36,10 +38,8 @@ deptrac:
 
     - name: DriverShared
       collectors:
-        - { type: className, value: .*Cake\\Validation\\.* }
-        - { type: className, value: .*Cake\\Error\\.* }
-        - { type: className, value: .*Cake\\Core\\Exception\\.* }
-        - { type: className, value: .*Cake\\Utility\\.* }
+        - { type: className, value: .*Camoo\\Inflector\\.* }
+        - { type: className, value: .*Camoo\\Cache\\.* }
 
     - name: AppShared
       collectors:
