@@ -26,19 +26,16 @@ return [
             'path'      => CACHE . 'persistent/model/',
         ],
         '_camoo_hosting_conf' => [
-            'className' => 'CAMOO\Cache\Filesystem',
             'duration' => '+ 2 weeks',
             'serialize' => true,
             'path' => CACHE . 'persistent/',
         ],
         '_camoo_hosting_tariff' => [
-            'className' => 'CAMOO\Cache\Filesystem',
             'duration' => '+ 12 hours',
             'serialize' => true,
             'path' => CACHE . 'persistent/tariff/',
         ],
         '_camoo_hosting_1hour' => [
-            'className' => 'CAMOO\Cache\Filesystem',
             'duration' => '+ 1 hours',
             'serialize' => true,
             'path' => CACHE . 'persistent/',
