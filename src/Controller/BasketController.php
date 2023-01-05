@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
-use CAMOO\Utils\Inflector;
+use Camoo\Inflector\Inflector;
 
 /**
  * Class BasketController

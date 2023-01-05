@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Template\Extension\Functions;
 
+use Camoo\Inflector\Inflector;
 use CAMOO\Template\Extension\FunctionHelper;
 use CAMOO\Utils\Configure;
-use CAMOO\Utils\Inflector;
 
 /**
  * Class Tariffs
