@@ -12,7 +12,7 @@ use Camoo\Hosting\Modules;
 use CAMOO\Utils\Configure;
 use josegonzalez\Dotenv\Loader;
 
-if (file_exists(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
+if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
     (new Loader(CONFIG . '.env'))->parse()->define();
 }
 

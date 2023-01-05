@@ -1,10 +1,10 @@
-{% extends "Layouts/pages.tpl" %}
+{% extends "Layouts/pages.twig" %}
 {% block content %}
 
 {{ siteConfig.about_us | raw }}
 
 <!-- have_question_statr -->
-<div id="have-question">{% include 'Layouts/Blocks/Layouts/havequestion.tpl' %}</div>
+<div id="have-question">{% include 'Layouts/Blocks/Layouts/havequestion.twig' %}</div>
 <!-- have_question_end -->
 
 {% endblock %}

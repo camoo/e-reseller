@@ -1,10 +1,10 @@
 {% block js %}
     <script src="/js/vendor/modernizr-3.5.0.min.js"></script>
     <!-- script src="/js/vendor/jquery-1.12.4.min.js"></script -->
-	<script src="/js/jquery-3.3.1.min.js"></script><!-- jQuery Library -->
+    <script src="/js/jquery-3.3.1.min.js"></script><!-- jQuery Library -->
     <script src="/js/popper.min.js"></script>
     <!-- script src="/js/bootstrap.min.js"></script -->
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/isotope.pkgd.min.js"></script>
     <script src="/js/ajax-form.js"></script>
@@ -21,25 +21,25 @@
     <script src="/js/gijgo.min.js"></script>
 
     <!--contact js-->
-	<!-- 
+    <!--
     <script src="/js/contact.js"></script>
     <script src="/js/jquery.ajaxchimp.min.js"></script>
     <script src="/js/jquery.form.js"></script>
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/mail-script.js"></script> 
-	-->
+    -->
 
     <script src="/js/main.js"></script>
-	<script src="/js/script.js"></script><!-- Library -->
-	{% if is_loggedin() %}
-      <script src="/js/Users/script.js"></script>
-	  {% else %}
-      <script src="/js/Users/getin.js"></script>
-	{% endif %}
-      <script src="/js/domainwhois.js"></script>
-      <script src="/js/Basket/script.js?{{ date().timestamp }}"></script>
-{% if add_custom_js() %}
-<script src="/js/custom.js?{{ date().timestamp }}"></script>
-{% endif %}
-	  {{ html_fetch('script') }}
+    <script src="/js/script.js"></script><!-- Library -->
+    {% if is_loggedin() %}
+        <script src="/js/Users/script.js"></script>
+    {% else %}
+        <script src="/js/Users/getin.js"></script>
+    {% endif %}
+    <script src="/js/domainwhois.js"></script>
+    <script src="/js/Basket/script.js?{{ date().timestamp }}"></script>
+    {% if add_custom_js() %}
+        <script src="/js/custom.js?{{ date().timestamp }}"></script>
+    {% endif %}
+    {{ html_fetch('script') }}
 {% endblock %}

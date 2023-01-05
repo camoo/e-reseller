@@ -1,0 +1,115 @@
+{% block header %}
+    <!-- header-start -->
+    <header>
+        <div class="header-area ">
+            <div id="sticky-header" class="main-header-area">
+                <div class="container-fluid p-0">
+                    <div class="row align-items-center no-gutters">
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="logo-img">
+                                <a href="/">
+                                    <img src="/img/{{ get_logo_name() }}" alt="logo">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-lg-7">
+                            <div class="main-menu  d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">
+                                        <li><a class="{{ pages_active }}" href="/">Accueil</a></li>
+                                        <li><a class="{{ packages_active }}" href="/packages">Package</a></li>
+                                        <li><a href="/support">Support <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="/support/terms">Terms</a></li>
+                                                <li><a href="/support/privacy">Privacy</a></li>
+                                            </ul>
+                                        </li>
+                                        <!-- li><a href="#">pages <i class="ti-angle-down"></i></a>
+                                            <ul class="submenu">
+                                                <li><a href="elements.html">elements</a></li>
+                                            </ul>
+                                        </li -->
+                                        <!--li><a class="{{ support_active }}" href="/support">Support</a></li -->
+                                        <li><a class="{{ aboutUs_active }}" href="/aboutUs">About</a></li>
+                                        <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
+                                        <li id="line-cart"
+                                            class="ti-angle-down rs-pointer{% if basket_counter() < 1 %} invisible{% endif %}">
+                                            <a href="#">&nbsp;</a>
+                                            <ul class="submenu ul-basket">
+                                                <li class="title">Votre Panier</li>
+                                                {% for key,item in basket_items() %}
+                                                    {% if key == "hosting" %}
+                                                        {% for idex,hash in item %}
+                                                            <li class="cart-item" id="{{ hash.id }}">
+                                                                <div class="cart-item-description">
+                                                                    <span title="{{ hash.name }}"
+                                                                          class="cart-key"><strong>{{ hash.human_name }}</strong></span>
+                                                                    <span> XAF {{ hash.price }}</span>
+                                                                    <span title="Supprimer" data-id="{{ hash.id }}"
+                                                                          data-type="hosting" data-sku="{{ hash.sku }}"
+                                                                          class="delete-btn delete-cart-item"></span>
+                                                                </div>
+                                                            </li>
+                                                        {% endfor %}
+
+                                                    {% else %}
+                                                        <li class="cart-item">
+                                                            <div class="cart-item-description">
+                                                                <span title="{{ key }}"
+                                                                      class="cart-key"><strong>{{ key }}</strong></span>
+                                                                <span> XAF {{ item.price }}</span>
+                                                                <span title="Supprimer" data-sku="{{ key }}"
+                                                                      class="delete-btn delete-cart-item"></span>
+                                                            </div>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <li class="kasse">
+                                                    <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>à la caise</span></a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="icon-cart" style="float: left;">
+                                                <div class="cart-line-1" style="background-color: #C5BFB6"></div>
+                                                <div class="cart-line-2" style="background-color: #C5BFB6"></div>
+                                                <div class="cart-line-3" style="background-color: #C5BFB6"></div>
+                                                <div class="cart-wheel" style="background-color: #C5BFB6"></div>
+                                                <span style="margin-left: 15px;" id="cart-count"
+                                                      class="w3-badge w3-red">{{ basket_counter() }}</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 d-none d-lg-block">
+                            <div class="log_chat_area d-flex align-items-center">
+                                {% if is_loggedin() %}
+                                    <a href="/logout" id="camoo-logout" class="login">
+                                        <i class="flaticon-lock"></i>
+                                        <span id="logout">Déconnexion</span>
+                                    </a>
+                                    <div class="live_chat_btn">
+                                        <a class="boxed_btn_green goto-cpanel" href="#" id="camoo-dashbord">
+                                            <i class="flaticon-browser"></i>
+                                            <span>cPanel</span>
+                                        </a>
+                                    </div>
+                                {% else %}
+                                    <a href="#test-form" id="camoo-login" class="login popup-with-form">
+                                        <i class="flaticon-user"></i>
+                                        <span id="login">Connexion</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- header-end -->
+{% endblock %}

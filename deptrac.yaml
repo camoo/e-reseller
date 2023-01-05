@@ -4,7 +4,7 @@ deptrac:
     - ./src
   exclude_files:
     - '#.*Test\.php$#'
-    - '#.*\.tpl$#'
+    - '#.*\.twig#'
     - '#.*\.ctpl$#'
     - src/Application.php
   layers:
