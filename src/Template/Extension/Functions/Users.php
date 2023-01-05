@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Template\Extension\Functions;
 
+use CAMOO\Http\SessionSegment;
 use CAMOO\Template\Extension\FunctionHelper;
 
 /**
@@ -13,8 +14,7 @@ use CAMOO\Template\Extension\FunctionHelper;
  */
 class Users extends FunctionHelper
 {
-    /** @var SessionSegment $session */
-    private $session;
+    private SessionSegment $session;
 
     public function initialize(): void
     {

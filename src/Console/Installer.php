@@ -11,7 +11,6 @@ use InvalidArgumentException;
 
 final class Installer
 {
-
     public static function postInstall(Event $event): void
     {
         $consoleIO = $event->getIO();

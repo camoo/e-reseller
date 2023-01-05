@@ -14,7 +14,7 @@ use CAMOO\Template\Extension\FunctionHelper;
  */
 final class Lib extends FunctionHelper
 {
-    public $functions = ['Basket'];
+    public array $functions = ['Basket'];
 
     public function getFunctions(): array
     {
