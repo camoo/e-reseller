@@ -20,7 +20,6 @@ class UsersRest extends AppRest
 {
     public function initialized(): void
     {
-        /** @var Customers $customers */
         $this->loadRemoteObject('customers', new Customers());
     }
 
@@ -39,9 +38,7 @@ class UsersRest extends AppRest
         $validator
             ->requirePresence('password', 'create')
             ->add('password', 'custom', [
-                'rule' => function ($sPassword) {
-                    return (boolean)preg_match('/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z\\d]).*$/', $sPassword);
-                },
+                'rule' => fn($sPassword): bool => (boolean)preg_match('/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z\\d]).*$/', $sPassword),
                 'message' => 'Le mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
             ])
             ->notEmptyString('password', 'Spécifiez votre mot de passe');
@@ -55,9 +52,7 @@ class UsersRest extends AppRest
                     'message' => sprintf('Votre mot de passe dot être compris entre %d et %d characters.', 8, 20),
                 ],
                 'equalToPassword' => [
-                    'rule' => function ($value, $context) {
-                        return (string)$value === (string)$context['data']['password'];
-                    },
+                    'rule' => fn($value, $context): bool => (string)$value === (string)$context['data']['password'],
                     'message' => 'passwords_not_match',
                 ],
             ]);
@@ -67,18 +62,15 @@ class UsersRest extends AppRest
             ->requirePresence('address', 'create')
             ->add('address', [
                 'normal' => [
-                    'rule' => function ($sAdr) {
+                    'rule' => function ($sAdr): bool {
                         // NOT email
-                        if (mb_strpos($sAdr, '@') !== false) {
-                            return false;
-                        }
-                        // NOT Number
-                        //$sCcode = array_key_exists('ccode', $hConfig['data'])? $hConfig['data']['ccode'] : 'CM';
-                        if (!empty((int)$sAdr)) {
+                        if (str_contains($sAdr, '@')) {
                             return false;
                         }
 
-                        return true;
+                        // NOT Number
+                        //$sCcode = array_key_exists('ccode', $hConfig['data'])? $hConfig['data']['ccode'] : 'CM';
+                        return empty((int)$sAdr);
                     },
                     'message' => 'Votre adresse semble être invalide',
                 ],
@@ -103,14 +95,14 @@ class UsersRest extends AppRest
         return $validator;
     }
 
-    public function validationLogin(ValidationInterface $validator): ValidationInterface
+    public function validationLogin(ValidationInterface $validation): ValidationInterface
     {
-        $validator
+        $validation
             ->email('email')
             ->requirePresence('email', 'create')
             ->notEmptyString('email');
 
-        $validator
+        $validation
             ->requirePresence('password', 'create')
             ->notEmptyString('password', 'Mot de passe')
             ->add('password', [
@@ -119,15 +111,13 @@ class UsersRest extends AppRest
                     'message' => sprintf('Votre mot de passe dot être compris entre %d et %d characters.', 8, 20),
                 ],
                 'condition' => [
-                    'rule' => function ($sPassword) {
-                        return (boolean)preg_match('/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z\\d]).*$/', $sPassword);
-                    },
+                    'rule' => fn($sPassword): bool => (boolean)preg_match('/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z\\d]).*$/', $sPassword),
                     'message' => 'Le mot de passe doit contenir au moins 8 caractères, 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial',
 
                 ],
             ]);
 
-        return $validator;
+        return $validation;
     }
 
     public function beforeSend(Event $event, ArrayObject $option): void
@@ -158,6 +148,7 @@ class UsersRest extends AppRest
             ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
             throw new Exception((string)$response->getError());
         }
+
         $this->output = $hResponse['result'];
     }
 }

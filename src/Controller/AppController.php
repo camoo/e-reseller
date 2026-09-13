@@ -40,6 +40,7 @@ class AppController extends BaseController
         if ($this->request->getSession()->check('loggedin')) {
             $cart->setUserId($this->getUserId());
         }
+
         $cart->refresh();
 
         return $cart;
@@ -48,16 +49,16 @@ class AppController extends BaseController
     protected function getPackageById(int $id): ?array
     {
         $ahTariffs = Configure::read('RESELLER_TARIFFS');
-        $tariff = array_filter($ahTariffs['tariffs'], static function (array $hTariff) use ($id) {
-            if ($id === $hTariff['id']) {
-                return $hTariff;
+        $tariffs = is_array($ahTariffs) && is_array($ahTariffs['tariffs'] ?? null)
+            ? $ahTariffs['tariffs'] : [];
+
+        foreach ($tariffs as $tariff) {
+            if (is_array($tariff) && (int)($tariff['id'] ?? -1) === $id) {
+                return $tariff;
             }
+        }
 
-            return null;
-        });
-        $tariff = array_values($tariff);
-
-        return array_shift($tariff) ?? null;
+        return null;
     }
 
     /** @param AppModel|RestInterface $model */
@@ -66,6 +67,7 @@ class AppController extends BaseController
         if (empty($model)) {
             return;
         }
+
         $ahErrors = $model->getErrors();
         $asFields = [];
         if (!empty($ahErrors)) {
@@ -75,7 +77,8 @@ class AppController extends BaseController
                     $this->request->Flash->{$flashType}($sMessage);
                 }
             }
-            if (!empty($asFields)) {
+
+            if ($asFields !== []) {
                 $this->set('errorFields', $asFields);
             }
         }

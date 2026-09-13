@@ -10,6 +10,10 @@ use CAMOO\Utils\Cart;
 
 final class OrdersController extends AppController
 {
+    public $Security;
+
+    public $OrderRest;
+
     public function initialize(): void
     {
         parent::initialize();
@@ -28,6 +32,7 @@ final class OrdersController extends AppController
         if (!$this->request->is('ajax')) {
             throw new Exception('Unknown error !');
         }
+
         $cart = $this->getBasketRepository();
 
         $oderRequest = $this->OrderRest->newRequest(['body' => json_encode($this->buildCartData($cart))]);
@@ -39,7 +44,10 @@ final class OrdersController extends AppController
                 'status' => false,
                 'result' => $oderRequest->getErrors(),
             ]);
+
+            return;
         }
+
         $response = $oderRequest->send(['::orders', 'offline']);
 
         if (!empty($response['success'])) {
@@ -73,7 +81,10 @@ final class OrdersController extends AppController
                 'status' => false,
                 'result' => $oderRequest->getErrors(),
             ]);
+
+            return;
         }
+
         $response = $oderRequest->send(['::orders', 'online']);
 
         if (!empty($response['success'])) {
@@ -98,15 +109,17 @@ final class OrdersController extends AppController
                         $type => $items['price'],
                     ];
                 }
+
                 continue;
             }
+
             foreach ($items as $item) {
                 if (array_key_exists('id', $item)) {
                     $cartData[$type]['id'][$item['sku']] = null;
                 }
 
-                if (array_key_exists('domain_hosting', $item)) {
-                    $cartData[$type]['id'][$item['sku']] = $item['domain_hosting'];
+                if (array_key_exists('domain_hosting', $item) || array_key_exists('on_domain', $item)) {
+                    $cartData[$type]['id'][$item['sku']] = $item['domain_hosting'] ?? $item['on_domain'];
                 }
             }
         }

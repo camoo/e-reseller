@@ -17,9 +17,10 @@ use CAMOO\Utils\Configure;
  */
 class UsersController extends AppController
 {
+    public $UsersRest;
+
     public function initialize(): void
     {
-        /** @var AppRest */
         $this->loadRest('UsersRest');
     }
 
@@ -76,7 +77,8 @@ class UsersController extends AppController
 
                 return $this->redirect('/');
             }
-            $this->request->Flash->error('Nom d\'utilisateur ou mot de passe incorrect');
+
+            $this->request->Flash->error("Nom d'utilisateur ou mot de passe incorrect");
         }
 
         return $this->redirect('/');
@@ -118,6 +120,7 @@ class UsersController extends AppController
                 ]);
             }
         }
+
         throw new Exception('User not loggedIn !');
     }
 
@@ -140,6 +143,7 @@ class UsersController extends AppController
             $basket->setUserId($user['id']);
             $basket->save();
         }
+
         $this->request->Flash->success('Connecté avec succès');
     }
 }

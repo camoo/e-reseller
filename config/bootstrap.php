@@ -12,8 +12,9 @@ use CAMOO\Utils\Configure;
 use josegonzalez\Dotenv\Loader;
 
 if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
-    (new Loader(CONFIG . '.env'))->parse()->define();
+    new Loader(CONFIG . '.env')->parse()->define();
 }
+
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
 if (($xConfigHosting = Cache::reads('hosting_conf', '_camoo_hosting_conf')) === false) {
@@ -22,10 +23,12 @@ if (($xConfigHosting = Cache::reads('hosting_conf', '_camoo_hosting_conf')) === 
     if ($xConfigResponse->getStatusCode() !== 200) {
         throw new AppException('Site configuration cannot be read!');
     }
+
     $xConfigHostingRaw = $xConfigResponse->getJson();
     if (!array_key_exists('result', $xConfigHostingRaw)) {
         throw new AppException('Site configuration Result cannot be read!');
     }
+
     $xConfigHosting = $xConfigHostingRaw['result'];
     Cache::writes('hosting_conf', $xConfigHosting, '_camoo_hosting_conf');
 }
@@ -42,10 +45,12 @@ if (($xTariffsHosting = Cache::reads('hosting_tariffs', '_camoo_hosting_tariff')
     if ($xTariffsResponse->getStatusCode() !== 200) {
         throw new AppException('Site configuration cannot be read!');
     }
+
     $xTariffsHostingRaw = $xTariffsResponse->getJson();
     if (!array_key_exists('result', $xTariffsHostingRaw)) {
         throw new AppException('Site configuration Result cannot be read!');
     }
+
     $xTariffsHosting = $xTariffsHostingRaw['result'];
     Cache::writes('hosting_tariffs', $xTariffsHosting, '_camoo_hosting_tariff');
 }

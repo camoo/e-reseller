@@ -6,7 +6,7 @@ namespace App\Controller;
 
 final class PackagesController extends AppController
 {
-    public function overview()
+    public function overview(): void
     {
         $this->set('page_title', __('Shared Web Hosting'));
 

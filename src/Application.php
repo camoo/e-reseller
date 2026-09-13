@@ -9,8 +9,8 @@ use CAMOO\Di\Module\ModuleCollection;
 
 final class Application
 {
-    public function dependencyInjectionModules(ModuleCollection $modules): void
+    public function dependencyInjectionModules(ModuleCollection $moduleCollection): void
     {
-        $modules->add(HttpModule::class);
+        $moduleCollection->add(HttpModule::class);
     }
 }

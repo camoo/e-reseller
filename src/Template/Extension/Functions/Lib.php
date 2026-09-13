@@ -14,20 +14,22 @@ use CAMOO\Template\Extension\FunctionHelper;
  */
 final class Lib extends FunctionHelper
 {
+    public $Basket;
+
     public array $functions = ['Basket'];
 
     public function getFunctions(): array
     {
         return [
-            $this->add('domainwhois_results', [$this, 'getDomainWhoisResult'], ['is_safe' => ['html']]),
-            $this->add('add_custom_css', [$this, 'addCustomCss']),
-            $this->add('add_custom_js', [$this, 'addCustomJs']),
-            $this->add('get_logo_name', [$this, 'getLogoName'], ['is_safe' => ['html']]),
-            $this->add('get_favicon_name', [$this, 'getFaviconName'], ['is_safe' => ['html']]),
+            $this->add('domainwhois_results', $this->getDomainWhoisResult(...), ['is_safe' => ['html']]),
+            $this->add('add_custom_css', $this->addCustomCss(...)),
+            $this->add('add_custom_js', $this->addCustomJs(...)),
+            $this->add('get_logo_name', $this->getLogoName(...), ['is_safe' => ['html']]),
+            $this->add('get_favicon_name', $this->getFaviconName(...), ['is_safe' => ['html']]),
         ];
     }
 
-    public function getDomainWhoisResult($inp)
+    public function getDomainWhoisResult($inp): string
     {
         $oBasket = $this->Basket->getItems();
         $result = '';
@@ -39,7 +41,8 @@ final class Lib extends FunctionHelper
                 $cmd = 'add-to-basket';
                 if ($oBasket->has($domain)) {
                     $cmd .= ' disable';
-                    $takeIt = $word = 'Dans le pannier';
+                    $takeIt = 'Dans le pannier';
+                    $word = 'Dans le pannier';
                 }
 
                 if ($value['status'] === 'N') {
@@ -47,6 +50,7 @@ final class Lib extends FunctionHelper
                     $word = 'déjà pris';
                     $cmd = 'disable';
                 }
+
                 $result .= sprintf('
                     <div class="single_search d-flex justify-content-between align-items-center">
                         <div class="name_title">
@@ -68,22 +72,14 @@ final class Lib extends FunctionHelper
     {
         $cssPath = WEB . 'css' . DS;
         $filename = 'custom.css';
-        if (!is_file($cssPath . $filename)) {
-            return false;
-        }
-
-        return true;
+        return is_file($cssPath . $filename);
     }
 
     public function addCustomJs(): bool
     {
         $jsPath = WEB . 'js' . DS;
         $filename = 'custom.js';
-        if (!is_file($jsPath . $filename)) {
-            return false;
-        }
-
-        return true;
+        return is_file($jsPath . $filename);
     }
 
     public function getLogoName(): string
@@ -91,6 +87,7 @@ final class Lib extends FunctionHelper
         if (!defined('LOGO_FILE_NAME')) {
             return 'logo.png';
         }
+
         $imgPath = WEB . 'img' . DS;
         $filename = LOGO_FILE_NAME;
         if (!is_file($imgPath . $filename)) {
@@ -105,6 +102,7 @@ final class Lib extends FunctionHelper
         if (!defined('FAVICON_FILE_NAME')) {
             return 'favicon.ico';
         }
+
         $imgPath = WEB;
         $filename = FAVICON_FILE_NAME;
         if (!is_file($imgPath . $filename)) {

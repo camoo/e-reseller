@@ -9,6 +9,10 @@ use CAMOO\Exception\Exception;
 
 final class PaymentsController extends AppController
 {
+    public $Security;
+
+    public $PaymentsRest;
+
     public function initialize(): void
     {
         parent::initialize();
@@ -61,7 +65,7 @@ final class PaymentsController extends AppController
         $response = $paymentRequest->send(['::payments', 'mobileWallet']);
 
         if ($response['success']) {
-            $this->request->Flash->error($response['message']);
+            $this->request->Flash->success($response['message'] ?? 'Paiement initié avec succès');
         }
 
         $this->_jsonResponse([

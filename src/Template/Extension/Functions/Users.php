@@ -14,22 +14,22 @@ use CAMOO\Template\Extension\FunctionHelper;
  */
 class Users extends FunctionHelper
 {
-    private SessionSegment $session;
+    private SessionSegment $sessionSegment;
 
     public function initialize(): void
     {
-        $this->session = $this->request->getSession();
+        $this->sessionSegment = $this->request->getSession();
     }
 
     public function getFunctions(): array
     {
         return [
-            $this->add('is_loggedin', [$this, 'isLoggedIn']),
+            $this->add('is_loggedin', $this->isLoggedIn(...)),
         ];
     }
 
-    public function isLoggedIn()
+    public function isLoggedIn(): bool
     {
-        return $this->session->check('loggedin') && $this->session->read('loggedin') === true;
+        return $this->sessionSegment->check('loggedin') && $this->sessionSegment->read('loggedin') === true;
     }
 }

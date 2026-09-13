@@ -12,12 +12,12 @@ class PagesController extends AppController
         $this->loadModel('Users');
     }
 
-    public function overview()
+    public function overview(): void
     {
         $this->render();
     }
 
-    public function showBasket()
+    public function showBasket(): void
     {
         $this->set('page_title', 'Votre panier');
     }

@@ -14,14 +14,18 @@ use CAMOO\Utils\Configure;
  */
 class ContactController extends AppController
 {
-    public function overview()
+    public function overview(): void
     {
         if ($this->request->is('post')) {
             $email = $this->request->getData('email');
             if ($this->isValidEmail($email)) {
                 $this->sendEmail();
                 $this->request->Flash->success('Merci! Nous vous contacterons dès que possible');
+                $this->render();
+
+                return;
             }
+
             $this->request->Flash->error('Votre demande ne peut pas être traitée pour le moment');
         }
 
@@ -48,8 +52,8 @@ class ContactController extends AppController
         $mailer->send();
     }
 
-    private function isValidEmail(string $email): bool
+    private function isValidEmail(mixed $email): bool
     {
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+        return is_string($email) && filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 }

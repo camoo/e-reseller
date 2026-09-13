@@ -28,6 +28,7 @@ final class Installer
         if (is_file($appFile)) {
             return;
         }
+
         $distFile = $configDir . 'app.php.dist';
         $response = file_put_contents($appFile, file_get_contents($distFile));
 
@@ -36,6 +37,7 @@ final class Installer
 
             return;
         }
+
         $consoleIO->write('Unable to create file config/app.php.');
     }
 
@@ -46,6 +48,7 @@ final class Installer
         if (is_file($envFile)) {
             return;
         }
+
         $distFile = $configDir . '.env.dist';
         $content = file_get_contents($distFile);
 
@@ -59,6 +62,7 @@ final class Installer
             if (empty($username) || empty($password)) {
                 throw new InvalidArgumentException('Username or Password is missing!');
             }
+
             $find[] = '__USERNAME__';
             $find[] = '__PASSWORD__';
             $replace[] = $username;
@@ -74,6 +78,7 @@ final class Installer
 
             return;
         }
+
         $consoleIO->write('Unable to create file config/.env.');
     }
 
@@ -82,6 +87,7 @@ final class Installer
         if (!function_exists('shell_exec')) {
             return;
         }
+
         $command = sprintf('cd %s || exit && ./bin/camoo cleanup:all', $rootDir);
         $result = shell_exec($command);
         $consoleIO->write($result);
