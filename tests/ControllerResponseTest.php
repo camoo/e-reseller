@@ -17,6 +17,7 @@ use CAMOO\TestCase\ControllerTestCase;
 use CAMOO\Utils\Configure;
 use Cake\Event\EventListenerInterface;
 use GuzzleHttp\Psr7\Response;
+use CAMOO\Exception\Http\MethodNotAllowedException;
 use Psr\Http\Message\ResponseInterface;
 
 final class ControllerResponseTest extends ControllerTestCase
@@ -83,7 +84,7 @@ final class ControllerResponseTest extends ControllerTestCase
         $response = $this->dispatchAction($controller);
 
         self::assertSame(302, $response->getStatusCode());
-        self::assertSame('http://localhost/#login', $response->getHeaderLine('Location'));
+        self::assertSame('/#login', $response->getHeaderLine('Location'));
     }
 
     public function testDomainOverviewRedirectReturnsResponseWhenDomainIsMissing(): void
@@ -92,7 +93,15 @@ final class ControllerResponseTest extends ControllerTestCase
         $response = $this->dispatchAction($controller);
 
         self::assertSame(302, $response->getStatusCode());
-        self::assertSame('http://localhost/', $response->getHeaderLine('Location'));
+        self::assertSame('/', $response->getHeaderLine('Location'));
+    }
+
+    public function testLogoutRejectsGetRequests(): void
+    {
+        $controller = $this->createApplicationController(UsersController::class, 'logout', 'GET');
+
+        $this->expectException(MethodNotAllowedException::class);
+        $this->dispatchAction($controller);
     }
 
     private function createApplicationController(string $controllerClass, string $action): \CAMOO\Controller\AppController

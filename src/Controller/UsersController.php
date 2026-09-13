@@ -88,7 +88,7 @@ class UsersController extends AppController
 
     public function logout(): ResponseInterface
     {
-        $this->request->allowMethod(['get']);
+        $this->request->allowMethod(['post']);
         if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
             $this->request->getSession()->delete('Auth');
             $this->request->getSession()->delete('loggedin');
@@ -131,6 +131,7 @@ class UsersController extends AppController
     {
         $basket = null;
 
+        $this->request->getSession()->regenerateId();
         $this->request->getSession()->write('Auth.User', $user);
         $this->request->getSession()->write('loggedin', true);
 

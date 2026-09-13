@@ -2,6 +2,22 @@
     <script src="/js/vendor/modernizr-3.5.0.min.js{{ asset_version('js/vendor/modernizr-3.5.0.min.js') }}"></script>
     <!-- script src="/js/vendor/jquery-1.12.4.min.js"></script -->
     <script src="/js/jquery-3.3.1.min.js{{ asset_version('js/jquery-3.3.1.min.js') }}"></script><!-- jQuery Library -->
+    <script>
+        $.ajaxPrefilter(function (options) {
+            if (String(options.type || options.method || 'GET').toUpperCase() !== 'POST') {
+                return;
+            }
+            const token = $('input[name="__csrf_Token"]').first().val();
+            if (!token || typeof options.data === 'string' && options.data.indexOf('__csrf_Token=') !== -1) {
+                return;
+            }
+            if (options.data && typeof options.data === 'object') {
+                options.data.__csrf_Token = token;
+            } else {
+                options.data = {__csrf_Token: token};
+            }
+        });
+    </script>
     <script src="/js/popper.min.js{{ asset_version('js/popper.min.js') }}"></script>
     <!-- script src="/js/bootstrap.min.js"></script -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>

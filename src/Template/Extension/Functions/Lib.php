@@ -56,15 +56,17 @@ final class Lib extends FunctionHelper
                     $cmd = 'disable';
                 }
 
+                $escapedDomain = $this->escape((string)$domain);
+                $price = $this->escape((string)($value['price']['addnewdomain'] ?? ''));
                 $result .= sprintf('
                     <div class="single_search d-flex justify-content-between align-items-center">
                         <div class="name_title">
-                            <h4>' . $domain . '</h4>
+                            <h4>' . $escapedDomain . '</h4>
                         </div>
                         <div class="prising_content single-domain-item">
-                            <a data-domain="' . $domain . '" data-price="' . $value['price']['addnewdomain'] . '" class="trigger-domain premium %s" href="#">%s</a>
-                            <a href="#">XAF ' . $value['price']['addnewdomain'] . '/an</a> 
-                            <a data-domain="' . $domain . '" data-price="' . $value['price']['addnewdomain'] . '" class="trigger-domain boxed_btn_green %s" href="#">%s</a>
+                            <a data-domain="' . $escapedDomain . '" data-price="' . $price . '" class="trigger-domain premium %s" href="#">%s</a>
+                            <a href="#">XAF ' . $price . '/an</a>
+                            <a data-domain="' . $escapedDomain . '" data-price="' . $price . '" class="trigger-domain boxed_btn_green %s" href="#">%s</a>
                         </div>
                     </div>', $class, $word, $cmd, $takeIt);
             }
@@ -147,5 +149,10 @@ final class Lib extends FunctionHelper
         $features = Configure::read('Features');
 
         return is_array($features) && ($features[$feature] ?? false) === true;
+    }
+
+    private function escape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }

@@ -23,7 +23,6 @@ final class OrdersController extends AppController
 
     public function beforeAction(EventInterface $event): void
     {
-        $this->Security->setConfig('unlockedActions', ['payOffline']);
         parent::beforeAction($event);
     }
 

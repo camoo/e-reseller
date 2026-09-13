@@ -22,7 +22,6 @@ final class PaymentsController extends AppController
 
     public function beforeAction(EventInterface $event): void
     {
-        $this->Security->setConfig('unlockedActions', ['mobileMoney']);
         parent::beforeAction($event);
     }
 

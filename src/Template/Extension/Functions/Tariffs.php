@@ -70,7 +70,7 @@ class Tariffs extends FunctionHelper
                 <div class="col-xl-4 col-md-6 col-lg-4"">
                     <div class="single_prising">
                         <div class="prising_header ' . $headerClass . '">
-                            <h3>' . Inflector::humanize($hTariff['name']) . '</h3>
+                            <h3>' . $this->escape(Inflector::humanize((string)$hTariff['name'])) . '</h3>
                         </div>
 
                                <div class="middle_content">
@@ -94,9 +94,9 @@ class Tariffs extends FunctionHelper
 
         return $html . ('        </ul>
         </div>
-                        <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
+                        <p class="prise"> Coûts <span>' . $this->escape((string)$hTariff['price']) . '/an</span></p>
                         <div class="start_btn text-center">
-                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] . '" data-type="hosting" href="#" class="add2cart boxed_btn_green">Je commande</a>
+                        <a data-belongs="' . $this->escape((string)$this->getBelongsTo($hTariff)) . '" data-sku="' . $this->escape((string)$hTariff['id']) . '" data-type="hosting" href="#" class="add2cart boxed_btn_green">Je commande</a>
 
                     </div>
                 </div>
@@ -112,8 +112,8 @@ class Tariffs extends FunctionHelper
                         <div class="prising_icon blue">
                             <i class="flaticon-servers"></i>
                         </div>
-                        <h3>' . Inflector::humanize($hTariff['name']) . '</h3>
-                        <p class="prising_text">' . $hTariff['description'] . '</p>
+                        <h3>' . $this->escape(Inflector::humanize((string)$hTariff['name'])) . '</h3>
+                        <p class="prising_text">' . $this->escape((string)$hTariff['description']) . '</p>
                 ' . $this->inclDomains($hTariff) . '
                 ' . $this->storage($hTariff, 'ram_quota') . '
                 ' . $this->storage($hTariff) . '
@@ -131,8 +131,8 @@ class Tariffs extends FunctionHelper
         }
 
         return $html . ('
-                        <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
-                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] . '" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
+                        <p class="prise"> Coûts <span>' . $this->escape((string)$hTariff['price']) . '/an</span></p>
+                        <a data-belongs="' . $this->escape((string)$this->getBelongsTo($hTariff)) . '" data-sku="' . $this->escape((string)$hTariff['id']) . '" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
                     </div>
                 </div>');
     }
@@ -244,5 +244,10 @@ class Tariffs extends FunctionHelper
         }
 
         return null;
+    }
+
+    private function escape(string $value): string
+    {
+        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }

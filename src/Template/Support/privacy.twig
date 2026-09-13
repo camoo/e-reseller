@@ -4,7 +4,7 @@
     <!-- core_features_start -->
     <div class="core_features2 faq_area">
         <div class="container">
-            {{ siteConfig.privacy | raw }}
+            {{ siteConfig.privacy }}
             {% if siteConfig.privacy |trim is empty %}
                 <p>{{ t('Privacy content is missing !') }}</p>
             {% endif %}

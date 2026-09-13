@@ -21,7 +21,6 @@ final class BasketController extends AppController
 
     public function beforeAction(EventInterface $event): void
     {
-        $this->Security->setConfig('unlockedActions', ['add', 'delete']);
         parent::beforeAction($event);
     }
 

@@ -44,7 +44,6 @@ class DomainsController extends AppController
     {
         $this->requireFeature('domains');
         parent::beforeAction($event);
-        $this->Security->setConfig('unlockedActions', ['domainSearch', 'addToBasket', 'removeFromBasket', 'isValid']);
     }
 
     public function domainSearch(): ResponseInterface
