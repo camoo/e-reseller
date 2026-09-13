@@ -8,7 +8,7 @@
                         <div class="col-xl-2 col-lg-2">
                             <div class="logo-img">
                                 <a href="/">
-                                    <img src="/img/{{ get_logo_name() }}" alt="logo">
+                                    <img src="/img/{{ get_logo_name() }}{{ asset_version('img/' ~ get_logo_name()) }}" alt="{{ siteConfig.company_name }}">
                                 </a>
                             </div>
                         </div>
@@ -16,12 +16,14 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a class="{{ pages_active }}" href="/">Accueil</a></li>
-                                        <li><a class="{{ packages_active }}" href="/packages">Package</a></li>
-                                        <li><a href="/support">Support <i class="ti-angle-down"></i></a>
+                                        <li><a class="{{ pages_active }}" href="/">{{ t('Accueil') }}</a></li>
+                                        {% if feature_enabled('hosting') %}
+                                            <li><a class="{{ packages_active }}" href="/packages">{{ t('Package') }}</a></li>
+                                        {% endif %}
+                                        <li><a href="/support">{{ t('Support') }} <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="/support/terms">Terms</a></li>
-                                                <li><a href="/support/privacy">Privacy</a></li>
+                                                <li><a href="/support/terms">{{ t('Terms') }}</a></li>
+                                                <li><a href="/support/privacy">{{ t('Privacy') }}</a></li>
                                             </ul>
                                         </li>
                                         <!-- li><a href="#">pages <i class="ti-angle-down"></i></a>
@@ -30,13 +32,14 @@
                                             </ul>
                                         </li -->
                                         <!--li><a class="{{ support_active }}" href="/support">Support</a></li -->
-                                        <li><a class="{{ aboutUs_active }}" href="/aboutUs">About</a></li>
-                                        <li><a class="{{ contact_active }}" href="/contact">Contact</a></li>
+                                        <li><a class="{{ aboutUs_active }}" href="/aboutUs">{{ t('About') }}</a></li>
+                                        <li><a class="{{ contact_active }}" href="/contact">{{ t('Contact') }}</a></li>
+                                        {% if feature_enabled('domains') or feature_enabled('hosting') %}
                                         <li id="line-cart"
                                             class="ti-angle-down rs-pointer{% if basket_counter() < 1 %} invisible{% endif %}">
                                             <a href="#">&nbsp;</a>
                                             <ul class="submenu ul-basket">
-                                                <li class="title">Votre Panier</li>
+                                                <li class="title">{{ t('Votre Panier') }}</li>
                                                 {% for key,item in basket_items() %}
                                                     {% if key == "hosting" %}
                                                         {% for idex,hash in item %}
@@ -65,7 +68,7 @@
                                                     {% endif %}
                                                 {% endfor %}
                                                 <li class="kasse">
-                                                    <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>à la caisse</span></a>
+                                                    <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>{{ t('à la caisse') }}</span></a>
                                                 </li>
                                             </ul>
 
@@ -78,6 +81,7 @@
                                                       class="w3-badge w3-red">{{ basket_counter() }}</span>
                                             </div>
                                         </li>
+                                        {% endif %}
                                     </ul>
                                 </nav>
                             </div>
@@ -87,7 +91,7 @@
                                 {% if is_loggedin() %}
                                     <a href="/logout" id="camoo-logout" class="login">
                                         <i class="flaticon-lock"></i>
-                                        <span id="logout">Déconnexion</span>
+                                        <span id="logout">{{ t('Déconnexion') }}</span>
                                     </a>
                                     <div class="live_chat_btn">
                                         <a class="boxed_btn_green goto-cpanel" href="#" id="camoo-dashbord">
@@ -98,13 +102,23 @@
                                 {% else %}
                                     <a href="#test-form" id="camoo-login" class="login popup-with-form">
                                         <i class="flaticon-user"></i>
-                                        <span id="login">Connexion</span>
+                                        <span id="login">{{ t('Connexion') }}</span>
                                     </a>
                                 {% endif %}
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mobile_menu d-block d-lg-none"></div>
+                            <div class="mobile-header-actions d-flex d-lg-none">
+                                {% if is_loggedin() %}
+                                    <a href="/logout" class="login">{{ t('Déconnexion') }}</a>
+                                {% else %}
+                                    <a href="#test-form" id="camoo-login-mobile" class="login popup-with-form">
+                                        <i class="flaticon-user"></i>
+                                        <span>{{ t('Connexion') }}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>

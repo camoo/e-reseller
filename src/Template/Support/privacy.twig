@@ -6,7 +6,7 @@
         <div class="container">
             {{ siteConfig.privacy | raw }}
             {% if siteConfig.privacy |trim is empty %}
-                <p>Privacy content is missing !</p>
+                <p>{{ t('Privacy content is missing !') }}</p>
             {% endif %}
         </div>
     </div>

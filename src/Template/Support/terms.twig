@@ -6,7 +6,7 @@
         <div class="container">
             {{ siteConfig.terms| raw }}
             {% if siteConfig.terms |trim is empty %}
-                <p>Terms content is missing !</p>
+                <p>{{ t('Terms content is missing !') }}</p>
             {% endif %}
         </div>
     </div>

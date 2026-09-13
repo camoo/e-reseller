@@ -10,3 +10,21 @@ services:
       - .:/app
     environment:
       - APP_ENV=development
+      - USE_REMOTE_CONFIG=false
+
+  https:
+    image: caddy:2-alpine
+    container_name: reseller_framework_https
+    depends_on:
+      - app
+    ports:
+      - "9080:80"
+      - "9443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

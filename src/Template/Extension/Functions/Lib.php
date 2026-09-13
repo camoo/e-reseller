@@ -6,6 +6,8 @@ namespace App\Template\Extension\Functions;
 
 use Camoo\Cache\Cache;
 use CAMOO\Template\Extension\FunctionHelper;
+use CAMOO\Utils\Configure;
+use function Cake\I18n\__;
 
 /**
  * Class Lib
@@ -26,6 +28,9 @@ final class Lib extends FunctionHelper
             $this->add('add_custom_js', $this->addCustomJs(...)),
             $this->add('get_logo_name', $this->getLogoName(...), ['is_safe' => ['html']]),
             $this->add('get_favicon_name', $this->getFaviconName(...), ['is_safe' => ['html']]),
+            $this->add('asset_version', $this->assetVersion(...)),
+            $this->add('t', $this->translate(...)),
+            $this->add('feature_enabled', $this->featureEnabled(...)),
         ];
     }
 
@@ -89,12 +94,15 @@ final class Lib extends FunctionHelper
         }
 
         $imgPath = WEB . 'img' . DS;
-        $filename = LOGO_FILE_NAME;
+        $filename = basename((string)LOGO_FILE_NAME);
+        if ($filename !== (string)LOGO_FILE_NAME || $filename === '') {
+            return 'logo.png';
+        }
         if (!is_file($imgPath . $filename)) {
             return 'logo.png';
         }
 
-        return LOGO_FILE_NAME;
+        return $filename;
     }
 
     public function getFaviconName(): string
@@ -104,11 +112,40 @@ final class Lib extends FunctionHelper
         }
 
         $imgPath = WEB;
-        $filename = FAVICON_FILE_NAME;
+        $filename = basename((string)FAVICON_FILE_NAME);
+        if ($filename !== (string)FAVICON_FILE_NAME || $filename === '') {
+            return 'favicon.ico';
+        }
         if (!is_file($imgPath . $filename)) {
             return 'favicon.ico';
         }
 
-        return FAVICON_FILE_NAME;
+        return $filename;
+    }
+
+    public function assetVersion(string $asset): string
+    {
+        $asset = ltrim($asset, '/');
+        if ($asset === '' || str_contains($asset, '..')) {
+            return '';
+        }
+
+        $path = WEB . $asset;
+        $mtime = is_file($path) ? filemtime($path) : false;
+
+        return false === $mtime ? '' : '?v=' . $mtime;
+    }
+
+    /** Translate text from the active reseller locale in Twig templates. */
+    public function translate(string $message, mixed ...$arguments): string
+    {
+        return __($message, ...$arguments);
+    }
+
+    public function featureEnabled(string $feature): bool
+    {
+        $features = Configure::read('Features');
+
+        return is_array($features) && ($features[$feature] ?? false) === true;
     }
 }

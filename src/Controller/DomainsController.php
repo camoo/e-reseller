@@ -17,9 +17,9 @@ use CAMOO\Exception\Exception;
  */
 class DomainsController extends AppController
 {
-    public $Security;
+    public ?\CAMOO\Controller\Component\SecurityComponent $Security = null;
 
-    public $DomainsRest;
+    public ?\App\Model\Rest\DomainsRest $DomainsRest = null;
 
     private array $allowedExtensions = [
         'cm',
@@ -41,6 +41,7 @@ class DomainsController extends AppController
 
     public function beforeAction(EventInterface $event): void
     {
+        $this->requireFeature('domains');
         parent::beforeAction($event);
         $this->Security->setConfig('unlockedActions', ['domainSearch', 'addToBasket', 'removeFromBasket', 'isValid']);
     }
@@ -144,8 +145,7 @@ class DomainsController extends AppController
         }
 
         $cart = $this->getBasketRepository();
-        $domain = $this->request->getData('domain');
-        $domain = strtolower($domain);
+        $domain = strtolower((string)$this->request->getData('domain'));
 
         $cart->removeItem($domain);
 

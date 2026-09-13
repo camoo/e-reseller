@@ -61,6 +61,20 @@ class AppController extends BaseController
         return null;
     }
 
+    protected function isFeatureEnabled(string $feature): bool
+    {
+        $features = Configure::read('Features');
+
+        return is_array($features) && ($features[$feature] ?? false) === true;
+    }
+
+    protected function requireFeature(string $feature): void
+    {
+        if (!$this->isFeatureEnabled($feature)) {
+            throw new App\Exception\ControllerException('This product is not available.');
+        }
+    }
+
     /** @param AppModel|RestInterface $model */
     protected function showValidateErrors($model, string $flashType = 'error'): void
     {

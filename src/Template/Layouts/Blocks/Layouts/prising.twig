@@ -1,5 +1,6 @@
 {% block prising %}
     <!-- prising_area_start -->
+    {% if feature_enabled('hosting') %}
     <div class="prising_area">
         <div class="container">
             <div class="row">
@@ -19,5 +20,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <!-- prising_area_end -->
 {% endblock %}

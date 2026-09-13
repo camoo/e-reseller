@@ -7,6 +7,7 @@ namespace App\Controller;
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 use Camoo\Inflector\Inflector;
+use function Cake\I18n\__;
 
 /**
  * Class BasketController
@@ -15,7 +16,7 @@ use Camoo\Inflector\Inflector;
  */
 final class BasketController extends AppController
 {
-    public $Security;
+    public ?\CAMOO\Controller\Component\SecurityComponent $Security = null;
 
     public function beforeAction(EventInterface $event): void
     {
@@ -94,30 +95,31 @@ final class BasketController extends AppController
     public function delete(): void
     {
         $this->request->allowMethod(['post']);
-        if ($this->request->is('ajax')) {
-            $oBasket = $this->getBasketRepository();
-            $sku = $this->request->getData('sku');
-
-            $id = $this->request->getData('id');
-            $type = $this->request->getData('type');
-            if (!empty($id) && !empty($type) && $type === 'hosting') {
-                $itemKey = $this->getItemKeyId($id); // key might be 0 as well
-                $ahCartTypeItems = $oBasket->get('hosting');
-                unset($ahCartTypeItems[$itemKey]);
-
-                // REMOVE OLD KEY
-                $oBasket->removeItem('hosting');
-
-                if (!empty($ahCartTypeItems)) {
-                    // UPDATE KEY
-                    $oBasket->addItem($type, $ahCartTypeItems);
-                }
-            } else {
-                $oBasket->removeItem($sku);
-            }
-
-            $this->_jsonResponse(['status' => true]);
+        if (!$this->request->is('ajax')) {
+            throw new \RuntimeException('Invalid Request type');
         }
+
+        $cart = $this->getBasketRepository();
+        $sku = $this->request->getData('sku');
+        $id = $this->request->getData('id');
+        $type = $this->request->getData('type');
+        if (!empty($id) && !empty($type) && $type === 'hosting') {
+            $itemKey = $this->getItemKeyId($id); // key might be 0 as well
+            $ahCartTypeItems = $cart->get('hosting');
+            unset($ahCartTypeItems[$itemKey]);
+
+            // REMOVE OLD KEY
+            $cart->removeItem('hosting');
+
+            if (!empty($ahCartTypeItems)) {
+                // UPDATE KEY
+                $cart->addItem($type, $ahCartTypeItems);
+            }
+        } else {
+            $cart->removeItem((string)$sku);
+        }
+
+        $this->_jsonResponse(['status' => true]);
     }
 
     public function addDomainToHosting(): void
