@@ -19,7 +19,6 @@ class DomainsRest extends AppRest
 {
     public function initialized(): void
     {
-        /** @var Domains $domains */
         $this->loadRemoteObject('domains', new Domains());
     }
 
@@ -28,14 +27,14 @@ class DomainsRest extends AppRest
         return $validator;
     }
 
-    public function validationWhois(ValidationInterface $validator): ValidationInterface
+    public function validationWhois(ValidationInterface $validation): ValidationInterface
     {
-        $validator
+        $validation
             ->requirePresence('domain', 'create')
-            ->notEmptyString('domains', 'Le nom de domaine')
+            ->notEmptyString('domain', 'Le nom de domaine')
             ->add('domain', [
                 'condition' => [
-                    'rule' => function (string $domain) {
+                    'rule' => function (string $domain): bool {
                         if (substr_count($domain, '.') > 0) {
                             return (boolean)preg_match(
                                 '/^(?:[a-zA-Z0-9]+(?:-*[a-zA-Z0-9])*\.)+[a-zA-Z]{2,}$/',
@@ -50,7 +49,7 @@ class DomainsRest extends AppRest
                 ],
             ]);
 
-        return $validator;
+        return $validation;
     }
 
     /**
@@ -63,6 +62,7 @@ class DomainsRest extends AppRest
             ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
             throw new Exception((string)$response->getError());
         }
+
         $this->output = $hResponse['result'];
     }
 }

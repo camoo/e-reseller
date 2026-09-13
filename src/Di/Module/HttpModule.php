@@ -10,7 +10,7 @@ use Ray\Di\AbstractModule;
 
 final class HttpModule extends AbstractModule
 {
-    protected function configure()
+    protected function configure(): void
     {
         $this->bind(ClientInterface::class)->to(Client::class);
     }

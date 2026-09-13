@@ -19,8 +19,8 @@ final class Basket extends FunctionHelper
     public function getFunctions(): array
     {
         return [
-            $this->add('basket_counter', [$this, 'getCount']),
-            $this->add('basket_items', [$this, 'getItems']),
+            $this->add('basket_counter', $this->getCount(...)),
+            $this->add('basket_items', $this->getItems(...)),
         ];
     }
 

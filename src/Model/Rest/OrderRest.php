@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Model\Rest;
 
 use CAMOO\Event\Event;
@@ -22,7 +24,11 @@ class OrderRest extends AppRest
             ->notEmptyString('body', 'Le panier ne peut pas être vide')
             ->add('body', [
                 'condition' => [
-                    'rule' => fn (string $body) => json_decode($body) && json_last_error() === JSON_ERROR_NONE,
+                    'rule' => static function (string $body): bool {
+                        json_decode($body, true);
+
+                        return json_last_error() === JSON_ERROR_NONE && is_array(json_decode($body, true));
+                    },
                     'message' => 'Commande invalide',
 
                 ],
@@ -40,6 +46,7 @@ class OrderRest extends AppRest
             ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
             throw new Exception((string)$response->getError());
         }
+
         $this->output = $hResponse['result'];
     }
 }

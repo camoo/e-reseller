@@ -6,7 +6,7 @@ namespace App\Controller;
 
 final class AboutUsController extends AppController
 {
-    public function overview()
+    public function overview(): void
     {
         $this->render();
     }

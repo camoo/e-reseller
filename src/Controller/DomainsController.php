@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\ControllerException;
+use App\Lib\DomainName;
 use Camoo\Cache\Cache;
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
@@ -16,6 +17,10 @@ use CAMOO\Exception\Exception;
  */
 class DomainsController extends AppController
 {
+    public ?\CAMOO\Controller\Component\SecurityComponent $Security = null;
+
+    public ?\App\Model\Rest\DomainsRest $DomainsRest = null;
+
     private array $allowedExtensions = [
         'cm',
         'com',
@@ -36,22 +41,17 @@ class DomainsController extends AppController
 
     public function beforeAction(EventInterface $event): void
     {
+        $this->requireFeature('domains');
         parent::beforeAction($event);
         $this->Security->setConfig('unlockedActions', ['domainSearch', 'addToBasket', 'removeFromBasket', 'isValid']);
     }
 
-    public function domainSearch()
+    public function domainSearch(): void
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
             $status = false;
-            $domain = $this->request->getData('domain');
-            $asDomainCheck = explode('.', $domain);
-            if (count($asDomainCheck) > 1) {
-                $domain = count($asDomainCheck) > 1 ? array_shift($asDomainCheck) : $asDomainCheck[0];
-            }
-
-            $domain = strtolower($domain);
+            $domain = DomainName::normalize((string)$this->request->getData('domain'));
 
             $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
             $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
@@ -63,6 +63,8 @@ class DomainsController extends AppController
                     'status' => false,
                     'result' => $oNewRequest->getErrors(),
                 ]);
+
+                return;
             }
 
             if (($xRet = Cache::reads($domain, '_camoo_hosting_1hour')) === false) {
@@ -81,10 +83,11 @@ class DomainsController extends AppController
 
             return;
         }
+
         throw new Exception('Unknown error !');
     }
 
-    public function overview()
+    public function overview(): void
     {
         $domain = $this->request->getQuery('d');
         if (empty($domain)) {
@@ -92,33 +95,40 @@ class DomainsController extends AppController
 
             return;
         }
+
         $this->set('domain', $domain);
         $this->render();
     }
 
-    public function addToBasket()
+    public function addToBasket(): void
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
             throw new ControllerException('Invalid Request type');
         }
-        $oBasket = $this->getBasketRepository();
+
+        $cart = $this->getBasketRepository();
         $status = false;
-        $domain = $domainBasket = strtolower($this->request->getData('domain'));
-        $asDomainCheck = explode('.', $domain);
-        if (count($asDomainCheck) > 1) {
-            $domain = count($asDomainCheck) > 1 ? array_shift($asDomainCheck) : $asDomainCheck[0];
-        }
+        $domain = strtolower(trim((string)$this->request->getData('domain')));
+        $domainBasket = $domain;
+        $domain = DomainName::normalize($domain);
+
         $xRet = Cache::reads($domain, '_camoo_hosting_1hour');
         $hDomain = [];
-        if ($xRet !== false && ($hDomain = $xRet[$domainBasket])) {
+        if ($xRet !== false && is_array($xRet) && is_array($hDomain = $xRet[$domainBasket] ?? null)) {
             $status = true;
-            $hDomain['price'] = $hDomain['price']['addnewdomain'];
+            $hDomain['price'] = $hDomain['price']['addnewdomain'] ?? null;
+            if ($hDomain['price'] === null) {
+                $this->_jsonResponse(['status' => false, 'item' => []]);
+
+                return;
+            }
+
             $hDomain['basket_icon'] = 'flaticon-hosting';
             $hDomain['description'] = 'Nom de domaine';
             // other
             //$hDomain['basket_icon'] = 'flaticon-servers';
-            $oBasket->addItem($domainBasket, $hDomain);
+            $cart->addItem($domainBasket, $hDomain);
         }
 
         $this->_jsonResponse([
@@ -127,17 +137,17 @@ class DomainsController extends AppController
         ]);
     }
 
-    public function removeFromBasket()
+    public function removeFromBasket(): void
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
             throw new ControllerException('Invalid request');
         }
 
-        $oBasket = $this->getBasketRepository();
-        $domain = $this->request->getData('domain');
-        $domain = strtolower($domain);
-        $oBasket->removeItem($domain);
+        $cart = $this->getBasketRepository();
+        $domain = strtolower((string)$this->request->getData('domain'));
+
+        $cart->removeItem($domain);
 
         $this->_jsonResponse([
             'status' => true,
@@ -145,7 +155,7 @@ class DomainsController extends AppController
         ]);
     }
 
-    public function decision()
+    public function decision(): void
     {
         $this->set('page_title', 'Indiquez un nom de domaine');
         $itemKeyId = $this->request->getQuery('kid');
@@ -154,21 +164,22 @@ class DomainsController extends AppController
 
             return;
         }
+
         $this->set('item_key', $itemKeyId);
         $this->render();
     }
 
-    public function isValid()
+    public function isValid(): void
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
             throw new Exception('Unknown error !');
         }
 
-        $domain = $this->request->getData('domain');
+        $domain = (string)$this->request->getData('domain');
 
-        $status = substr_count($domain, '.') > 0;
-        if ($status === true) {
+        $status = DomainName::isValid($domain);
+        if ($status) {
             $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
             $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
             $status = empty($oNewRequest->getErrors());

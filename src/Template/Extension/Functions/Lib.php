@@ -6,6 +6,8 @@ namespace App\Template\Extension\Functions;
 
 use Camoo\Cache\Cache;
 use CAMOO\Template\Extension\FunctionHelper;
+use CAMOO\Utils\Configure;
+use function Cake\I18n\__;
 
 /**
  * Class Lib
@@ -14,20 +16,25 @@ use CAMOO\Template\Extension\FunctionHelper;
  */
 final class Lib extends FunctionHelper
 {
+    public $Basket;
+
     public array $functions = ['Basket'];
 
     public function getFunctions(): array
     {
         return [
-            $this->add('domainwhois_results', [$this, 'getDomainWhoisResult'], ['is_safe' => ['html']]),
-            $this->add('add_custom_css', [$this, 'addCustomCss']),
-            $this->add('add_custom_js', [$this, 'addCustomJs']),
-            $this->add('get_logo_name', [$this, 'getLogoName'], ['is_safe' => ['html']]),
-            $this->add('get_favicon_name', [$this, 'getFaviconName'], ['is_safe' => ['html']]),
+            $this->add('domainwhois_results', $this->getDomainWhoisResult(...), ['is_safe' => ['html']]),
+            $this->add('add_custom_css', $this->addCustomCss(...)),
+            $this->add('add_custom_js', $this->addCustomJs(...)),
+            $this->add('get_logo_name', $this->getLogoName(...), ['is_safe' => ['html']]),
+            $this->add('get_favicon_name', $this->getFaviconName(...), ['is_safe' => ['html']]),
+            $this->add('asset_version', $this->assetVersion(...)),
+            $this->add('t', $this->translate(...)),
+            $this->add('feature_enabled', $this->featureEnabled(...)),
         ];
     }
 
-    public function getDomainWhoisResult($inp)
+    public function getDomainWhoisResult($inp): string
     {
         $oBasket = $this->Basket->getItems();
         $result = '';
@@ -39,7 +46,8 @@ final class Lib extends FunctionHelper
                 $cmd = 'add-to-basket';
                 if ($oBasket->has($domain)) {
                     $cmd .= ' disable';
-                    $takeIt = $word = 'Dans le pannier';
+                    $takeIt = 'Dans le pannier';
+                    $word = 'Dans le pannier';
                 }
 
                 if ($value['status'] === 'N') {
@@ -47,6 +55,7 @@ final class Lib extends FunctionHelper
                     $word = 'déjà pris';
                     $cmd = 'disable';
                 }
+
                 $result .= sprintf('
                     <div class="single_search d-flex justify-content-between align-items-center">
                         <div class="name_title">
@@ -68,22 +77,14 @@ final class Lib extends FunctionHelper
     {
         $cssPath = WEB . 'css' . DS;
         $filename = 'custom.css';
-        if (!is_file($cssPath . $filename)) {
-            return false;
-        }
-
-        return true;
+        return is_file($cssPath . $filename);
     }
 
     public function addCustomJs(): bool
     {
         $jsPath = WEB . 'js' . DS;
         $filename = 'custom.js';
-        if (!is_file($jsPath . $filename)) {
-            return false;
-        }
-
-        return true;
+        return is_file($jsPath . $filename);
     }
 
     public function getLogoName(): string
@@ -91,13 +92,17 @@ final class Lib extends FunctionHelper
         if (!defined('LOGO_FILE_NAME')) {
             return 'logo.png';
         }
+
         $imgPath = WEB . 'img' . DS;
-        $filename = LOGO_FILE_NAME;
+        $filename = basename((string)LOGO_FILE_NAME);
+        if ($filename !== (string)LOGO_FILE_NAME || $filename === '') {
+            return 'logo.png';
+        }
         if (!is_file($imgPath . $filename)) {
             return 'logo.png';
         }
 
-        return LOGO_FILE_NAME;
+        return $filename;
     }
 
     public function getFaviconName(): string
@@ -105,12 +110,42 @@ final class Lib extends FunctionHelper
         if (!defined('FAVICON_FILE_NAME')) {
             return 'favicon.ico';
         }
+
         $imgPath = WEB;
-        $filename = FAVICON_FILE_NAME;
+        $filename = basename((string)FAVICON_FILE_NAME);
+        if ($filename !== (string)FAVICON_FILE_NAME || $filename === '') {
+            return 'favicon.ico';
+        }
         if (!is_file($imgPath . $filename)) {
             return 'favicon.ico';
         }
 
-        return FAVICON_FILE_NAME;
+        return $filename;
+    }
+
+    public function assetVersion(string $asset): string
+    {
+        $asset = ltrim($asset, '/');
+        if ($asset === '' || str_contains($asset, '..')) {
+            return '';
+        }
+
+        $path = WEB . $asset;
+        $mtime = is_file($path) ? filemtime($path) : false;
+
+        return false === $mtime ? '' : '?v=' . $mtime;
+    }
+
+    /** Translate text from the active reseller locale in Twig templates. */
+    public function translate(string $message, mixed ...$arguments): string
+    {
+        return __($message, ...$arguments);
+    }
+
+    public function featureEnabled(string $feature): bool
+    {
+        $features = Configure::read('Features');
+
+        return is_array($features) && ($features[$feature] ?? false) === true;
     }
 }

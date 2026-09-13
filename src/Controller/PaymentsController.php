@@ -9,6 +9,10 @@ use CAMOO\Exception\Exception;
 
 final class PaymentsController extends AppController
 {
+    public ?\CAMOO\Controller\Component\SecurityComponent $Security = null;
+
+    public ?\App\Model\Rest\PaymentsRest $PaymentsRest = null;
+
     public function initialize(): void
     {
         parent::initialize();
@@ -34,10 +38,12 @@ final class PaymentsController extends AppController
             $this->_jsonResponse([
                 'status' => false,
             ]);
+
+            return;
         }
 
-        $paymentRequest = $this->PaymentsRest->newRequest(['payment_id' => $paymentId], false);
-        $response = $paymentRequest->send(['::payments', 'check'], false);
+        $appRest = $this->PaymentsRest->newRequest(['payment_id' => $paymentId], false);
+        $response = $appRest->send(['::payments', 'check'], false);
 
         $this->_jsonResponse([
             'status' => !empty($response['success']),
@@ -57,11 +63,11 @@ final class PaymentsController extends AppController
             'customer' => $this->getUserId(),
         ];
 
-        $paymentRequest = $this->PaymentsRest->newRequest($payload);
-        $response = $paymentRequest->send(['::payments', 'mobileWallet']);
+        $appRest = $this->PaymentsRest->newRequest($payload);
+        $response = $appRest->send(['::payments', 'mobileWallet']);
 
         if ($response['success']) {
-            $this->request->Flash->error($response['message']);
+            $this->request->Flash->success($response['message'] ?? 'Paiement initié avec succès');
         }
 
         $this->_jsonResponse([

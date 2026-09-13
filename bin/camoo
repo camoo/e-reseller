@@ -60,6 +60,13 @@ if [ "$VARIABLE" == "cleanup:core" ]; then
   exit 0
 fi
 
+if [ "$VARIABLE" == "cleanup:translations" ]; then
+  echo "Clear Translation cache..."
+  rm -f "$APP"/tmp/cache/persistent/camoo_core_translations*
+  echo "[DONE]"
+  exit 0
+fi
+
 if [ "$VARIABLE" == "cleanup:tpl" ]; then
   echo "Clear Template's cache..."
   rm -rf "$APP"/tmp/cache/tpl/*
@@ -84,6 +91,7 @@ fi
 if [ "$VARIABLE" == "cleanup:all" ]; then
   echo "Clear ALL caches..."
   rm -rf "$APP"/tmp/cache/persistent/persistent/*
+  rm -f "$APP"/tmp/cache/persistent/camoo_core_translations*
   rm -rf "$APP"/tmp/cache/tpl/*
   rm -rf "$APP"/tmp/cache/persistent/tariff/*
   rm -rf "$APP"/tmp/cache/persistent/di/*

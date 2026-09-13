@@ -18,8 +18,8 @@ class Tariffs extends FunctionHelper
     public function getFunctions(): array
     {
         return [
-            $this->add('hosting_plans', [$this, 'getHostingPlans'], ['is_safe' => ['html']]),
-            $this->add('package_plans', [$this, 'getPackagePlans'], ['is_safe' => ['html']]),
+            $this->add('hosting_plans', $this->getHostingPlans(...), ['is_safe' => ['html']]),
+            $this->add('package_plans', $this->getPackagePlans(...), ['is_safe' => ['html']]),
         ];
     }
 
@@ -72,7 +72,7 @@ class Tariffs extends FunctionHelper
                         <div class="prising_header ' . $headerClass . '">
                             <h3>' . Inflector::humanize($hTariff['name']) . '</h3>
                         </div>
-                        
+
                                <div class="middle_content">
         <div class="list">
         <ul>
@@ -87,25 +87,24 @@ class Tariffs extends FunctionHelper
         if (!empty($hTariff['has_shell']) && !empty($hTariff['max_ssh'])) {
             $html .= $this->humanOptions($hTariff, 'max_ssh');
         }
+
         if (!empty($hTariff->is_ssl_included)) {
             $html .= '<p>Free SSL Let\'s Encrypt <i class="fa fa-check dc-check" aria-hidden="true"></i></p>';
         }
-        $html .= '        </ul>
+
+        return $html . ('        </ul>
         </div>
                         <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
                         <div class="start_btn text-center">
-                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] .
-            '" data-type="hosting" href="#" class="add2cart boxed_btn_green">Je commande</a>
+                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] . '" data-type="hosting" href="#" class="add2cart boxed_btn_green">Je commande</a>
 
                     </div>
                 </div>
                 </div>
-                </div>';
-
-        return $html;
+                </div>');
     }
 
-    private function _planHtml($hTariff)
+    private function _planHtml(array $hTariff): string
     {
         $html = '
                 <div class="col-xl-3 col-md-6 col-lg-6">
@@ -126,23 +125,22 @@ class Tariffs extends FunctionHelper
         if (!empty($hTariff['has_shell']) && !empty($hTariff['max_ssh'])) {
             $html .= $this->humanOptions($hTariff, 'max_ssh');
         }
+
         if (!empty($hTariff->is_ssl_included)) {
             $html .= '<p>Free SSL Let\'s Encrypt <i class="fa fa-check dc-check" aria-hidden="true"></i></p>';
         }
-        $html .= '
-                        <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
-                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] .
-            '" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
-                    </div>
-                </div>';
 
-        return $html;
+        return $html . ('
+                        <p class="prise"> Coûts <span>' . $hTariff['price'] . '/an</span></p>
+                        <a data-belongs="' . $this->getBelongsTo($hTariff) . '" data-sku="' . $hTariff['id'] . '" data-type="hosting" href="#" class="add2cart boxed_btn_green2">Je commande</a>
+                    </div>
+                </div>');
     }
 
     private function inclDomains(array $hTariffs): string
     {
         $sLI = '<p class="no-hover">&nbsp;</p>';
-        if (empty($hTariffs) || empty($hTariffs['is_domain_included'])) {
+        if ($hTariffs === [] || empty($hTariffs['is_domain_included'])) {
             return $sLI;
         }
 
@@ -156,21 +154,20 @@ class Tariffs extends FunctionHelper
 
     private function storage(array $hTariffs, ?string $sOption = null): string
     {
-        if (empty($hTariffs)) {
+        if ($hTariffs === []) {
             return '';
         }
 
         if ($sOption === null) {
             if (!empty($hTariffs['disk_quota'])) {
-                $sLI = '<p>' . $this->formatBytes($hTariffs['disk_quota']) . 'o Espace disque</p>';
-            } else {
-                $sLI = '<p>Espace disque illimité</p>';
+                return '<p>' . $this->formatBytes($hTariffs['disk_quota']) . 'o Espace disque</p>';
             }
 
-            return $sLI;
+            return '<p>Espace disque illimité</p>';
         }
+
         if (!empty($hTariffs[$sOption])) {
-            if ($sOption == 'email_quota') {
+            if ($sOption === 'email_quota') {
                 $sLI = '<p>' . $this->formatBytes($hTariffs[$sOption]) . 'o par compte </p>';
             } else {
                 $sLI = '<p>' . $this->formatBytes($hTariffs[$sOption]) . 'o ' .
@@ -185,7 +182,7 @@ class Tariffs extends FunctionHelper
 
     private function humanOptions(array $hTariffs, string $sOption): string
     {
-        if (empty($hTariffs)) {
+        if ($hTariffs === []) {
             return '';
         }
 
@@ -196,23 +193,23 @@ class Tariffs extends FunctionHelper
 
                 return sprintf('<p>%s</p>', $hTariffs[$sOption] . ' ' . $sTxt);
             }
-            $sLI = '<p>' . $hTariffs[$sOption] . ' ' . $this->_ipr(sprintf('lang_%s', $sOption)) . '</p>';
-        } else {
-            $sLI = '<p>' . $this->_ipr(sprintf('lang_unlimited_%s', $sOption)) . '</p>';
+
+            return '<p>' . $hTariffs[$sOption] . ' ' . $this->_ipr(sprintf('lang_%s', $sOption)) . '</p>';
         }
 
-        return $sLI;
+        return '<p>' . $this->_ipr(sprintf('lang_unlimited_%s', $sOption)) . '</p>';
     }
 
-    private function formatBytes(float $size): string|float
+    private function formatBytes(float $size): string
     {
         if (empty($size)) {
             return 0;
         }
+
         $base = log($size, 1000);
         $suffixes = ['', 'M', 'G', 'T'];
 
-        return round(pow(1000, $base - floor($base)), 2) . $suffixes[floor($base)];
+        return round(1000 ** ($base - floor($base)), 2) . $suffixes[floor($base)];
     }
 
     private function _ipr(string $key): string
@@ -244,15 +241,6 @@ class Tariffs extends FunctionHelper
     {
         if (array_key_exists('package_group', $tariff)) {
             return $tariff['package_group']['name'];
-        }
-
-        return null;
-    }
-
-    private function getTypeName(array $tariff): ?string
-    {
-        if (array_key_exists('package_type', $tariff)) {
-            return $tariff['package_type']['name'];
         }
 
         return null;

@@ -30,7 +30,7 @@ class PaymentsRest extends AppRest
         $validator
             ->nonNegativeInteger('customer')
             ->requirePresence('customer', 'create')
-            ->notEmptyString('customer', 'Indiquer l\'utilisateur ');
+            ->notEmptyString('customer', "Indiquer l'utilisateur ");
 
         return $validator;
     }
@@ -43,6 +43,7 @@ class PaymentsRest extends AppRest
             // dd($response);
             throw new Exception((string)$response->getError());
         }
+
         $this->output = $hResponse['result'];
     }
 }

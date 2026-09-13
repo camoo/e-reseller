@@ -3,6 +3,8 @@ vendor
 config/app.php
 config/.env
 .php-cs-fixer.cache
+.phpunit.cache/
+.rector.cache/
 .idea
 logs/
 tmp/
