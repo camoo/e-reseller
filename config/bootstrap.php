@@ -18,6 +18,13 @@ if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
 
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
+// Optional PHP configuration is the right place for long-form reseller
+// content. Keep app.local.php untracked.
+$localConfigPath = CONFIG . 'app.local.php';
+if (is_file($localConfigPath) && is_readable($localConfigPath)) {
+    Configure::load($localConfigPath, true);
+}
+
 // Local development must remain usable when the remote API is unavailable.
 // Remote configuration is still the default outside development and can be
 // explicitly enabled locally with USE_REMOTE_CONFIG=true.
@@ -50,6 +57,43 @@ if ($isLocalDevelopment) {
 
 if (!empty($xConfigHosting)) {
     Configure::write('RESELLER_SITE', $xConfigHosting);
+
+    // Homepage content is intentionally data-driven so a reseller can edit
+    // merchandising copy and feature cards without modifying Twig templates.
+    $homeContent = Configure::read('HomeContent');
+    $mergeHomeContent = static function (array $defaults, array $override) use (&$mergeHomeContent): array {
+        foreach ($override as $key => $value) {
+            // Lists represent editable collections: supplying one replaces
+            // the default list instead of unexpectedly merging by numeric key.
+            if (
+                is_array($value)
+                && is_array($defaults[$key] ?? null)
+                && !array_is_list($value)
+                && !array_is_list($defaults[$key])
+            ) {
+                $defaults[$key] = $mergeHomeContent($defaults[$key], $value);
+                continue;
+            }
+
+            $defaults[$key] = $value;
+        }
+
+        return $defaults;
+    };
+    $remoteHomeContent = $xConfigHosting['home_content']
+        ?? $xConfigHosting['homepage']
+        ?? [];
+    if (is_array($remoteHomeContent) && is_array($homeContent)) {
+        $homeContent = $mergeHomeContent($homeContent, $remoteHomeContent);
+    }
+    $homeContentJson = getenv('HOME_CONTENT_JSON');
+    if (is_string($homeContentJson) && trim($homeContentJson) !== '') {
+        $localHomeContent = json_decode($homeContentJson, true);
+        if (is_array($localHomeContent) && is_array($homeContent)) {
+            $homeContent = $mergeHomeContent($homeContent, $localHomeContent);
+        }
+    }
+    Configure::write('HomeContent', $homeContent);
 
     // The hosting dashboard may provide a locale for this reseller. Only
     // activate catalogs that are installed in this application.

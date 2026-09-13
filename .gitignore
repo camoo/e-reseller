@@ -1,6 +1,7 @@
 .php_cs.cache
 vendor
 config/app.php
+config/app.local.php
 config/.env
 .php-cs-fixer.cache
 .phpunit.cache/

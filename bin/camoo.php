@@ -26,4 +26,4 @@ if (count($argv) < 2) {
 
 $runner = new Runner($argv);
 $runner->run();
-exit(1);
+exit(0);

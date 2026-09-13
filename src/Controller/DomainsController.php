@@ -9,6 +9,7 @@ use App\Lib\DomainName;
 use Camoo\Cache\Cache;
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class DomainsController
@@ -46,7 +47,7 @@ class DomainsController extends AppController
         $this->Security->setConfig('unlockedActions', ['domainSearch', 'addToBasket', 'removeFromBasket', 'isValid']);
     }
 
-    public function domainSearch(): void
+    public function domainSearch(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if ($this->request->is('ajax')) {
@@ -59,12 +60,11 @@ class DomainsController extends AppController
             if (!empty($oNewRequest->getErrors())) {
                 $this->showValidateErrors($oNewRequest);
 
-                $this->_jsonResponse([
+                return $this->jsonResponse([
                     'status' => false,
                     'result' => $oNewRequest->getErrors(),
                 ]);
 
-                return;
             }
 
             if (($xRet = Cache::reads($domain, '_camoo_hosting_1hour')) === false) {
@@ -76,31 +76,28 @@ class DomainsController extends AppController
                 $status = true;
             }
 
-            $this->_jsonResponse([
+            return $this->jsonResponse([
                 'status' => $status,
                 'domain' => $domain,
             ]);
 
-            return;
         }
 
         throw new Exception('Unknown error !');
     }
 
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
         $domain = $this->request->getQuery('d');
         if (empty($domain)) {
-            $this->redirect('/');
-
-            return;
+            return $this->redirect('/');
         }
 
         $this->set('domain', $domain);
-        $this->render();
+        return $this->render();
     }
 
-    public function addToBasket(): void
+    public function addToBasket(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -119,9 +116,7 @@ class DomainsController extends AppController
             $status = true;
             $hDomain['price'] = $hDomain['price']['addnewdomain'] ?? null;
             if ($hDomain['price'] === null) {
-                $this->_jsonResponse(['status' => false, 'item' => []]);
-
-                return;
+                return $this->jsonResponse(['status' => false, 'item' => []]);
             }
 
             $hDomain['basket_icon'] = 'flaticon-hosting';
@@ -131,13 +126,13 @@ class DomainsController extends AppController
             $cart->addItem($domainBasket, $hDomain);
         }
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => $status,
             'item' => $hDomain,
         ]);
     }
 
-    public function removeFromBasket(): void
+    public function removeFromBasket(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -149,27 +144,25 @@ class DomainsController extends AppController
 
         $cart->removeItem($domain);
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => true,
             'item' => $domain,
         ]);
     }
 
-    public function decision(): void
+    public function decision(): ResponseInterface
     {
         $this->set('page_title', 'Indiquez un nom de domaine');
         $itemKeyId = $this->request->getQuery('kid');
         if (empty($itemKeyId)) {
-            $this->redirect('/');
-
-            return;
+            return $this->redirect('/');
         }
 
         $this->set('item_key', $itemKeyId);
-        $this->render();
+        return $this->render();
     }
 
-    public function isValid(): void
+    public function isValid(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -185,7 +178,7 @@ class DomainsController extends AppController
             $status = empty($oNewRequest->getErrors());
         }
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => $status,
         ]);
     }

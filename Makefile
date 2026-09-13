@@ -1,4 +1,4 @@
-.PHONY: help build up down restart install update test rector rector-dry deptrac psalm shell
+.PHONY: help build up down restart install update test tinker rector rector-dry deptrac psalm shell
 
 DOCKER_COMPOSE ?= docker-compose
 EXEC_APP ?= $(DOCKER_COMPOSE) exec app
@@ -26,6 +26,9 @@ update: ## Run composer update
 
 test: ## Run PHPUnit tests
 	$(EXEC_APP) vendor/bin/phpunit --colors=always
+
+tinker: ## Open the development Tinker REPL
+	docker compose run --rm app ./bin/camoo tinker
 
 rector: ## Run Rector to upgrade/refactor code to PHP 8.4+
 	$(EXEC_APP) vendor/bin/rector process

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+
 final class AboutUsController extends AppController
 {
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
-        $this->render();
+        return $this->render();
     }
 }

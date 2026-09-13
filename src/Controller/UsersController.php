@@ -9,6 +9,7 @@ use Camoo\Cache\Cache;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Cart;
 use CAMOO\Utils\Configure;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class UsersController
@@ -25,13 +26,11 @@ class UsersController extends AppController
         $this->loadRest('UsersRest');
     }
 
-    public function join(): void
+    public function join(): ResponseInterface
     {
         $this->request->allowMethod(['post', 'get']);
         if ($this->request->is('get')) {
-            $this->redirect('/#join');
-
-            return;
+            return $this->redirect('/#join');
         }
 
         if ($this->request->is('post')) {
@@ -44,9 +43,7 @@ class UsersController extends AppController
                 if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
                     $this->doLogin($hUser);
 
-                    $this->redirect('/');
-
-                    return;
+                    return $this->redirect('/');
                 }
             }
 
@@ -55,24 +52,20 @@ class UsersController extends AppController
             }
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
-    public function login(): void
+    public function login(): ResponseInterface
     {
         $this->request->allowMethod(['post', 'get']);
 
         if ($this->request->is('get')) {
-            $this->redirect('/#login');
-
-            return;
+            return $this->redirect('/#login');
         }
 
         if ($this->request->is('post')) {
             if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
-                $this->redirect('/');
-
-                return;
+                return $this->redirect('/');
             }
 
             $data = [
@@ -84,18 +77,16 @@ class UsersController extends AppController
             if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'auth']))) {
                 $this->doLogin($xRet);
 
-                $this->redirect('/');
-
-                return;
+                return $this->redirect('/');
             }
 
             $this->request->Flash->error("Nom d'utilisateur ou mot de passe incorrect");
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
-    public function logout(): void
+    public function logout(): ResponseInterface
     {
         $this->request->allowMethod(['get']);
         if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
@@ -105,10 +96,10 @@ class UsersController extends AppController
             $this->request->Flash->success('Déconnecté avec succès');
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
-    public function getSSO(): void
+    public function getSSO(): ResponseInterface
     {
         $this->request->allowMethod(['get']);
         if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
@@ -125,12 +116,11 @@ class UsersController extends AppController
                         $xRet['sso_token'];
                 }
 
-                $this->_jsonResponse([
+                return $this->jsonResponse([
                     'status' => $status,
                     'sso_link' => $ssoLink,
                 ]);
 
-                return;
             }
         }
 

@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
+use Psr\Http\Message\ResponseInterface;
 
 final class PaymentsController extends AppController
 {
@@ -25,7 +26,7 @@ final class PaymentsController extends AppController
         parent::beforeAction($event);
     }
 
-    public function check(): void
+    public function check(): ResponseInterface
     {
         $this->request->allowMethod(['get']);
         if (!$this->request->is('ajax')) {
@@ -35,22 +36,21 @@ final class PaymentsController extends AppController
         $paymentId = $this->request->getQuery('payment_id');
 
         if (empty($paymentId)) {
-            $this->_jsonResponse([
+            return $this->jsonResponse([
                 'status' => false,
             ]);
 
-            return;
         }
 
         $appRest = $this->PaymentsRest->newRequest(['payment_id' => $paymentId], false);
         $response = $appRest->send(['::payments', 'check'], false);
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => !empty($response['success']),
         ]);
     }
 
-    public function mobileMoney(): void
+    public function mobileMoney(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -70,7 +70,7 @@ final class PaymentsController extends AppController
             $this->request->Flash->success($response['message'] ?? 'Paiement initié avec succès');
         }
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => !empty($response['success']),
             'message' => $response['message'] ?? null,
             'paymentId' => $response['paymentId'] ?? null,

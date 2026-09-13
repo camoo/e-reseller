@@ -76,6 +76,13 @@ a:hover {
     text-decoration: none;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(16, 185, 129, .55);
+    outline-offset: 3px;
+}
+
 /* ==========================================================================
    Navigation Bar (Glassmorphic Header)
    ========================================================================== */
@@ -105,7 +112,9 @@ a:hover {
 
 .main-header-area .logo-img img {
     max-height: 44px;
+    max-width: 180px;
     width: auto;
+    object-fit: contain;
     transition: transform 0.2s ease;
 }
 
@@ -134,6 +143,9 @@ a:hover {
     align-items: center;
     gap: 4px;
 }
+
+.main-menu { padding: 0 !important; }
+.main-menu ul#navigation > li > a { white-space: nowrap; }
 
 /* Dropdown Submenus */
 .main-menu ul li .submenu {
@@ -307,6 +319,13 @@ a:hover {
     letter-spacing: -0.03em;
 }
 
+/* Override the legacy slider rules, which otherwise make the headline and
+   submit control disproportionately large and rectangular. */
+.slider_area .single_slider .slider_text h3 {
+    font-size: clamp(2.4rem, 5vw, 4rem) !important;
+    line-height: 1.08 !important;
+}
+
 /* Modern Domain Lookup Form */
 .find_dowmain_form {
     display: flex;
@@ -327,6 +346,7 @@ a:hover {
 .find_dowmain_form input[name="domain"] {
     flex: 1;
     min-width: 0;
+    width: auto !important;
     height: 58px;
     border: 0;
     padding: 0 24px;
@@ -354,6 +374,30 @@ a:hover {
     cursor: pointer;
     box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
     transition: all 0.2s ease;
+}
+
+.slider_area .find_dowmain .find_dowmain_form button {
+    flex: 0 0 160px;
+    width: 160px !important;
+    height: 58px;
+    margin: 0;
+    float: none;
+    border: 0;
+    border-radius: var(--camoo-radius-pill) !important;
+    overflow: hidden;
+    appearance: none;
+    -webkit-appearance: none;
+    background: linear-gradient(135deg, var(--camoo-brand), var(--camoo-brand-dark));
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 750;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+    transition: all 0.2s ease;
+}
+
+.slider_area .find_dowmain .find_dowmain_form button:hover {
+    background: linear-gradient(135deg, var(--camoo-brand-dark), #1e40af);
+    transform: translateY(-1px);
 }
 
 .find_dowmain_form input[type="submit"]:hover {
@@ -416,6 +460,22 @@ a:hover {
 .tld_pill_ssl .tld_tag {
     background: #06b6d4;
 }
+
+.hero-trust {
+    gap: 10px 24px;
+    margin-top: 30px;
+    color: rgba(255, 255, 255, .82);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.hero-trust span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.hero-trust i { color: #6ee7b7; }
 
 /* ==========================================================================
    Product Cards & Pricing Sections
@@ -767,30 +827,92 @@ a:hover {
    ========================================================================== */
 
 .white-popup-block {
+    width: min(520px, calc(100vw - 32px));
     max-width: 520px;
-    margin: 40px auto;
+    max-height: calc(100vh - 32px);
+    margin: 16px auto;
     border-radius: var(--camoo-radius-lg);
     background: #ffffff;
     box-shadow: var(--camoo-shadow-lg);
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.white-popup-block,
+.white-popup-block *,
+.white-popup-block *::before,
+.white-popup-block *::after {
+    box-sizing: border-box;
+}
+
+.white-popup-block .popup_box,
+.white-popup-block .popup_inner,
+.white-popup-block form,
+.white-popup-block .row,
+.white-popup-block [class*="col-"] {
+    width: 100%;
+    max-width: 100%;
+}
+
+.white-popup-block .popup_box {
+    display: block;
+    min-height: 0;
+    padding: 0;
 }
 
 .white-popup-block .popup_inner {
-    padding: 40px;
+    height: auto;
+    min-height: 0;
+    padding: 32px;
     border-radius: var(--camoo-radius-lg);
+}
+
+.white-popup-block .popup_inner > .logo {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.white-popup-block .popup_inner > .logo img {
+    display: inline-block;
+    width: auto;
+    max-width: 180px;
+    max-height: 64px;
+    object-fit: contain;
 }
 
 .white-popup-block h3 {
     font-size: 1.8rem;
     font-weight: 800;
-    margin-bottom: 24px;
+    margin: 0 0 20px;
     text-align: center;
+}
+
+.white-popup-block .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.white-popup-block .row > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 16px;
 }
 
 .contact-section-1 .form-control,
 .white-popup-block input,
-.white-popup-block textarea {
+.white-popup-block textarea,
+.white-popup-block select,
+.white-popup-block button {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.white-popup-block input,
+.white-popup-block textarea,
+.white-popup-block select {
     min-height: 52px;
     border: 1px solid var(--camoo-border);
     border-radius: var(--camoo-radius-sm);
@@ -798,6 +920,72 @@ a:hover {
     font-size: 15px;
     box-shadow: none;
     transition: all 0.2s ease;
+}
+
+.white-popup-block button {
+    min-height: 54px;
+}
+
+.white-popup-block .doen_have_acc {
+    margin: 8px 0 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Registration needs room for its two-column form on larger screens. */
+#test-form2.white-popup-block {
+    width: min(720px, calc(100vw - 32px));
+    max-width: 720px;
+}
+
+#test-form2 .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 16px;
+}
+
+#test-form2 .row > .col-md-6 {
+    flex: 0 0 calc(50% - 8px);
+    width: calc(50% - 8px);
+}
+
+#test-form2 .row > .col-xl-12 {
+    flex: 0 0 100%;
+    width: 100%;
+}
+
+#test-form2 .div_form_add,
+#test-form2 .input {
+    width: 100%;
+}
+
+@media (max-width: 767.98px) {
+    .white-popup-block {
+        width: calc(100vw - 24px);
+        max-height: calc(100vh - 24px);
+        margin: 12px auto;
+    }
+
+    .white-popup-block .popup_inner {
+        padding: 24px 18px;
+    }
+
+    .white-popup-block .popup_inner > .logo {
+        margin-bottom: 22px;
+    }
+
+    .white-popup-block h3 {
+        font-size: 1.45rem;
+    }
+
+    #test-form2.white-popup-block {
+        width: calc(100vw - 24px);
+    }
+
+    #test-form2 .row > .col-md-6 {
+        flex-basis: 100%;
+        width: 100%;
+    }
 }
 
 .contact-section-1 .form-control:focus,
@@ -927,6 +1115,7 @@ a:hover {
     .slider_text h3 {
         font-size: 2.6rem;
     }
+    .main-header-area .logo-img img { max-width: 150px; }
 }
 
 @media (max-width: 767.98px) {
@@ -953,10 +1142,16 @@ a:hover {
         width: 100%;
         border-radius: var(--camoo-radius-pill);
     }
+    .slider_area .find_dowmain .find_dowmain_form button {
+        flex-basis: 54px;
+        width: 100% !important;
+        height: 54px;
+    }
     .tld_pill {
         font-size: 13px;
         padding: 6px 12px;
     }
+    .hero-trust { gap: 10px 16px; margin-top: 24px; }
     .prising_area,
     .core_features,
     .search_area,

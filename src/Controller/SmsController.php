@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Class SmsController
  *
@@ -11,9 +13,10 @@ namespace App\Controller;
  */
 class SmsController extends AppController
 {
-    public function balance(): void
+    public function balance(): ResponseInterface
     {
         $response = ['balance' => 100, 'currency' => 'XAF'];
-        $this->set('_serialize', $response);
+
+        return $this->jsonResponse($response);
     }
 }

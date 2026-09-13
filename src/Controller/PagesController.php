@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+
 class PagesController extends AppController
 {
     public function initialize(): void
@@ -12,13 +14,15 @@ class PagesController extends AppController
         $this->loadModel('Users');
     }
 
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
-        $this->render();
+        return $this->render();
     }
 
-    public function showBasket(): void
+    public function showBasket(): ResponseInterface
     {
         $this->set('page_title', 'Votre panier');
+
+        return $this->render();
     }
 }

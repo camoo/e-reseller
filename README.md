@@ -182,6 +182,38 @@ docker compose run --rm app ./bin/camoo cleanup:all
 The translation layer and CSS layer are independent: use PO files for visible
 wording and `custom.css` for colors, typography, spacing, and layout.
 
+#### Customize homepage content
+
+The homepage merchandising blocks are reseller data, not fixed template copy:
+domain/TLD badges, the hosting-plan introduction, and the feature tabs/cards.
+The defaults live in `config/app.php` under `HomeContent`. A reseller can
+override them without editing Twig in either of two ways:
+
+1. Preferred for a managed reseller: return a `home_content` object from the
+   hosting configuration endpoint. The object may contain `tld_badges`,
+   `pricing`, and `features`; omitted values keep the defaults.
+2. For a local or self-hosted installation: set `HOME_CONTENT_JSON` in
+   `config/.env`. This is merged after the API response, so `.env` is the
+   final local override.
+
+For longer content, copy `config/app.local.php.dist` to
+`config/app.local.php` and edit the returned PHP array. This is easier to
+maintain than JSON and is loaded automatically. The complete precedence is:
+base `app.php`, PHP local overrides, hosting API `home_content`, then
+`HOME_CONTENT_JSON`.
+
+Example:
+
+```dotenv
+HOME_CONTENT_JSON='{"pricing":{"title":"Choisissez votre offre"},"tld_badges":[{"name":".com","price":"12 EUR","tag":"Populaire","class":"tld_pill_popular"}],"features":{"tabs":[{"label":"Pourquoi nous choisir","items":[{"title":"Support expert","description":"Une équipe disponible pour vous aider.","icon":"flaticon-security"}]}]}}'
+```
+
+Each content value is escaped as normal template text. Default values are also
+passed through `t()`, so they can be translated in
+`src/Locale/<locale>/default.po`. Custom reseller wording is displayed as
+provided and does not require a code deployment. Use the existing feature
+flags to remove product areas that are not sold.
+
 #### Enable only the products you sell
 
 Product availability is controlled first from `config/.env`:

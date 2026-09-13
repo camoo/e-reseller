@@ -8,6 +8,7 @@ use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 use Camoo\Inflector\Inflector;
 use function Cake\I18n\__;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class BasketController
@@ -24,15 +25,15 @@ final class BasketController extends AppController
         parent::beforeAction($event);
     }
 
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
         $this->set('page_title', __('Votre Panier'));
         $cart = $this->getBasketRepository();
         $this->set('basket', $cart);
-        $this->render();
+        return $this->render();
     }
 
-    public function add(): void
+    public function add(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
 
@@ -49,9 +50,7 @@ final class BasketController extends AppController
 
         $package = $this->getPackageById((int)$sku);
         if ($package === null) {
-            $this->_jsonResponse(['status' => false, 'id' => null]);
-
-            return;
+            return $this->jsonResponse(['status' => false, 'id' => null]);
         }
 
         $ahCartTypeItems = !$cart->has($type) ? [] : $cart->get($type);
@@ -89,10 +88,10 @@ final class BasketController extends AppController
             $status = false;
         }
 
-        $this->_jsonResponse(['status' => $status, 'id' => $sNewId]);
+        return $this->jsonResponse(['status' => $status, 'id' => $sNewId]);
     }
 
-    public function delete(): void
+    public function delete(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -119,10 +118,10 @@ final class BasketController extends AppController
             $cart->removeItem((string)$sku);
         }
 
-        $this->_jsonResponse(['status' => true]);
+        return $this->jsonResponse(['status' => true]);
     }
 
-    public function addDomainToHosting(): void
+    public function addDomainToHosting(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -142,7 +141,7 @@ final class BasketController extends AppController
             $cart->addItem('hosting', $ahCartTypeItems);
         }
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => true,
         ]);
     }

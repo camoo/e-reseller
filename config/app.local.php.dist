@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Copy this file to config/app.local.php for long-form local overrides.
+ *
+ * Precedence: app.php < app.local.php < hosting API home_content
+ * < HOME_CONTENT_JSON.
+ */
+return [
+    'HomeContent' => [
+        'pricing' => [
+            'title' => "Choisissez votre offre",
+            'description' => "Présentez vos offres avec votre propre message, sans modifier les templates.",
+        ],
+        'features' => [
+            'tabs' => [
+                [
+                    'label' => 'Pourquoi nous choisir',
+                    'items' => [
+                        [
+                            'title' => 'Support expert',
+                            'description' => 'Une équipe disponible pour accompagner vos clients.',
+                            'icon' => 'flaticon-security',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+];

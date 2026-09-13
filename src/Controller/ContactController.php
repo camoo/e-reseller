@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use CAMOO\Mailer\Mailer;
 use CAMOO\Utils\Configure;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class ContactController
@@ -14,22 +15,20 @@ use CAMOO\Utils\Configure;
  */
 class ContactController extends AppController
 {
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
         if ($this->request->is('post')) {
             $email = $this->request->getData('email');
             if ($this->isValidEmail($email)) {
                 $this->sendEmail();
                 $this->request->Flash->success('Merci! Nous vous contacterons dès que possible');
-                $this->render();
-
-                return;
+                return $this->render();
             }
 
             $this->request->Flash->error('Votre demande ne peut pas être traitée pour le moment');
         }
 
-        $this->render();
+        return $this->render();
     }
 
     protected function sendEmail(): void
