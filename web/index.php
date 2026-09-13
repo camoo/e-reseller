@@ -28,14 +28,20 @@ $middlewares = [
 
             return is_array($user) && !empty($user['id']) ? $user : null;
         },
-        new \Camoo\Http\Curl\Infrastructure\Response(statusCode: 401),
+        new \Camoo\Http\Curl\Infrastructure\Response(
+            body: new \Camoo\Http\Curl\Domain\Entity\Stream(''),
+            statusCode: 401,
+        ),
         required: false,
     ),
     new \CAMOO\Http\Middleware\AuthorizationMiddleware(
         static fn (\Psr\Http\Message\ServerRequestInterface $request): bool =>
             in_array($request->getUri()->getPath(), $publicRoutes, true)
             || $request->getAttribute('identity') !== null,
-        new \Camoo\Http\Curl\Infrastructure\Response(statusCode: 403),
+        new \Camoo\Http\Curl\Infrastructure\Response(
+            body: new \Camoo\Http\Curl\Domain\Entity\Stream(''),
+            statusCode: 403,
+        ),
     ),
 ];
 $caller = new \CAMOO\Http\Caller(dirname(__DIR__) . '/config', $middlewares);

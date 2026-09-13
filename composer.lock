@@ -1069,12 +1069,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/framework.git",
-                "reference": "23099f9b54350323412ce340090c9f5918c714b3"
+                "reference": "55bfef803b37ec461286ad80a3b0fa758e79da18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/framework/zipball/23099f9b54350323412ce340090c9f5918c714b3",
-                "reference": "23099f9b54350323412ce340090c9f5918c714b3",
+                "url": "https://api.github.com/repos/camoo/framework/zipball/55bfef803b37ec461286ad80a3b0fa758e79da18",
+                "reference": "55bfef803b37ec461286ad80a3b0fa758e79da18",
                 "shasum": ""
             },
             "require": {
@@ -1149,7 +1149,7 @@
                 "issues": "https://gitlab.com/camoo/framework/issues",
                 "source": "https://gitlab.com/camoo/framework"
             },
-            "time": "2026-09-13T21:31:18+00:00"
+            "time": "2026-09-13T21:42:27+00:00"
         },
         {
             "name": "camoo/hosting",
