@@ -7,7 +7,7 @@ namespace App\Command;
 use CAMOO\Command\Command;
 use CAMOO\Console\Input\InputArgument;
 use Camoo\Http\Curl\Domain\Client\ClientInterface;
-use CAMOO\Utils\Inflector;
+use Camoo\Inflector\Inflector;
 
 /**
  * Class UserCommand
