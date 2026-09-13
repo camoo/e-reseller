@@ -155,7 +155,7 @@ final class BasketController extends AppController
 
         $ahCartTypeItems = $cart->get($type);
         $cartItem = array_filter($ahCartTypeItems, static function (array $item) use ($id): ?array {
-            if ($id === $item['id'] ?? null) {
+            if ($id === ($item['id'] ?? null)) {
                 return $item;
             }
 
