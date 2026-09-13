@@ -1069,12 +1069,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/framework.git",
-                "reference": "81aaa63b4fa6742c6af72b495b7799745a94e71e"
+                "reference": "c69efc796bfdd906befe365703b785367de7ce8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/framework/zipball/81aaa63b4fa6742c6af72b495b7799745a94e71e",
-                "reference": "81aaa63b4fa6742c6af72b495b7799745a94e71e",
+                "url": "https://api.github.com/repos/camoo/framework/zipball/c69efc796bfdd906befe365703b785367de7ce8a",
+                "reference": "c69efc796bfdd906befe365703b785367de7ce8a",
                 "shasum": ""
             },
             "require": {
@@ -1150,7 +1150,7 @@
                 "issues": "https://gitlab.com/camoo/framework/issues",
                 "source": "https://gitlab.com/camoo/framework"
             },
-            "time": "2026-09-13T18:36:01+00:00"
+            "time": "2026-09-13T19:29:03+00:00"
         },
         {
             "name": "camoo/hosting",
@@ -6555,16 +6555,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v5.8.0",
+            "version": "v5.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f"
+                "reference": "9e33da9553fe7786f0962b35f4e4ecf01be89def"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
-                "reference": "044a6a392ff8ad0d61f14370a5fbbd0a0107152f",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9e33da9553fe7786f0962b35f4e4ecf01be89def",
+                "reference": "9e33da9553fe7786f0962b35f4e4ecf01be89def",
                 "shasum": ""
             },
             "require": {
@@ -6606,9 +6606,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v5.8.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
-            "time": "2026-07-04T14:30:18+00:00"
+            "time": "2026-09-13T18:51:52+00:00"
         },
         {
             "name": "phar-io/manifest",

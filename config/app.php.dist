@@ -1,6 +1,10 @@
 <?php
 return [
     'debug' => defined('DEV_MODE') ? DEV_MODE : false,
+    'Error' => [
+        // Keep framework deprecations from turning valid responses into blank pages.
+        'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
+    ],
     'App' => [
 		'namespace' => 'App',
 		'defaultLanguage' => 'fr_CM',

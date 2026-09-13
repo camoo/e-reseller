@@ -18,6 +18,14 @@ if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
 
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
 
+// CakePHP's translation helpers are function-based and are not guaranteed to
+// be loaded by Composer when only the I18n classes are referenced.
+require_once ROOT . DS . 'vendor' . DS . 'cakephp' . DS . 'i18n' . DS . 'functions.php';
+
+// Apply the configured error mask before framework code initializes services
+// that may emit deprecation notices (for example, CakePHP translations).
+error_reporting((int)(Configure::read('Error.errorLevel') ?? E_ALL));
+
 // Optional PHP configuration is the right place for long-form reseller
 // content. Keep app.local.php untracked.
 $localConfigPath = CONFIG . 'app.local.php';
