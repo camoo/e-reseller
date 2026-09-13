@@ -25,6 +25,8 @@ return [
         $routeCollector->addRoute('GET', '/payments/check', ['controller' => 'Payments', 'action' => 'check']);
         $routeCollector->addRoute('POST', '/payments/mobile-money', ['controller' => 'Payments', 'action' => 'mobileMoney']);
         $routeCollector->addRoute('GET', '/about-us', ['controller' => 'AboutUs', 'action' => 'overview']);
+        // Backwards-compatible alias for existing navigation links/bookmarks.
+        $routeCollector->addRoute('GET', '/aboutUs', ['controller' => 'AboutUs', 'action' => 'overview']);
         $routeCollector->addRoute(['POST', 'GET'], '/contact', ['controller' => 'Contact', 'action' => 'overview']);
         $routeCollector->addRoute('GET', '/packages', ['controller' => 'Packages', 'action' => 'overview']);
         $routeCollector->addRoute('GET', '/support', ['controller' => 'Support', 'action' => 'overview']);

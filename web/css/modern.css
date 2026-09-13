@@ -1025,6 +1025,17 @@ input:focus-visible {
     padding: 88px 0 54px;
 }
 
+.footer .footer_logo a {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: var(--camoo-radius-sm);
+    background: #ffffff;
+}
+
+.footer .footer_logo img {
+    display: block;
+}
+
 .footer_widget ul li {
     margin-bottom: 12px;
 }
@@ -1100,7 +1111,6 @@ input:focus-visible {
 }
 
 .copy-right_text {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding: 28px 0;
 }
 
