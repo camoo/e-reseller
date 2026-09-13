@@ -10,3 +10,8 @@ logs/
 tmp/
 web/css/custom.css
 web/js/custom.js
+AGENTS.md
+Caddyfile
+rector.php
+framework-local-root.crt
+phpunit.xml

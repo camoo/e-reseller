@@ -17,6 +17,9 @@
                                 <nav>
                                     <ul id="navigation">
                                         <li><a class="{{ pages_active }}" href="/">{{ t('Accueil') }}</a></li>
+                                        {% if feature_enabled('domains') %}
+                                            <li><a href="/#domainwhois">{{ t('Domaines & SSL') }}</a></li>
+                                        {% endif %}
                                         {% if feature_enabled('hosting') %}
                                             <li><a class="{{ packages_active }}" href="/packages">{{ t('Package') }}</a></li>
                                         {% endif %}

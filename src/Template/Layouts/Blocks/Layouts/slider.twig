@@ -16,6 +16,14 @@
                                 {{ form_input('submit', {'type' : 'submit', 'value' : t('Lancer'), 'id' : 'finddomain'}) }}
                                 {{ form_end() }}
                             </div>
+                            <div class="domain_tld_pills d-flex justify-content-center flex-wrap align-items-center">
+                                <div class="tld_pill"><strong class="tld_name">.com</strong> <span class="tld_price">XAF 7,500</span></div>
+                                <div class="tld_pill"><strong class="tld_name">.net</strong> <span class="tld_price">XAF 8,500</span></div>
+                                <div class="tld_pill"><strong class="tld_name">.org</strong> <span class="tld_price">XAF 9,000</span></div>
+                                <div class="tld_pill tld_pill_popular"><strong class="tld_name">.cm</strong> <span class="tld_price">XAF 6,500</span> <span class="tld_tag">{{ t('Populaire') }}</span></div>
+                                <div class="tld_pill tld_pill_email"><strong class="tld_name">.email</strong> <span class="tld_price">XAF 5,000</span> <span class="tld_tag">{{ t('Email Included') }}</span></div>
+                                <div class="tld_pill tld_pill_ssl"><strong class="tld_name">SSL</strong> <span class="tld_price">{{ t('Gratuit') }}</span> <span class="tld_tag">{{ t('Secured') }}</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -35,11 +35,14 @@
                                 {{ t('service') }}
                             </h3>
                             <ul>
-                                {% if feature_enabled('hosting') %}<li><a href="/packages">{{ t('Hosting') }}</a></li>{% endif %}
-                                {% if feature_enabled('domains') %}<li><a href="/">{{ t('Domain') }}</a></li>{% endif %}
+                                {% if feature_enabled('domains') %}
+                                    <li><a href="/">{{ t('Noms de domaine') }}</a></li>
+                                    <li><a href="/#domainwhois">{{ t('Certificats SSL') }}</a></li>
+                                    <li><a href="/#domainwhois">{{ t('Email Professionnel') }}</a></li>
+                                {% endif %}
                                 {% if feature_enabled('hosting') %}
+                                    <li><a href="/packages">{{ t('Hébergement Web') }}</a></li>
                                     <li><a href="/packages#wordpress">{{ t('Wordpress') }}</a></li>
-                                    <li><a href="/packages#shared-hosting">{{ t('Shared Hosting') }}</a></li>
                                 {% endif %}
                             </ul>
 
