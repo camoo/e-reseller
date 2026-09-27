@@ -35,6 +35,23 @@ class AppController extends BaseController
         $this->loadComponent('Security');
     }
 
+    public function loadComponent(string $component, array $config = []): void
+    {
+        parent::loadComponent($component, $config);
+        $name = \Cake\Utility\Inflector::classify($component);
+        if (property_exists($this, $name) && $this->{$name} === null) {
+            $this->{$name} = $this->getComponentCollection()?->offsetGet($name);
+        }
+    }
+
+    protected function loadRest(string $restModel): void
+    {
+        parent::loadRest($restModel);
+        if (property_exists($this, $restModel) && $this->{$restModel} === null) {
+            $this->{$restModel} = $this->getRestLocator()->get(\Cake\Utility\Inflector::classify($restModel));
+        }
+    }
+
     protected function getBasketRepository(): Cart
     {
         $cart = call_user_func($this->_basket, $this->request);
