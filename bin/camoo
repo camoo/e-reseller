@@ -55,6 +55,8 @@ fi
 
 if [ "$VARIABLE" == "cleanup:core" ]; then
   echo "Clear Core cache..."
+  rm -rf "$APP"/tmp/cache/persistent/core/*
+  rm -rf "$APP"/tmp/cache/persistent/model/*
   rm -rf "$APP"/tmp/cache/persistent/persistent/*
   echo "[DONE]"
   exit 0
@@ -90,6 +92,8 @@ fi
 
 if [ "$VARIABLE" == "cleanup:all" ]; then
   echo "Clear ALL caches..."
+  rm -rf "$APP"/tmp/cache/persistent/core/*
+  rm -rf "$APP"/tmp/cache/persistent/model/*
   rm -rf "$APP"/tmp/cache/persistent/persistent/*
   rm -f "$APP"/tmp/cache/persistent/camoo_core_translations*
   rm -rf "$APP"/tmp/cache/tpl/*

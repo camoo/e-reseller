@@ -13,7 +13,7 @@ use Cake\I18n\I18n;
 use josegonzalez\Dotenv\Loader;
 
 if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
-    new Loader(CONFIG . '.env')->parse()->define();
+    (new Loader(CONFIG . '.env'))->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
 }
 
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';

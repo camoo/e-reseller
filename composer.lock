@@ -833,27 +833,27 @@
         },
         {
             "name": "camoo/cache",
-            "version": "2.3.1",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/cache.git",
-                "reference": "607b72e8c8397f99696f3fed36cd438d971cc509"
+                "reference": "5416b8be55d399f11d3cb0950eb93fa00073586c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/cache/zipball/607b72e8c8397f99696f3fed36cd438d971cc509",
-                "reference": "607b72e8c8397f99696f3fed36cd438d971cc509",
+                "url": "https://api.github.com/repos/camoo/cache/zipball/5416b8be55d399f11d3cb0950eb93fa00073586c",
+                "reference": "5416b8be55d399f11d3cb0950eb93fa00073586c",
                 "shasum": ""
             },
             "require": {
                 "defuse/php-encryption": "^2.4",
                 "php": ">=8.2",
                 "psr/simple-cache": "^3.0",
-                "symfony/cache": "^7.0.6"
+                "symfony/cache": "^7.4.12"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.5"
+                "phpunit/phpunit": "^10.5.62"
             },
             "suggest": {
                 "phpunit/phpunit": "Allows automated tests to be run without system-wide install."
@@ -886,7 +886,7 @@
                 "source": "https://github.com/camoo/cache",
                 "wiki": "https://github.com/camoo/cache/wiki"
             },
-            "time": "2024-04-23T13:29:38+00:00"
+            "time": "2026-09-14T14:15:11+00:00"
         },
         {
             "name": "camoo/config",
@@ -2034,16 +2034,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "3.7.0",
+            "version": "3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "f25c5e5385d3a0bca2dc364d556d3b83a06559ed"
+                "reference": "037807a39697890dcede8b766c5efe8a1b4855fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/f25c5e5385d3a0bca2dc364d556d3b83a06559ed",
-                "reference": "f25c5e5385d3a0bca2dc364d556d3b83a06559ed",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/037807a39697890dcede8b766c5efe8a1b4855fe",
+                "reference": "037807a39697890dcede8b766c5efe8a1b4855fe",
                 "shasum": ""
             },
             "require": {
@@ -2118,9 +2118,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/3.7.0"
+                "source": "https://github.com/doctrine/orm/tree/3.7.1"
             },
-            "time": "2026-09-07T19:35:17+00:00"
+            "time": "2026-09-14T05:45:59+00:00"
         },
         {
             "name": "doctrine/persistence",

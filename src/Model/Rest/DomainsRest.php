@@ -52,6 +52,16 @@ class DomainsRest extends AppRest
         return $validation;
     }
 
+    public function validationResendVerification(ValidationInterface $validation): ValidationInterface
+    {
+        $validation
+            ->requirePresence('id', 'create')
+            ->notEmptyString('id', 'Identifiant de domaine requis')
+            ->integer('id');
+
+        return $validation;
+    }
+
     /**
      * @param Response $response
      *                           return void
@@ -59,10 +69,10 @@ class DomainsRest extends AppRest
     public function afterSend(Event $event, $response): void
     {
         if ($response->getStatusCode() !== 200 ||
-            ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
+            (($hResponse = $response->getJson()) && ($hResponse['status'] ?? '') === 'KO')) {
             throw new Exception((string)$response->getError());
         }
 
-        $this->output = $hResponse['result'];
+        $this->output = $hResponse['result'] ?? $hResponse;
     }
 }

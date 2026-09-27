@@ -127,6 +127,67 @@ class UsersController extends AppController
         throw new Exception('User not loggedIn !');
     }
 
+    public function getBalance(): ResponseInterface
+    {
+        $this->request->allowMethod(['get']);
+        if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
+            $iUserId = $this->getUserId();
+            $currency = $this->request->getQuery('currency');
+
+            $params = [$iUserId];
+            if (!empty($currency) && is_string($currency)) {
+                $params[] = $currency;
+            }
+
+            $oNewRequest = $this->UsersRest->newRequest($params, false);
+            $result = $oNewRequest->send(['::customers', 'getBalance'], false);
+
+            return $this->jsonResponse([
+                'status' => !empty($result),
+                'balance' => $result,
+            ]);
+        }
+
+        throw new Exception('User not loggedIn !');
+    }
+
+    public function editProfile(): ResponseInterface
+    {
+        $this->request->allowMethod(['post']);
+        if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
+            $iUserId = $this->getUserId();
+            $data = $this->request->getData();
+            $data['id'] = $iUserId;
+
+            $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'edit', 'action' => 'edit']);
+            if (empty($oNewRequest->getErrors())) {
+                $response = $oNewRequest->send(['::customers', 'edit']);
+                if ($this->request->is('ajax')) {
+                    return $this->jsonResponse([
+                        'status' => true,
+                        'result' => $response,
+                    ]);
+                }
+                $this->request->Flash->success('Profil mis à jour avec succès');
+
+                return $this->redirect('/');
+            }
+
+            if ($this->request->is('ajax')) {
+                return $this->jsonResponse([
+                    'status' => false,
+                    'errors' => $oNewRequest->getErrors(),
+                ]);
+            }
+
+            $this->showValidateErrors($oNewRequest);
+
+            return $this->redirect('/');
+        }
+
+        throw new Exception('User not loggedIn !');
+    }
+
     private function doLogin(array $user): void
     {
         $basket = null;

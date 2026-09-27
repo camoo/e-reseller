@@ -1,4 +1,4 @@
-.PHONY: help build up down restart install update test tinker rector rector-dry deptrac psalm shell
+.PHONY: help build up down restart install update clear-cache test tinker rector rector-dry deptrac psalm shell
 
 DOCKER_COMPOSE ?= docker-compose
 EXEC_APP ?= $(DOCKER_COMPOSE) exec app
@@ -23,6 +23,9 @@ install: ## Run composer install
 
 update: ## Run composer update
 	$(EXEC_APP) composer update
+
+clear-cache: ## Clear all application caches
+	$(DOCKER_COMPOSE) run --rm app ./bin/camoo cleanup:all
 
 test: ## Run PHPUnit tests
 	$(EXEC_APP) vendor/bin/phpunit --colors=always

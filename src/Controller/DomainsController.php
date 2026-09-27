@@ -22,6 +22,8 @@ class DomainsController extends AppController
 
     public ?\App\Model\Rest\DomainsRest $DomainsRest = null;
 
+    public ?\App\Model\Rest\ContactsRest $ContactsRest = null;
+
     private array $allowedExtensions = [
         'cm',
         'com',
@@ -180,5 +182,75 @@ class DomainsController extends AppController
         return $this->jsonResponse([
             'status' => $status,
         ]);
+    }
+
+    public function editContact(): ResponseInterface
+    {
+        $this->request->allowMethod(['post']);
+        $this->loadRest('ContactsRest');
+
+        $data = $this->request->getData();
+        $oNewRequest = $this->ContactsRest->newRequest($data, true, ['validation' => 'edit']);
+
+        if (!empty($oNewRequest->getErrors())) {
+            $this->showValidateErrors($oNewRequest);
+
+            if ($this->request->is('ajax')) {
+                return $this->jsonResponse([
+                    'status' => false,
+                    'errors' => $oNewRequest->getErrors(),
+                ]);
+            }
+
+            return $this->redirect('/');
+        }
+
+        $result = $oNewRequest->send(['::contacts', 'edit']);
+
+        if ($this->request->is('ajax')) {
+            return $this->jsonResponse([
+                'status' => true,
+                'result' => $result,
+            ]);
+        }
+
+        $this->request->Flash->success('Contact mis à jour avec succès');
+
+        return $this->redirect('/');
+    }
+
+    public function resendVerification(): ResponseInterface
+    {
+        $this->request->allowMethod(['post']);
+        $id = (int)$this->request->getData('id');
+
+        $oNewRequest = $this->DomainsRest->newRequest(['id' => $id], true, ['validation' => 'resendVerification']);
+
+        if (!empty($oNewRequest->getErrors())) {
+            $this->showValidateErrors($oNewRequest);
+
+            if ($this->request->is('ajax')) {
+                return $this->jsonResponse([
+                    'status' => false,
+                    'errors' => $oNewRequest->getErrors(),
+                ]);
+            }
+
+            return $this->redirect('/');
+        }
+
+        $response = $oNewRequest->send(['::domains', 'resendVerificationMail'], false);
+
+        if ($this->request->is('ajax')) {
+            return $this->jsonResponse([
+                'status' => true,
+                'message' => 'Email de vérification renvoyé avec succès',
+                'result' => $response,
+            ]);
+        }
+
+        $this->request->Flash->success('Email de vérification renvoyé avec succès');
+
+        return $this->redirect('/');
     }
 }

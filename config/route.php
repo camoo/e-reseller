@@ -9,6 +9,10 @@ return [
         $routeCollector->addRoute(['POST', 'GET'], '/join', ['controller' => 'Users', 'action' => 'join']);
         $routeCollector->addRoute('POST', '/logout', ['controller' => 'Users', 'action' => 'logout']);
         $routeCollector->addRoute('GET', '/sso', ['controller' => 'Users', 'action' => 'getSSO']);
+        $routeCollector->addRoute('GET', '/balance', ['controller' => 'Users', 'action' => 'getBalance']);
+        $routeCollector->addRoute('POST', '/profile/edit', ['controller' => 'Users', 'action' => 'editProfile']);
+        $routeCollector->addRoute('POST', '/contacts/edit', ['controller' => 'Domains', 'action' => 'editContact']);
+        $routeCollector->addRoute('POST', '/domains/resend-verification', ['controller' => 'Domains', 'action' => 'resendVerification']);
         $routeCollector->addRoute('POST', '/domain-whois', ['controller' => 'Domains', 'action' => 'domainSearch']);
         $routeCollector->addRoute('POST', '/domain-add-to-basket', ['controller' => 'Domains', 'action' => 'addToBasket']);
         $routeCollector->addRoute('POST', '/domain-remove-basket', ['controller' => 'Domains', 'action' => 'removeFromBasket']);
