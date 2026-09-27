@@ -7,6 +7,7 @@ namespace App\Controller;
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Cart;
+use Psr\Http\Message\ResponseInterface;
 
 final class OrdersController extends AppController
 {
@@ -22,11 +23,10 @@ final class OrdersController extends AppController
 
     public function beforeAction(EventInterface $event): void
     {
-        $this->Security->setConfig('unlockedActions', ['payOffline']);
         parent::beforeAction($event);
     }
 
-    public function payOffline(): void
+    public function payOffline(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -40,12 +40,11 @@ final class OrdersController extends AppController
         if (!empty($appRest->getErrors())) {
             $this->showValidateErrors($appRest);
 
-            $this->_jsonResponse([
+            return $this->jsonResponse([
                 'status' => false,
                 'result' => $appRest->getErrors(),
             ]);
 
-            return;
         }
 
         $response = $appRest->send(['::orders', 'offline']);
@@ -57,12 +56,12 @@ final class OrdersController extends AppController
             $this->request->Flash->error('Échec de commande. Veuillez vérifier votre panier et re-essayer plus tard.');
         }
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => !empty($response['success']),
         ]);
     }
 
-    public function payWithMobileWallet(): void
+    public function payWithMobileWallet(): ResponseInterface
     {
         $this->request->allowMethod(['post']);
         if (!$this->request->is('ajax')) {
@@ -77,12 +76,11 @@ final class OrdersController extends AppController
         if (!empty($appRest->getErrors())) {
             $this->showValidateErrors($appRest);
 
-            $this->_jsonResponse([
+            return $this->jsonResponse([
                 'status' => false,
                 'result' => $appRest->getErrors(),
             ]);
 
-            return;
         }
 
         $response = $appRest->send(['::orders', 'online']);
@@ -94,7 +92,7 @@ final class OrdersController extends AppController
             $this->request->Flash->error('Échec de commande. Veuillez vérifier votre panier et re-essayer plus tard.');
         }
 
-        $this->_jsonResponse([
+        return $this->jsonResponse([
             'status' => !empty($response['success']),
         ]);
     }

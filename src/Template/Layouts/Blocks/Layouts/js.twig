@@ -1,10 +1,22 @@
 {% block js %}
-    <script src="/js/vendor/modernizr-3.5.0.min.js{{ asset_version('js/vendor/modernizr-3.5.0.min.js') }}"></script>
-    <!-- script src="/js/vendor/jquery-1.12.4.min.js"></script -->
-    <script src="/js/jquery-3.3.1.min.js{{ asset_version('js/jquery-3.3.1.min.js') }}"></script><!-- jQuery Library -->
-    <script src="/js/popper.min.js{{ asset_version('js/popper.min.js') }}"></script>
-    <!-- script src="/js/bootstrap.min.js"></script -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script><!-- jQuery Library -->
+    <script>
+        $.ajaxPrefilter(function (options) {
+            if (String(options.type || options.method || 'GET').toUpperCase() !== 'POST') {
+                return;
+            }
+            const token = $('input[name="__csrf_Token"]').first().val();
+            if (!token || typeof options.data === 'string' && options.data.indexOf('__csrf_Token=') !== -1) {
+                return;
+            }
+            if (options.data && typeof options.data === 'object') {
+                options.data.__csrf_Token = token;
+            } else {
+                options.data = {__csrf_Token: token};
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     <script src="/js/owl.carousel.min.js{{ asset_version('js/owl.carousel.min.js') }}"></script>
     <script src="/js/isotope.pkgd.min.js{{ asset_version('js/isotope.pkgd.min.js') }}"></script>
     <script src="/js/ajax-form.js{{ asset_version('js/ajax-form.js') }}"></script>

@@ -1,6 +1,10 @@
 <?php
 return [
     'debug' => defined('DEV_MODE') ? DEV_MODE : false,
+    'Error' => [
+        // Keep framework deprecations from turning valid responses into blank pages.
+        'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
+    ],
     'App' => [
 		'namespace' => 'App',
 		'defaultLanguage' => 'fr_CM',
@@ -10,7 +14,7 @@ return [
     ],
     'Security' => [
         'csrf_lifetime' => 1800, // 30 min
-        'csrf_single_once' => true, // one csrf Token for each request instead of session token
+        'csrf_single_once' => false,
     ],
     'Cache' => [
         /**
@@ -56,9 +60,10 @@ return [
         'cookie' => [
             'lifetime' => 14400,
             'path' => '/',
-            'domain' => '.' . (defined('DOMAIN_NAME') ? DOMAIN_NAME : $_SERVER['HTTP_HOST'] ?? ''),
+            'domain' => defined('DOMAIN_NAME') ? DOMAIN_NAME : null,
             'secure' => true,
             'httponly' => true,
+            'samesite' => 'Lax',
         ]
     ]
 ];

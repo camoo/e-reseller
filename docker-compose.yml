@@ -11,6 +11,12 @@ services:
     environment:
       - APP_ENV=development
       - USE_REMOTE_CONFIG=false
+      - CAMOO_HOSTING_ENDPOINT=http://host.docker.internal:8082/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - default
+      - camoo-network
 
   https:
     image: caddy:2-alpine
@@ -24,7 +30,15 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+    networks:
+      - default
 
 volumes:
   caddy_data:
   caddy_config:
+
+networks:
+  default:
+  camoo-network:
+    name: camoo-network
+    external: true

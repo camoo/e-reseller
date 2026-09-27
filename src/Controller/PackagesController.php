@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use function Cake\I18n\__;
+use Psr\Http\Message\ResponseInterface;
 
 final class PackagesController extends AppController
 {
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
         $this->requireFeature('hosting');
         $this->set('page_title', __('Shared Web Hosting'));
 
-        $this->render();
+        return $this->render();
     }
 }

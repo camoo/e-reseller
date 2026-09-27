@@ -9,6 +9,7 @@ use Camoo\Cache\Cache;
 use CAMOO\Exception\Exception;
 use CAMOO\Utils\Cart;
 use CAMOO\Utils\Configure;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class UsersController
@@ -25,13 +26,11 @@ class UsersController extends AppController
         $this->loadRest('UsersRest');
     }
 
-    public function join(): void
+    public function join(): ResponseInterface
     {
         $this->request->allowMethod(['post', 'get']);
         if ($this->request->is('get')) {
-            $this->redirect('/#join');
-
-            return;
+            return $this->redirect('/#join');
         }
 
         if ($this->request->is('post')) {
@@ -44,9 +43,7 @@ class UsersController extends AppController
                 if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
                     $this->doLogin($hUser);
 
-                    $this->redirect('/');
-
-                    return;
+                    return $this->redirect('/');
                 }
             }
 
@@ -55,24 +52,20 @@ class UsersController extends AppController
             }
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
-    public function login(): void
+    public function login(): ResponseInterface
     {
         $this->request->allowMethod(['post', 'get']);
 
         if ($this->request->is('get')) {
-            $this->redirect('/#login');
-
-            return;
+            return $this->redirect('/#login');
         }
 
         if ($this->request->is('post')) {
             if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
-                $this->redirect('/');
-
-                return;
+                return $this->redirect('/');
             }
 
             $data = [
@@ -84,20 +77,18 @@ class UsersController extends AppController
             if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'auth']))) {
                 $this->doLogin($xRet);
 
-                $this->redirect('/');
-
-                return;
+                return $this->redirect('/');
             }
 
             $this->request->Flash->error("Nom d'utilisateur ou mot de passe incorrect");
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
-    public function logout(): void
+    public function logout(): ResponseInterface
     {
-        $this->request->allowMethod(['get']);
+        $this->request->allowMethod(['post']);
         if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
             $this->request->getSession()->delete('Auth');
             $this->request->getSession()->delete('loggedin');
@@ -105,10 +96,10 @@ class UsersController extends AppController
             $this->request->Flash->success('Déconnecté avec succès');
         }
 
-        $this->redirect('/');
+        return $this->redirect('/');
     }
 
-    public function getSSO(): void
+    public function getSSO(): ResponseInterface
     {
         $this->request->allowMethod(['get']);
         if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
@@ -125,13 +116,73 @@ class UsersController extends AppController
                         $xRet['sso_token'];
                 }
 
-                $this->_jsonResponse([
+                return $this->jsonResponse([
                     'status' => $status,
                     'sso_link' => $ssoLink,
                 ]);
 
-                return;
             }
+        }
+
+        throw new Exception('User not loggedIn !');
+    }
+
+    public function getBalance(): ResponseInterface
+    {
+        $this->request->allowMethod(['get']);
+        if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
+            $iUserId = $this->getUserId();
+            $currency = $this->request->getQuery('currency');
+
+            $params = [$iUserId];
+            if (!empty($currency) && is_string($currency)) {
+                $params[] = $currency;
+            }
+
+            $oNewRequest = $this->UsersRest->newRequest($params, false);
+            $result = $oNewRequest->send(['::customers', 'getBalance'], false);
+
+            return $this->jsonResponse([
+                'status' => !empty($result),
+                'balance' => $result,
+            ]);
+        }
+
+        throw new Exception('User not loggedIn !');
+    }
+
+    public function editProfile(): ResponseInterface
+    {
+        $this->request->allowMethod(['post']);
+        if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
+            $iUserId = $this->getUserId();
+            $data = $this->request->getData();
+            $data['id'] = $iUserId;
+
+            $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'edit', 'action' => 'edit']);
+            if (empty($oNewRequest->getErrors())) {
+                $response = $oNewRequest->send(['::customers', 'edit']);
+                if ($this->request->is('ajax')) {
+                    return $this->jsonResponse([
+                        'status' => true,
+                        'result' => $response,
+                    ]);
+                }
+                $this->request->Flash->success('Profil mis à jour avec succès');
+
+                return $this->redirect('/');
+            }
+
+            if ($this->request->is('ajax')) {
+                return $this->jsonResponse([
+                    'status' => false,
+                    'errors' => $oNewRequest->getErrors(),
+                ]);
+            }
+
+            $this->showValidateErrors($oNewRequest);
+
+            return $this->redirect('/');
         }
 
         throw new Exception('User not loggedIn !');
@@ -141,6 +192,7 @@ class UsersController extends AppController
     {
         $basket = null;
 
+        $this->request->getSession()->regenerateId();
         $this->request->getSession()->write('Auth.User', $user);
         $this->request->getSession()->write('loggedin', true);
 

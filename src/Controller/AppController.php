@@ -31,6 +31,7 @@ class AppController extends BaseController
     {
         parent::initialize();
         $this->set('siteConfig', Configure::read('RESELLER_SITE'));
+        $this->set('homeContent', Configure::read('HomeContent', []));
         $this->loadComponent('Security');
     }
 

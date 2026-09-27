@@ -5,24 +5,25 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use function Cake\I18n\__;
+use Psr\Http\Message\ResponseInterface;
 
 final class SupportController extends AppController
 {
-    public function overview(): void
+    public function overview(): ResponseInterface
     {
-        $this->render();
+        return $this->render();
     }
 
-    public function terms(): void
+    public function terms(): ResponseInterface
     {
         $this->set('page_title', __('Terms  and conditions'));
 
-        $this->render();
+        return $this->render();
     }
 
-    public function privacy(): void
+    public function privacy(): ResponseInterface
     {
         $this->set('page_title', __('Privacy'));
-        $this->render();
+        return $this->render();
     }
 }

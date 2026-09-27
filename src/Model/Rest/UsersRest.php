@@ -120,22 +120,64 @@ class UsersRest extends AppRest
         return $validation;
     }
 
+    public function validationEdit(ValidationInterface $validation): ValidationInterface
+    {
+        $validation
+            ->integer('id')
+            ->requirePresence('id', 'create')
+            ->notEmptyString('id');
+
+        $validation
+            ->scalar('name')
+            ->allowEmptyString('name');
+
+        $validation
+            ->email('email')
+            ->allowEmptyString('email');
+
+        $validation
+            ->scalar('address')
+            ->allowEmptyString('address');
+
+        $validation
+            ->scalar('city')
+            ->allowEmptyString('city');
+
+        $validation
+            ->scalar('phone')
+            ->allowEmptyString('phone');
+
+        return $validation;
+    }
+
     public function beforeSend(Event $event, ArrayObject $option): void
     {
         $optionData = $option->getArrayCopy();
-        if (!array_key_exists('action', $optionData) || $optionData['action'] !== 'add') {
+        $action = $optionData['action'] ?? null;
+
+        if ($action === 'add') {
+            $this->offsetSet('state', 'Centre');
+            $this->offsetSet('company', 'N/A');
+            $this->offsetSet('phone-cc', '237');
+            $this->offsetSet('ccode', 'CM');
+            $this->offsetSet('name', $this->get('firstname') . ' ' . $this->get('name'));
+            $this->offsetSet('zipcode', '0000');
+            $this->offsetSet('address-1', $this->get('address'));
+            $this->offsetUnset('address');
+            $this->offsetUnset('firstname');
             return;
         }
 
-        $this->offsetSet('state', 'Centre');
-        $this->offsetSet('company', 'N/A');
-        $this->offsetSet('phone-cc', '237');
-        $this->offsetSet('ccode', 'CM');
-        $this->offsetSet('name', $this->get('firstname') . ' ' . $this->get('name'));
-        $this->offsetSet('zipcode', '0000');
-        $this->offsetSet('address-1', $this->get('address'));
-        $this->offsetUnset('address');
-        $this->offsetUnset('firstname');
+        if ($action === 'edit') {
+            if ($this->has('firstname') && $this->has('name')) {
+                $this->offsetSet('name', $this->get('firstname') . ' ' . $this->get('name'));
+                $this->offsetUnset('firstname');
+            }
+            if ($this->has('address')) {
+                $this->offsetSet('address-1', $this->get('address'));
+                $this->offsetUnset('address');
+            }
+        }
     }
 
     /**
@@ -145,10 +187,10 @@ class UsersRest extends AppRest
     public function afterSend(Event $event, $response): void
     {
         if ($response->getStatusCode() !== 200 ||
-            ($hResponse = $response->getJson()) && $hResponse['status'] === 'KO') {
+            (($hResponse = $response->getJson()) && ($hResponse['status'] ?? '') === 'KO')) {
             throw new Exception((string)$response->getError());
         }
 
-        $this->output = $hResponse['result'];
+        $this->output = $hResponse['result'] ?? $hResponse;
     }
 }
