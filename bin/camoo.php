@@ -2,8 +2,8 @@
 <?php
 declare(strict_types=1);
 
-if (version_compare(PHP_VERSION, '8.0', '<')) {
-    trigger_error('The CAMOO FRAMEWORK Library requires PHP version 8.0 or higher', E_USER_ERROR);
+if (version_compare(PHP_VERSION, '8.4', '<')) {
+    trigger_error('The CAMOO FRAMEWORK Library requires PHP version 8.4 or higher', E_USER_ERROR);
 }
 
 try {
