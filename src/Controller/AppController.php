@@ -15,6 +15,8 @@ use CAMOO\Model\AppModel;
 use CAMOO\Utils\Cart;
 use CAMOO\Utils\Configure;
 
+use function Cake\I18n\__;
+
 /**
  * @property SecurityComponent $Security
  * @property DomainsRest       $DomainsRest
@@ -31,7 +33,9 @@ class AppController extends BaseController
     {
         parent::initialize();
         $this->set('siteConfig', Configure::read('RESELLER_SITE'));
-        $this->set('homeContent', Configure::read('HomeContent', []));
+        $showcaseContent = Configure::read('HomeContent', []);
+        $this->set('homeContent', $showcaseContent);
+        $this->set('showcaseContent', $showcaseContent);
         $this->loadComponent('Security');
     }
 
@@ -93,6 +97,13 @@ class AppController extends BaseController
         }
     }
 
+    protected function showcaseText(string $key, string $fallback): string
+    {
+        $value = Configure::read('HomeContent.' . $key);
+
+        return is_string($value) && trim($value) !== '' ? $value : $fallback;
+    }
+
     /** @param AppModel|RestInterface $model */
     protected function showValidateErrors($model, string $flashType = 'error'): void
     {
@@ -102,17 +113,29 @@ class AppController extends BaseController
 
         $ahErrors = $model->getErrors();
         $asFields = [];
+        $asMessages = [];
         if (!empty($ahErrors)) {
             foreach ($ahErrors as $sField => $ahError) {
                 $asFields[] = $sField;
-                foreach ($ahError as $sMessage) {
-                    $this->request->Flash->{$flashType}($sMessage);
+                $asFieldMessages = [];
+                foreach ((array)$ahError as $sMessage) {
+                    if (is_scalar($sMessage) && trim((string)$sMessage) !== '') {
+                        $asFieldMessages[] = trim((string)$sMessage);
+                    }
+                }
+                if ($asFieldMessages !== []) {
+                    $asMessages[] = sprintf('%s: %s', $sField, implode(', ', $asFieldMessages));
                 }
             }
 
             if ($asFields !== []) {
                 $this->set('errorFields', $asFields);
             }
+        }
+        if ($asMessages !== []) {
+            $this->request->Flash->{$flashType}(
+                __('Veuillez corriger les informations suivantes : ') . implode(' | ', $asMessages),
+            );
         }
     }
 }

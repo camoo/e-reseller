@@ -1,11 +1,11 @@
 {% extends "Layouts/pages.twig" %}
 {% block content %}
+{% set basketContent=showcaseContent.pages.basket|default({}) %}
 <div class="shopping-cart">
     <div class="container">
         <!-- Title -->
         <div class="title">
-            Vous avez <strong>{{ basket.count() }}</strong> élément{% if basket.count() > 1 %}s{% endif %} dans le
-            panier
+            {{ t(basketContent.items_prefix|default('Vous avez')) }} <strong>{{ basket.count() }}</strong> {{ t(basket.count() > 1 ? basketContent.item_plural|default('éléments') : basketContent.item_singular|default('élément')) }} {{ t(basketContent.items_suffix|default('dans le panier')) }}
         </div>
         {% for key,item in basket %}
         {% if key == "hosting" %}
@@ -55,7 +55,7 @@
 
         {% if not is_loggedin() %}
         <div class="col-xl-12 cart-goto-login">
-            <a id="user-join" href="/#login" class="boxed_btn_green">Se connecter ou créer un compte</a>
+                            <a id="user-join" href="/login" class="boxed_btn_green">{{ t(basketContent.login_button|default('Se connecter ou créer un compte')) }}</a>
         </div>
         {% endif %}
     </div>
@@ -65,24 +65,22 @@
 <div id="payment-options">
     <div class="container">
         <div class="row">
-            <h2 class="payment-method-heading">Choisissez un mode de paiement pour finaliser votre achat</h2>
+            <h2 class="payment-method-heading">{{ t(basketContent.payment_title|default('Choisissez un mode de paiement pour finaliser votre achat')) }}</h2>
             <div class="CartSection pay-sepr" id="CartSection_paymentOptions">
                 <div class="paymentOption rfloat opt-2" id="paymentOption_offline">
-                    <h3 class="ui-subheading">Options de paiement</h3>
-                    <p class="txt-info">Ajoutez votre commande maintenant ou payez plus tard par chèque/espèces ou
-                        dépôt.</p>
-                    <p class="italic_font">En cliquant sur "Payer hors ligne" ou "Payer par Mobile Money", vous acceptez les<br><a target="_blank"
-                                                                                                       href="/support/terms">Terms
-                            &amp; Conditions</a> + <a href="/support/privacy" target="_blank">associated agreements</a>
+                    <h3 class="ui-subheading">{{ t(basketContent.payment_options|default('Options de paiement')) }}</h3>
+                    <p class="txt-info">{{ t(basketContent.payment_description|default('Ajoutez votre commande maintenant ou payez plus tard par chèque/espèces ou dépôt.')) }}</p>
+                    <p class="italic_font">{{ t(basketContent.terms_prefix|default('En cliquant sur "Payer hors ligne" ou "Payer par Mobile Money", vous acceptez les')) }}<br><a target="_blank"
+                                                                                                       href="/support/terms">{{ t(basketContent.terms_link|default('Terms & Conditions')) }}</a> + <a href="/support/privacy" target="_blank">{{ t(basketContent.privacy_link|default('associated agreements')) }}</a>
                         concernant les produits ci-dessus.</p>
                     <p>
-                        <button id="pay-offline-button" class="uiButton btn-space" type="button"><span><span>Payer hors ligne</span></span>
+                        <button id="pay-offline-button" class="uiButton btn-space" type="button"><span><span>{{ t(basketContent.offline|default('Payer hors ligne')) }}</span></span>
                         </button>
                         {% if siteConfig.can_mobile_money %}
                         |
                         <a href="#momo-form" id="momo-payment" class="uiButton btn-space popup-with-form">
                             <i class="flaticon-security"></i>
-                            <span id="show-momo">Payer par Mobile Money</span>
+                            <span id="show-momo">{{ t(basketContent.mobile_money|default('Payer par Mobile Money')) }}</span>
                         </a>
                         {% endif %}
                     </p>
@@ -93,11 +91,11 @@
                 <p id="payment-response" style="padding-bottom: 10px;"></p>
             </div>
             <div class="paymentOption" id="visa_only_payment_online" style="display: none;">
-                <h3>VISA Only Payment Gateway</h3>
-                <p>This is offer is applicable only to VISA card holders</p>
+                <h3>{{ t(basketContent.visa_title|default('VISA Only Payment Gateway')) }}</h3>
+                <p>{{ t(basketContent.visa_description|default('This offer is applicable only to VISA card holders')) }}</p>
                 <div class="clear"></div>
                 <p>
-                    <button id="visa_gateway_button" class="ui-button"><span><span>Pay Now</span></span></button>
+                    <button id="visa_gateway_button" class="ui-button"><span><span>{{ t(basketContent.visa_button|default('Pay Now')) }}</span></span></button>
                 </p>
             </div>
 

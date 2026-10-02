@@ -1,4 +1,5 @@
 {% block footer %}
+    {% set footerContent=showcaseContent.footer|default({}) %}
     <!-- footer -->
     <footer class="footer">
         <div class="camoo-loading invisible"></div>
@@ -32,7 +33,7 @@
                     <div class="col-xl-3 col-md-6 col-lg-3">
                         <div class="footer_widget">
                             <h3 class="footer_title">
-                                {{ t('service') }}
+                                {{ t(footerContent.services_title|default('service')) }}
                             </h3>
                             <ul>
                                 {% if feature_enabled('domains') %}
@@ -51,7 +52,7 @@
                     <div class="col-xl-2 col-md-6 col-lg-2">
                         <div class="footer_widget">
                             <h3 class="footer_title">
-                                {{ t('Navigation') }}
+                                {{ t(footerContent.navigation_title|default('Navigation')) }}
                             </h3>
                             <ul>
                                 <li><a href="/">{{ t('Home') }}</a></li>
@@ -64,15 +65,20 @@
                     <div class="col-xl-4 col-md-6 col-lg-4">
                         <div class="footer_widget">
                             <h3 class="footer_title">
-                                {{ t('Newsletter') }}
+                                {{ t(footerContent.newsletter_title|default('Newsletter')) }}
                             </h3>
-                            <form action="#" class="newsletter_form">
+                            {{ form_start('newsletter', {'url':'/newsletter/subscribe', 'class':'newsletter_form', 'id':'newsletter'}) }}
                                 <label>
-                                    <input type="text" placeholder="{{ t('Votre E-mail') }}">
+                                    <input type="email" name="email" autocomplete="email" required placeholder="{{ t(footerContent.newsletter_placeholder|default('Votre E-mail')) }}">
                                 </label>
-                                <button type="submit">{{ t("S'abonner") }}</button>
-                            </form>
-                            <p class="newsletter_text">{{ t('Abonnez-vous à notre newsletter pour ne pas rater nos dernières publications') }}</p>
+                                <label class="newsletter_honeypot" aria-hidden="true">
+                                    <span>{{ t('Website') }}</span>
+                                    <input type="text" name="website" tabindex="-1" autocomplete="off">
+                                </label>
+                                <button type="submit">{{ t(footerContent.newsletter_button|default("S'abonner")) }}</button>
+                            {{ form_end() }}
+                            <div class="newsletter_feedback" id="newsletter-feedback" role="alert" aria-live="polite"></div>
+                            <p class="newsletter_text">{{ t(footerContent.newsletter_description|default('Abonnez-vous à notre newsletter pour ne pas rater nos dernières publications')) }}</p>
                         </div>
                     </div>
                 </div>
@@ -105,23 +111,7 @@
                         </a>
                     </div>
                     <h3>{{ t('Connexion au compte') }}</h3>
-                    {{ form_start('login', {'url':'/login', 'class' : 'camoo-form-spining'}) }}
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12">
-                            {{ form_input('username', {'type': 'email', 'placeholder' : t('Votre E-Mail'), 'required' : 'required'}) }}
-
-
-                        </div>
-                        <div class="col-xl-12 col-md-12">
-                            {{ form_input('passwd', {'type' : 'password', 'placeholder' : t('Mot de passe'), 'required': 'required'}) }}
-
-                        </div>
-                        <div class="col-xl-12">
-                            {{ form_input('submit', {'id':'user-login','type' : 'submit', 'class' : 'boxed_btn_green', 'value' : t('Se connecter')}) }}
-
-                        </div>
-                    </div>
-                    {{ form_end() }}
+                    {% include 'Layouts/Blocks/Layouts/login-form.twig' %}
                     <p class="doen_have_acc">{{ t('Pas encore un compte?') }} <a class="dont-hav-acc" href="#test-form2">{{ t("S'enregistrer") }}</a>
                     </p>
                 </div>
@@ -136,49 +126,7 @@
             <div class="popup_box ">
                 <div class="popup_inner">
                     <h3>{{ t('Enregistrez-vous') }}</h3>
-                    {{ form_start('join', {'url':'/join', 'class': 'camoo-form-spining'}) }}
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="div_form_add">
-                                <div class="input text required">
-                                    {{ form_input('name', {'placeholder' : t('Votre Nom'), 'required' : 'required'}) }}
-                                </div>
-                                <div class="input text required">
-                                    {{ form_input('firstname', {'placeholder' : t('Votre Prénom'), 'required' : 'required'}) }}
-                                </div>
-                                <div class="input password required">
-                                    {{ form_input('password', {'placeholder' : t('Mot de passe'), 'required' : 'required'}) }}
-                                </div>
-                                <div class="input password">
-                                    {{ form_input('password_confirm', {'type': 'password', 'placeholder' : t('Confirmer votre Mot de passe'), 'required' : 'required'}) }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="div_form_add">
-                                <div class="input email required">
-                                    {{ form_input('email', {'placeholder' : t('Votre E-mail'), 'required' : 'required'}) }}
-                                </div>
-                                <div class="input text required">
-                                    {{ form_input('city', {'placeholder' : t('Votre ville'), 'required' : 'required'}) }}
-                                </div>
-                                <div class="input phone required">
-                                    {{ form_input('phone', {'type':'number', 'placeholder' : t('Votre téléphone'), 'required' : 'required'}) }}
-
-                                </div>
-                                <div class="input text required">
-                                    {{ form_input('address', {'placeholder' : t('Votre adresse (Rue/Quartier)'), 'required' : 'required'}) }}
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-12">
-                            {{ form_input('submit', {'id': 'user-join', 'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : t('Créer votre compte')}) }}
-
-                        </div>
-                    </div>
-                    {{ form_end() }}
+                    {% include 'Layouts/Blocks/Layouts/register-form.twig' %}
                 </div>
             </div>
         </section>

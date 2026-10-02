@@ -21,7 +21,7 @@ class PagesController extends AppController
 
     public function showBasket(): ResponseInterface
     {
-        $this->set('page_title', 'Votre panier');
+        $this->set('page_title', $this->showcaseText('pages.basket.title', 'Votre panier'));
 
         return $this->render();
     }

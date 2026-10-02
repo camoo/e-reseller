@@ -9,6 +9,7 @@ use App\Lib\DomainName;
 use Camoo\Cache\Cache;
 use CAMOO\Event\EventInterface;
 use CAMOO\Exception\Exception;
+use CAMOO\Utils\Configure;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -68,14 +69,24 @@ class DomainsController extends AppController
 
             }
 
-            if (($xRet = Cache::reads($domain, '_camoo_hosting_1hour')) === false) {
-                $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
-                Cache::writes($domain, $xRet, '_camoo_hosting_1hour');
+            $xRet = Cache::reads($domain, '_camoo_hosting_1hour');
+            if ($xRet !== false && !$this->isAvailabilityResult($xRet)) {
+                Cache::deletes($domain, '_camoo_hosting_1hour');
+                $xRet = false;
             }
 
-            if ($xRet) {
-                $status = true;
+            if ($xRet === false) {
+                $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
+                if (!$this->isAvailabilityResult($xRet)) {
+                    $xRet = $this->localAvailability($domain);
+                }
+
+                if ($this->isAvailabilityResult($xRet)) {
+                    Cache::writes($domain, $xRet, '_camoo_hosting_1hour');
+                }
             }
+
+            $status = $this->isAvailabilityResult($xRet);
 
             return $this->jsonResponse([
                 'status' => $status,
@@ -85,6 +96,49 @@ class DomainsController extends AppController
         }
 
         throw new Exception('Unknown error !');
+    }
+
+    private function isAvailabilityResult(mixed $result): bool
+    {
+        if (!is_array($result) || $result === []) {
+            return false;
+        }
+
+        foreach ($result as $details) {
+            if (!is_array($details) || !array_key_exists('status', $details)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Provide deterministic domain rows for local development when the
+     * hosting provider is not configured. Production never uses this unless
+     * explicitly enabled through configuration.
+     */
+    private function localAvailability(string $domain): array
+    {
+        $config = Configure::read('DomainAvailability.local');
+        if (!is_array($config) || ($config['enabled'] ?? false) !== true) {
+            return [];
+        }
+
+        $prices = is_array($config['prices'] ?? null) ? $config['prices'] : [];
+        $takenTlds = is_array($config['taken_tlds'] ?? null) ? $config['taken_tlds'] : [];
+        $result = [];
+
+        foreach ($this->allowedExtensions as $tld) {
+            $result[$domain . '.' . $tld] = [
+                'status' => in_array($tld, $takenTlds, true) ? 'N' : 'Y',
+                'price' => [
+                    'addnewdomain' => $prices[$tld] ?? null,
+                ],
+            ];
+        }
+
+        return $result;
     }
 
     public function overview(): ResponseInterface
@@ -153,7 +207,7 @@ class DomainsController extends AppController
 
     public function decision(): ResponseInterface
     {
-        $this->set('page_title', 'Indiquez un nom de domaine');
+        $this->set('page_title', $this->showcaseText('pages.domain.decision_title', 'Indiquez un nom de domaine'));
         $itemKeyId = $this->request->getQuery('kid');
         if (empty($itemKeyId)) {
             return $this->redirect('/');

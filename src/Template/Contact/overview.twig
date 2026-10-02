@@ -1,43 +1,49 @@
 {% extends "Layouts/pages.twig" %}
 {% block content %}
+	{% set contactContent=showcaseContent.pages.contact|default({}) %}
 	    <!-- ================ contact section start ================= -->
     <section class="contact-section-1">
             <div class="container">
                 <div class="d-none d-sm-block mb-5 pb-4">
                 </div>
-    
+
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="contact-title">{{ t('Contactez-nous') }}</h2>
+                        <h2 class="contact-title">{{ t(contactContent.title|default('Contactez-nous')) }}</h2>
+                        <p class="contact-intro">{{ t(contactContent.intro|default('Une question sur un domaine, un hébergement ou votre commande ? Notre équipe est là pour vous aider.')) }}</p>
                     </div>
                     <div class="col-lg-8">
+					<div class="contact-form-card">
+						<h3>{{ t(contactContent.form_title|default('Parlons de votre projet')) }}</h3>
+						<p>{{ t(contactContent.form_description|default('Décrivez-nous votre besoin. Nous vous répondrons avec une proposition claire et adaptée.')) }}</p>
 					{{ form_start() }}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-									{{ form_input('message', {'type' : 'textarea', 'class' : 'form-control w-100', 'placeholder' : t('Votre Message'), 'cols' : 30, 'rows' : 9, 'required' : 'required' })  }}
+									{{ form_input('message', {'type' : 'textarea', 'class' : 'form-control w-100', 'placeholder' : t(contactContent.message_placeholder|default('Votre Message')), 'cols' : 30, 'rows' : 9, 'required' : 'required' })  }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-									{{ form_input('name', {'required' : 'required','class' : 'form-control valid', 'placeholder' : t('Votre nom') })  }}
+									{{ form_input('name', {'required' : 'required','class' : 'form-control valid', 'placeholder' : t(contactContent.name_placeholder|default('Votre nom')) })  }}
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-									{{ form_input('email', {'required' : 'required','class' : 'form-control valid', 'placeholder' : t('Votre E-mail') })  }}
+									{{ form_input('email', {'required' : 'required','class' : 'form-control valid', 'placeholder' : t(contactContent.email_placeholder|default('Votre E-mail')) })  }}
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-									{{ form_input('subject', {'required' : 'required','class' : 'form-control valid', 'placeholder' : t("L'objet") })  }}
+									{{ form_input('subject', {'required' : 'required','class' : 'form-control valid', 'placeholder' : t(contactContent.subject_placeholder|default("L'objet")) })  }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-                                <button type="submit" class="button button-contactForm boxed-btn">{{ t('Envoyez') }}</button>
-                            </div>
+								<button type="submit" class="button button-contactForm boxed-btn">{{ t(contactContent.submit|default('Envoyez')) }}</button>
+							</div>
 						{{ form_end() }}
+					</div>
                     </div>
                     <div class="col-lg-3 offset-lg-1">
                         <div class="media contact-info">
@@ -51,14 +57,42 @@
                             <span class="contact-info__icon"><i class="ti-tablet"></i></span>
                             <div class="media-body">
                                 <h3>{{ siteConfig.company_tel }}</h3>
-                                <p>{{ t('7j/7') }}</p>
+                                <p>{{ t(contactContent.availability|default('7j/7')) }}</p>
                             </div>
                         </div>
                         <div class="media contact-info">
                             <span class="contact-info__icon"><i class="ti-email"></i></span>
                             <div class="media-body">
                                 <h3>{{ siteConfig.contact_email }}</h3>
-                                <p>{{ t('Contactez-nous à tout moment!') }}</p>
+                                <p>{{ t(contactContent.availability_description|default('Contactez-nous à tout moment!')) }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-guidance">
+                    <div class="row align-items-stretch">
+                        <div class="col-lg-4">
+                            <div class="contact-response-card">
+                                <span class="contact-card-kicker">{{ t(contactContent.availability|default('7j/7')) }}</span>
+                                <h3>{{ t(contactContent.response_title|default('Une réponse qui vous fait avancer')) }}</h3>
+                                <p>{{ t(contactContent.response_description|default('Besoin d’un conseil avant de commander ? Envoyez-nous votre projet et recevez une réponse personnalisée.')) }}</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="contact-reasons-card">
+                                <h3>{{ t('Comment pouvons-nous vous aider ?') }}</h3>
+                                <div class="row">
+                                    {% for reason in contactContent.reasons|default([]) %}
+                                        <div class="col-md-4">
+                                            <div class="contact-reason">
+                                                <i class="{{ reason.icon|default('ti-help-alt') }}" aria-hidden="true"></i>
+                                                <h4>{{ t(reason.title|default('Votre projet')) }}</h4>
+                                                <p>{{ t(reason.description|default('Nous sommes là pour vous accompagner.')) }}</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     </div>

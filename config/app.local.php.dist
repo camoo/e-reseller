@@ -10,6 +10,14 @@ declare(strict_types=1);
  */
 return [
     'HomeContent' => [
+        'seo' => [
+            'title' => 'Mon hébergeur',
+            'description' => 'Noms de domaine et hébergement web pour votre activité.',
+        ],
+        'hero' => [
+            'eyebrow' => 'Votre présence en ligne commence ici',
+            'title' => 'Réservez votre domaine',
+        ],
         'pricing' => [
             'title' => "Choisissez votre offre",
             'description' => "Présentez vos offres avec votre propre message, sans modifier les templates.",
@@ -28,5 +36,31 @@ return [
                 ],
             ],
         ],
+        'well_known' => [
+            // Leave these empty to use the generated tenant-aware defaults.
+            // The reseller cPanel exposes guided fields for these values.
+            'robots' => '',
+            'sitemap' => '',
+            'llms' => '',
+            'security_txt' => '',
+            'change_password_redirect' => '',
+            'sitemap_urls' => '',
+        ],
     ],
+    ],
+    // Legacy optional overrides for discovery / SEO / well-known resources.
+    // Prefer HomeContent.well_known above or the reseller cPanel fields:
+    // 'WellKnown' => [
+    //     'change_password_redirect' => '/profile/edit',
+    //     // Custom robots.txt string or array of rules:
+    //     // 'robots' => "User-agent: *\nAllow: /\nDisallow: /admin\n",
+    //     // Custom sitemap XML string or extra URLs to include:
+    //     // 'sitemap_urls' => ['/custom-landing-page'],
+    //     // Custom llms.txt markdown string:
+    //     // 'llms' => "# My Reseller\n> Description\n",
+    //     // Custom well-known resources (JSON or text):
+    //     // 'resources' => [
+    //     //     'assetlinks.json' => [...],
+    //     // ],
+    // ],
 ];

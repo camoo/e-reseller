@@ -26,7 +26,7 @@ final class BasketController extends AppController
 
     public function overview(): ResponseInterface
     {
-        $this->set('page_title', __('Votre Panier'));
+        $this->set('page_title', $this->showcaseText('pages.basket.title', __('Votre Panier')));
         $cart = $this->getBasketRepository();
         $this->set('basket', $cart);
         return $this->render();

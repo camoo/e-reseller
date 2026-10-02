@@ -7,6 +7,58 @@ $(function(){
 			oButtonSubmit.prop('disabled', true);
 		}
 	});
+
+	$(document).on('submit', '.newsletter_form, #newsletter', function (e) {
+		e.preventDefault();
+		var $form = $(this);
+		var $submitBtn = $form.find('button[type="submit"]');
+		var $emailInput = $form.find('input[name="email"]');
+		var $feedback = $form.parent().find('.newsletter_feedback');
+
+		if ($feedback.length === 0) {
+			$feedback = $('<div class="newsletter_feedback" id="newsletter-feedback" role="alert" aria-live="polite"></div>');
+			$form.after($feedback);
+		}
+
+		var email = $.trim($emailInput.val());
+		if (!email) {
+			return;
+		}
+
+		var originalBtnText = $submitBtn.html();
+		$submitBtn.prop('disabled', true);
+		$feedback.removeClass('is-success is-error').hide().empty();
+
+		$.ajax({
+			url: $form.attr('action') || '/newsletter/subscribe',
+			type: 'POST',
+			data: $form.serialize(),
+			dataType: 'json',
+			headers: {
+				'Accept': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		}).done(function (response) {
+			if (response && (response.status === true || response.success === true)) {
+				$feedback.addClass('is-success')
+					.text(response.message || 'Merci ! Votre adresse e-mail est maintenant inscrite à notre newsletter.')
+					.slideDown(200);
+				$emailInput.val('');
+			} else {
+				$feedback.addClass('is-error')
+					.text((response && response.message) || 'Une erreur est survenue. Veuillez réessayer.')
+					.slideDown(200);
+			}
+		}).fail(function (xhr) {
+			var errorMsg = 'Votre inscription à la newsletter n’a pas pu être enregistrée. Veuillez réessayer plus tard.';
+			if (xhr.responseJSON && xhr.responseJSON.message) {
+				errorMsg = xhr.responseJSON.message;
+			}
+			$feedback.addClass('is-error').text(errorMsg).slideDown(200);
+		}).always(function () {
+			$submitBtn.prop('disabled', false).html(originalBtnText);
+		});
+	});
 });
 
 /**

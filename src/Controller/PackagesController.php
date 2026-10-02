@@ -12,7 +12,7 @@ final class PackagesController extends AppController
     public function overview(): ResponseInterface
     {
         $this->requireFeature('hosting');
-        $this->set('page_title', __('Shared Web Hosting'));
+        $this->set('page_title', $this->showcaseText('pages.packages.title', __('Shared Web Hosting')));
 
         return $this->render();
     }

@@ -1,15 +1,16 @@
 {% block support %}
+    {% set supportContent=showcaseContent.support_block|default({}) %}
     <!-- dedicated_support_start -->
     <div class="dedicated_support support_bg">
         <div class="container">
             <div class="row">
                 <div class="col-xl-5 col-md-8">
                     <div class="support_info">
-                        <h3>{{ t('Support 7j/7') }}</h3>
-                        <p>{{ t('Notre équipe technique répond à toutes vos preoccupations dans un bref délais.') }}</p>
+                        <h3>{{ t(supportContent.title|default('Support 7j/7')) }}</h3>
+                        <p>{{ t(supportContent.description|default('Notre équipe technique répond à toutes vos preoccupations dans un bref délais.')) }}</p>
                         <div class="get_started">
                             <a class="boxed_btn_green" href="/contact">
-                                <span>{{ t('Demandez une assistance') }}</span>
+                                <span>{{ t(supportContent.button|default('Demandez une assistance')) }}</span>
                             </a>
                             <a href="tel:{{ siteConfig.company_tel }}" class="phone_num">
                                 {{ siteConfig.company_tel }}

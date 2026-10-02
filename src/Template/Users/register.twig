@@ -1,0 +1,27 @@
+{% extends "Layouts/pages.twig" %}
+{% block content %}
+    {% set authContent=showcaseContent.pages.auth|default({}) %}
+    <section class="registration-page">
+        <div class="container">
+            <div class="registration-card">
+                <div class="registration-card-intro">
+                    <span class="registration-eyebrow">{{ t(authContent.register_eyebrow|default('Nouveau client')) }}</span>
+                    <h1>{{ t(authContent.register_title|default('Créer un compte')) }}</h1>
+                    <p>{{ t(authContent.register_description|default('Créez votre compte pour commander vos domaines, hébergements et services en ligne.')) }}</p>
+                </div>
+                <div class="registration-guidance">
+                    <strong>{{ t(authContent.register_requirements_title|default('Préparez ces informations')) }}</strong>
+                    <span>{{ t(authContent.register_requirements|default('Nom et prénom, adresse e-mail, mot de passe sécurisé, ville, téléphone et adresse complète.')) }}</span>
+                    <small>{{ t(authContent.register_password_hint|default('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.')) }}</small>
+                </div>
+                {% include 'Layouts/Blocks/Layouts/register-form.twig' with {
+                    'form_name': 'register',
+                    'form_class': 'camoo-form-spining registration-form',
+                    'form_submit_id': 'register-submit',
+                    'field_prefix': 'register-',
+                    'show_labels': true
+                } %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

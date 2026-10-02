@@ -6,6 +6,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/paths.php';
 
 use Camoo\Cache\Cache;
+use App\Service\DomainPricingService;
 use CAMOO\Exception\Exception as AppException;
 use Camoo\Hosting\Modules;
 use CAMOO\Utils\Configure;
@@ -91,6 +92,9 @@ if (!empty($xConfigHosting)) {
     $remoteHomeContent = $xConfigHosting['home_content']
         ?? $xConfigHosting['homepage']
         ?? [];
+    if (is_string($remoteHomeContent) && trim($remoteHomeContent) !== '') {
+        $remoteHomeContent = json_decode($remoteHomeContent, true) ?: [];
+    }
     if (is_array($remoteHomeContent) && is_array($homeContent)) {
         $homeContent = $mergeHomeContent($homeContent, $remoteHomeContent);
     }
@@ -101,7 +105,56 @@ if (!empty($xConfigHosting)) {
             $homeContent = $mergeHomeContent($homeContent, $localHomeContent);
         }
     }
+
+    // Domain prices are authoritative data from the hosting API, not static
+    // homepage copy. Cache the SDK lookup so rendering the homepage does not
+    // add a provider request on every visit.
+    $domainPricingConfig = Configure::read('DomainPricing');
+    if (!is_array($domainPricingConfig)) {
+        $domainPricingConfig = [
+            'enabled' => filter_var(getenv('DOMAIN_PRICES_FROM_SDK') ?: 'true', FILTER_VALIDATE_BOOL),
+            'tlds' => ['cm', 'com', 'net', 'org'],
+        ];
+    }
+    if (is_array($domainPricingConfig) && ($domainPricingConfig['enabled'] ?? true) === true) {
+        $domainPrices = Cache::reads('__homepage_domain_prices__', '_camoo_hosting_1hour');
+        $domainTlds = is_array($domainPricingConfig['tlds'] ?? null)
+            ? $domainPricingConfig['tlds'] : [];
+
+        if (!is_array($domainPrices)) {
+            try {
+                $domainPrices = (new DomainPricingService())->fetch(
+                    $domainTlds,
+                );
+            } catch (\Throwable) {
+                $domainPrices = [];
+            }
+
+            // This fallback is deliberately limited to the explicit local
+            // development fixture. Production never invents a domain price.
+            $localAvailability = Configure::read('DomainAvailability.local');
+            if ($domainPrices === []
+                && is_array($localAvailability)
+                && ($localAvailability['enabled'] ?? false) === true
+            ) {
+                $domainPrices = DomainPricingService::localFixturePrices($localAvailability, $domainTlds);
+            }
+
+            if ($domainPrices !== []) {
+                Cache::writes('__homepage_domain_prices__', $domainPrices, '_camoo_hosting_1hour');
+            }
+        }
+
+        $homeContent = DomainPricingService::applyToHomeContent(
+            $homeContent,
+            is_array($domainPrices) ? $domainPrices : [],
+            $domainTlds,
+        );
+    }
     Configure::write('HomeContent', $homeContent);
+    // Keep the descriptive alias available to templates and extensions while
+    // preserving the existing HomeContent configuration key.
+    Configure::write('ShowcaseContent', $homeContent);
 
     // The hosting dashboard may provide a locale for this reseller. Only
     // activate catalogs that are installed in this application.
