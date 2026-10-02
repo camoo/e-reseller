@@ -16,8 +16,6 @@ use function Cake\I18n\__;
  */
 final class Lib extends FunctionHelper
 {
-    public $Basket;
-
     public array $functions = ['Basket'];
 
     public function getFunctions(): array
@@ -38,8 +36,12 @@ final class Lib extends FunctionHelper
     {
         $oBasket = $this->Basket->getItems();
         $result = '';
-        if (($xRet = Cache::reads($inp, '_camoo_hosting_1hour')) !== false) {
+        if (($xRet = Cache::reads($inp, '_camoo_hosting_1hour')) !== false && is_array($xRet)) {
             foreach ($xRet as $domain => $value) {
+                if (!is_array($value) || !array_key_exists('status', $value)) {
+                    continue;
+                }
+
                 $class = 'available domain-available add-to-basket';
                 $word = 'Disponible';
                 $takeIt = 'Je commande';

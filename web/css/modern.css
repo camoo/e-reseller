@@ -147,6 +147,231 @@ input:focus-visible {
 .main-menu { padding: 0 !important; }
 .main-menu ul#navigation > li > a { white-space: nowrap; }
 
+/* Keep the desktop header in three explicit zones. The mobile .col-12 block
+   must not participate in the desktop row, otherwise Bootstrap gives it a
+   full-width flex basis and the menu collapses into the logo/actions. */
+@media (min-width: 992px) {
+    .header-area .main-header-area .row {
+        display: grid !important;
+        grid-template-columns: 180px minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    .header-area .main-header-area .row > .col-12 {
+        display: none !important;
+    }
+
+    .header-area .main-header-area .row > .header-brand,
+    .header-area .main-header-area .row > .header-navigation,
+    .header-area .main-header-area .row > .header-actions {
+        width: auto !important;
+        max-width: none !important;
+        flex: none !important;
+    }
+}
+
+.header-area .header-brand {
+    flex: 0 0 180px;
+    max-width: 180px;
+}
+
+.header-area .header-navigation {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+}
+
+.header-area .header-actions {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+    min-width: 360px;
+}
+
+.header-area .header-navigation .main-menu ul#navigation {
+    justify-content: center;
+    gap: 0;
+}
+
+.header-area .header-navigation .main-menu ul#navigation > li {
+    margin-right: 0 !important;
+}
+
+.header-area .header-navigation .main-menu ul#navigation > li > a {
+    padding-left: 9px;
+    padding-right: 9px;
+    font-size: 14px;
+}
+
+.header-area .header-actions .log_chat_area {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.header-area .header-actions .log_chat_area > form {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.header-area .header-actions .log_chat_area .login {
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .header-area .main-header-area .row {
+        grid-template-columns: 150px minmax(0, 1fr) auto;
+    }
+
+    .header-area .header-brand {
+        flex-basis: 150px;
+    }
+
+    .header-area .header-actions {
+        min-width: 300px;
+    }
+
+    .header-area .header-navigation .main-menu ul#navigation > li > a {
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 12px;
+    }
+}
+
+.header-area .header-cart {
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    list-style: none;
+}
+
+.header-area .header-cart-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 7px 11px;
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    border-radius: var(--camoo-radius-pill);
+    background: var(--camoo-brand-light);
+    color: var(--camoo-ink);
+    box-shadow: var(--camoo-shadow-sm);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    white-space: nowrap;
+}
+
+.header-area .header-cart-trigger:hover {
+    background: #dbeafe;
+    border-color: rgba(37, 99, 235, 0.45);
+}
+
+.header-area .header-cart-trigger:focus-visible {
+    outline: 3px solid rgba(16, 185, 129, .55);
+    outline-offset: 3px;
+}
+
+.header-area .header-cart .icon-cart {
+    display: inline-block;
+    position: relative;
+    width: 21px;
+    height: 21px;
+    float: none !important;
+    margin: 0 !important;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.header-area .header-cart .cart-line-1,
+.header-area .header-cart .cart-line-2,
+.header-area .header-cart .cart-line-3,
+.header-area .header-cart .cart-wheel {
+    position: absolute;
+    display: block;
+    background: var(--camoo-brand);
+}
+
+.header-area .header-cart .cart-line-1 {
+    top: 4px;
+    left: 3px;
+    width: 13px;
+    height: 2px;
+    transform: rotate(8deg);
+}
+
+.header-area .header-cart .cart-line-2 {
+    top: 8px;
+    left: 5px;
+    width: 11px;
+    height: 2px;
+}
+
+.header-area .header-cart .cart-line-3 {
+    top: 12px;
+    left: 6px;
+    width: 10px;
+    height: 2px;
+}
+
+.header-area .header-cart .cart-wheel {
+    left: 5px;
+    bottom: 2px;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    box-shadow: 9px 0 0 var(--camoo-brand);
+}
+
+.header-area .header-cart .cart-label {
+    color: var(--camoo-brand-dark);
+}
+
+.header-area .header-cart .ul-basket {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    left: auto;
+    z-index: 1100;
+    display: block;
+    visibility: hidden;
+    min-width: 290px;
+    padding: 12px;
+    border: 1px solid var(--camoo-border);
+    border-radius: var(--camoo-radius);
+    background: #ffffff;
+    box-shadow: var(--camoo-shadow-lg);
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+}
+
+.header-area .header-cart:hover .ul-basket,
+.header-area .header-cart:focus-within .ul-basket {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.header-area .header-cart .ul-basket .title {
+    padding: 4px 10px 10px;
+    color: var(--camoo-ink);
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.header-area .header-cart .ul-basket li {
+    display: block;
+    margin: 0;
+}
+
 /* Dropdown Submenus */
 .main-menu ul li .submenu {
     border-radius: var(--camoo-radius);
@@ -212,6 +437,7 @@ input:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    margin-right: 0;
     padding: 10px 20px;
     color: var(--camoo-ink) !important;
     background: #ffffff;
@@ -232,6 +458,10 @@ input:focus-visible {
 
 .header-area .log_chat_area .login i {
     color: var(--camoo-brand) !important;
+}
+
+.header-area .log_chat_area .live_chat_btn a {
+    white-space: nowrap;
 }
 
 /* Global Modern Buttons */

@@ -10,7 +10,8 @@ services:
       - .:/app
     environment:
       - APP_ENV=development
-      - USE_REMOTE_CONFIG=false
+      - USE_REMOTE_CONFIG=true
+      - LOCAL_DOMAIN_AVAILABILITY=true
       - CAMOO_HOSTING_ENDPOINT=http://host.docker.internal:8082/v1
     extra_hosts:
       - "host.docker.internal:host-gateway"

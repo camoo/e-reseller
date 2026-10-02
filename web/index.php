@@ -15,6 +15,13 @@ $publicRoutes = [
     '/support/privacy',
     '/contact',
     '/domain-whois',
+    '/domain-add-to-basket',
+    '/domain-remove-basket',
+    '/basket',
+    '/basket/add',
+    '/basket/delete',
+    '/basket/add-domain-to-hosting',
+    '/domains/is-valid',
     '/domains/decision',
     '/domains/decision/',
 ];
@@ -46,11 +53,25 @@ $middlewares = [
 ];
 $caller = new \CAMOO\Http\Caller(dirname(__DIR__) . '/config', $middlewares);
 $response = $caller->getResponse();
+$statusCode = 200;
+try {
+    $statusCode = $response->getStatusCode();
+} catch (\Throwable) {
+}
 
-// Rendered responses use Camoo's lightweight response object, whose optional
-// header container is empty by default. Emit the body directly at this
-// application boundary and use the normal successful status for page views.
-http_response_code(200);
+http_response_code($statusCode);
+
+try {
+    foreach ($response->getHeaders() as $headerLines) {
+        foreach ($headerLines as $name => $value) {
+            foreach ((array)$value as $line) {
+                header($name . ': ' . $line, false);
+            }
+        }
+    }
+} catch (\Throwable) {
+}
+
 $body = $response->getBody();
 if ($body->isSeekable()) {
     $body->rewind();

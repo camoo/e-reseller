@@ -192,7 +192,7 @@ class UsersController extends AppController
     {
         $basket = null;
 
-        $this->request->getSession()->regenerateId();
+        \CAMOO\Http\Session::create()->regenerateId();
         $this->request->getSession()->write('Auth.User', $user);
         $this->request->getSession()->write('loggedin', true);
 

@@ -25,6 +25,11 @@ Local development uses safe built-in reseller defaults and does not call the
 remote hosting API. Set `USE_REMOTE_CONFIG=true` in the Docker environment if
 you need to test against live reseller configuration.
 
+The Compose stack enables `LOCAL_DOMAIN_AVAILABILITY`, which supplies
+deterministic domain rows when no local WHOIS provider is configured. Set
+`LOCAL_DOMAIN_TAKEN_TLDS=net,org` to mark selected TLDs as taken during local
+UI testing. Keep this fixture disabled in deployed environments.
+
 For a deployed reseller, put the Camoo.Hosting credentials in the untracked
 `config/.env` file:
 

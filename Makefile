@@ -1,7 +1,9 @@
-.PHONY: help build up down restart install update clear-cache test tinker rector rector-dry deptrac psalm shell
+.PHONY: help build up down restart install update clear-cache test tinker rector rector-dry deptrac psalm shell restapi-up restapi-down restapi-restart restapi-logs up-all
 
-DOCKER_COMPOSE ?= docker-compose
+DOCKER_COMPOSE ?= docker compose
 EXEC_APP ?= $(DOCKER_COMPOSE) exec app
+RESTAPI_COMPOSE_FILE ?= $(if $(wildcard ../restapi/compose.yaml),../restapi/compose.yaml,/Users/epiphane/Projects/restapi/compose.yaml)
+RESTAPI_COMPOSE ?= $(DOCKER_COMPOSE) -f $(RESTAPI_COMPOSE_FILE)
 
 help: ## Show help menu
 	@echo "Available commands:"
@@ -13,10 +15,24 @@ build: ## Build Docker image
 up: ## Start Docker container in background
 	$(DOCKER_COMPOSE) up -d
 
+up-all: restapi-up up ## Start both REST API gateway and web-framework containers
+
 down: ## Stop Docker container
 	$(DOCKER_COMPOSE) down
 
 restart: down up ## Restart Docker container
+
+restapi-up: ## Start REST API gateway container in background
+	$(RESTAPI_COMPOSE) up -d
+
+restapi-down: ## Stop REST API gateway container
+	$(RESTAPI_COMPOSE) down
+
+restapi-restart: ## Restart REST API gateway container
+	$(RESTAPI_COMPOSE) restart
+
+restapi-logs: ## Tail REST API gateway logs
+	$(RESTAPI_COMPOSE) logs -f restapi
 
 install: ## Run composer install
 	$(EXEC_APP) composer install
