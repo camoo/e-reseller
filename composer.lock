@@ -1157,12 +1157,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/hosting.git",
-                "reference": "db2aa80639e8052846a6ed700ea85a3333fbe7cd"
+                "reference": "dc4f6608dd68eb196c3605e4c055a37ce4409ef1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/hosting/zipball/db2aa80639e8052846a6ed700ea85a3333fbe7cd",
-                "reference": "db2aa80639e8052846a6ed700ea85a3333fbe7cd",
+                "url": "https://api.github.com/repos/camoo/hosting/zipball/dc4f6608dd68eb196c3605e4c055a37ce4409ef1",
+                "reference": "dc4f6608dd68eb196c3605e4c055a37ce4409ef1",
                 "shasum": ""
             },
             "require": {
@@ -1212,7 +1212,7 @@
                 "source": "https://github.com/camoo/hosting",
                 "wiki": "https://api-doc.camoo.hosting/"
             },
-            "time": "2026-10-02T14:24:23+00:00"
+            "time": "2026-10-02T15:38:29+00:00"
         },
         {
             "name": "camoo/http-header-parser",
