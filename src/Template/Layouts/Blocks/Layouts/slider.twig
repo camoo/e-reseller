@@ -1,4 +1,5 @@
 {% block slider %}
+    {% set hero=showcaseContent.hero|default({}) %}
     <!-- slider_area_start -->
     {% if feature_enabled('domains') %}
     <div class="slider_area">
@@ -8,27 +9,31 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-xl-9">
                         <div class="slider_text text-center">
-                            <p>{{ t('Nous sommes le meilleur fournisseur de nom de domaine et Hébergeur Web au Cameroun') }}</p>
-                            <h3>{{ t('Trouvez votre domaine') }}</h3>
+                            <p>{{ t(hero.eyebrow|default('Nous sommes le meilleur fournisseur de nom de domaine et Hébergeur Web au Cameroun')) }}</p>
+                            <h3>{{ t(hero.title|default('Trouvez votre domaine')) }}</h3>
                             <div class="find_dowmain">
                                 {{ form_start('domain-lookup', {'id':'domainwhois', 'class': 'find_dowmain_form'}) }}
-                                {{ form_input('domain', {'placeholder' : t('Rechercher votre nom de domaine'), 'required' : 'required'}) }}
-                                {{ form_input('submit', {'type' : 'submit', 'value' : t('Lancer'), 'id' : 'finddomain'}) }}
+                                {{ form_input('domain', {'placeholder' : t(hero.search_placeholder|default('Rechercher votre nom de domaine')), 'required' : 'required'}) }}
+                                {{ form_input('submit', {'type' : 'submit', 'value' : t(hero.search_button|default('Lancer')), 'id' : 'finddomain'}) }}
                                 {{ form_end() }}
+                            </div>
+                            <div class="hero-account-cta">
+                                <span>{{ t(hero.register_prompt|default('Nouveau client ?')) }}</span>
+                                <a href="/register" id="hero-register-cta" class="hero-register-cta">{{ t(hero.register_button|default('Créer un compte')) }}</a>
                             </div>
                             <div class="domain_tld_pills d-flex justify-content-center flex-wrap align-items-center">
                                 {% for badge in homeContent.tld_badges|default([]) %}
                                     <div class="tld_pill {{ badge.class|default('') }}">
                                         <strong class="tld_name">{{ badge.name|default('') }}</strong>
-                                        <span class="tld_price">{{ t(badge.price|default('')) }}</span>
+                                        {% if badge.price|default('') is not empty %}<span class="tld_price">{{ t(badge.price) }}</span>{% endif %}
                                         {% if badge.tag|default('') is not empty %}<span class="tld_tag">{{ t(badge.tag) }}</span>{% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
                             <div class="hero-trust d-flex justify-content-center flex-wrap" aria-label="{{ t('Why choose us') }}">
-                                <span><i class="fa fa-check-circle" aria-hidden="true"></i>{{ t('Recherche rapide') }}</span>
-                                <span><i class="fa fa-shield" aria-hidden="true"></i>{{ t('Paiement sécurisé') }}</span>
-                                <span><i class="fa fa-life-ring" aria-hidden="true"></i>{{ t('Support disponible') }}</span>
+                                {% for trust in hero.trust|default([]) %}
+                                    <span><i class="{{ trust.icon|default('fa fa-check-circle') }}" aria-hidden="true"></i>{{ t(trust.label|default('')) }}</span>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

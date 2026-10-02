@@ -78,13 +78,24 @@ final class ControllerResponseTest extends ControllerTestCase
         self::assertSame(['balance' => 100, 'currency' => 'XAF'], json_decode((string)$response->getBody(), true));
     }
 
-    public function testLoginRedirectReturnsResponse(): void
+    public function testLoginPageReturnsResponse(): void
     {
         $controller = $this->createApplicationController(UsersController::class, 'login', 'GET');
+        $controller->getEventManager()->on(new RenderResponseListener());
         $response = $this->dispatchAction($controller);
 
-        self::assertSame(302, $response->getStatusCode());
-        self::assertSame('/#login', $response->getHeaderLine('Location'));
+        self::assertSame(200, $response->getStatusCode());
+        self::assertNotSame('', (string)$response->getBody());
+    }
+
+    public function testRegisterPageReturnsResponse(): void
+    {
+        $controller = $this->createApplicationController(UsersController::class, 'register', 'GET');
+        $controller->getEventManager()->on(new RenderResponseListener());
+        $response = $this->dispatchAction($controller);
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertNotSame('', (string)$response->getBody());
     }
 
     public function testDomainOverviewRedirectReturnsResponseWhenDomainIsMissing(): void

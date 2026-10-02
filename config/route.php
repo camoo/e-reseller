@@ -6,6 +6,7 @@ return [
     FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $routeCollector): void {
         $routeCollector->addRoute('GET', '/', ['controller' => 'Pages', 'action' => 'overview']);
         $routeCollector->addRoute(['POST', 'GET'], '/login', ['controller' => 'Users', 'action' => 'login']);
+        $routeCollector->addRoute('GET', '/register', ['controller' => 'Users', 'action' => 'register']);
         $routeCollector->addRoute(['POST', 'GET'], '/join', ['controller' => 'Users', 'action' => 'join']);
         $routeCollector->addRoute('POST', '/logout', ['controller' => 'Users', 'action' => 'logout']);
         $routeCollector->addRoute('GET', '/sso', ['controller' => 'Users', 'action' => 'getSSO']);
@@ -32,9 +33,17 @@ return [
         // Backwards-compatible alias for existing navigation links/bookmarks.
         $routeCollector->addRoute('GET', '/aboutUs', ['controller' => 'AboutUs', 'action' => 'overview']);
         $routeCollector->addRoute(['POST', 'GET'], '/contact', ['controller' => 'Contact', 'action' => 'overview']);
+        $routeCollector->addRoute('POST', '/newsletter/subscribe', ['controller' => 'Newsletter', 'action' => 'subscribe']);
         $routeCollector->addRoute('GET', '/packages', ['controller' => 'Packages', 'action' => 'overview']);
         $routeCollector->addRoute('GET', '/support', ['controller' => 'Support', 'action' => 'overview']);
         $routeCollector->addRoute('GET', '/support/terms', ['controller' => 'Support', 'action' => 'terms']);
         $routeCollector->addRoute('GET', '/support/privacy', ['controller' => 'Support', 'action' => 'privacy']);
+        $routeCollector->addRoute('GET', '/robots.txt', ['controller' => 'WellKnown', 'action' => 'robots']);
+        $routeCollector->addRoute('GET', '/sitemap.xml', ['controller' => 'WellKnown', 'action' => 'sitemap']);
+        $routeCollector->addRoute('GET', '/llms.txt', ['controller' => 'WellKnown', 'action' => 'llms']);
+        $routeCollector->addRoute('GET', '/llm.txt', ['controller' => 'WellKnown', 'action' => 'llms']);
+        $routeCollector->addRoute('GET', '/.well-known/security.txt', ['controller' => 'WellKnown', 'action' => 'securityTxt']);
+        $routeCollector->addRoute('GET', '/.well-known/change-password', ['controller' => 'WellKnown', 'action' => 'changePassword']);
+        $routeCollector->addRoute('GET', '/.well-known/{resource:.+}', ['controller' => 'WellKnown', 'action' => 'resource']);
     }),
 ];

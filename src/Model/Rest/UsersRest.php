@@ -49,11 +49,11 @@ class UsersRest extends AppRest
             ->add('password_confirm', [
                 'lengthBetween' => [
                     'rule' => ['lengthBetween', 8, 20],
-                    'message' => sprintf('Votre mot de passe dot être compris entre %d et %d characters.', 8, 20),
+                    'message' => sprintf('Votre mot de passe doit être compris entre %d et %d caractères.', 8, 20),
                 ],
                 'equalToPassword' => [
                     'rule' => fn($value, $context): bool => (string)$value === (string)$context['data']['password'],
-                    'message' => 'passwords_not_match',
+                    'message' => 'Les mots de passe ne correspondent pas.',
                 ],
             ]);
 
@@ -108,7 +108,7 @@ class UsersRest extends AppRest
             ->add('password', [
                 'lengthBetween' => [
                     'rule' => ['lengthBetween', 8, 20],
-                    'message' => sprintf('Votre mot de passe dot être compris entre %d et %d characters.', 8, 20),
+                    'message' => sprintf('Votre mot de passe doit être compris entre %d et %d caractères.', 8, 20),
                 ],
                 'condition' => [
                     'rule' => fn($sPassword): bool => (boolean)preg_match('/^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z\\d]).*$/', $sPassword),

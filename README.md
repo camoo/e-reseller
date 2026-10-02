@@ -187,16 +187,28 @@ docker compose run --rm app ./bin/camoo cleanup:all
 The translation layer and CSS layer are independent: use PO files for visible
 wording and `custom.css` for colors, typography, spacing, and layout.
 
-#### Customize homepage content
+#### Customize showcase content site-wide
 
-The homepage merchandising blocks are reseller data, not fixed template copy:
-domain/TLD badges, the hosting-plan introduction, and the feature tabs/cards.
-The defaults live in `config/app.php` under `HomeContent`. A reseller can
-override them without editing Twig in either of two ways:
+The public showcase copy is reseller data, not fixed template copy. The same
+configuration tree drives the homepage, navigation, SEO metadata, shared
+support/footer sections, page headings, authentication, domain ordering, and
+the basket/payment page. The defaults live in `config/app.php` under
+`HomeContent`. A reseller can override them without editing Twig in either of
+two ways:
 
 1. Preferred for a managed reseller: return a `home_content` object from the
-   hosting configuration endpoint. The object may contain `tld_badges`,
-   `pricing`, and `features`; omitted values keep the defaults.
+   hosting configuration endpoint. The object may contain `seo`, `well_known`,
+   `navigation`, `hero`, `support_block`, `questions`, `footer`, `pages`,
+   `tld_badges`, `pricing`, and `features`; omitted values keep the defaults.
+   The `well_known` object can override `robots`, `sitemap`, `llms`,
+   `security_txt`, `change_password_redirect`, and newline-separated
+   `sitemap_urls` without editing application code. To connect the footer
+   newsletter to the Hosting dashboard, set
+   The showcase newsletter uses the dedicated
+   `/v1/showcase/subscribers` endpoint. It stores each address in the Hosting
+   `subscribers` table with purpose `showcase_newsletter` and the authenticated
+   reseller's `user_id`; it does not use mailing-list identifiers or
+   `list_subscribers`.
 2. For a local or self-hosted installation: set `HOME_CONTENT_JSON` in
    `config/.env`. This is merged after the API response, so `.env` is the
    final local override.
@@ -210,7 +222,7 @@ base `app.php`, PHP local overrides, hosting API `home_content`, then
 Example:
 
 ```dotenv
-HOME_CONTENT_JSON='{"pricing":{"title":"Choisissez votre offre"},"tld_badges":[{"name":".com","price":"12 EUR","tag":"Populaire","class":"tld_pill_popular"}],"features":{"tabs":[{"label":"Pourquoi nous choisir","items":[{"title":"Support expert","description":"Une équipe disponible pour vous aider.","icon":"flaticon-security"}]}]}}'
+HOME_CONTENT_JSON='{"seo":{"title":"Mon hébergeur","description":"Noms de domaine et hébergement web pour votre activité."},"hero":{"eyebrow":"Votre présence en ligne commence ici","title":"Réservez votre domaine"},"pages":{"contact":{"title":"Parlons de votre projet"}},"pricing":{"title":"Choisissez votre offre"},"tld_badges":[{"name":".com","tag":"Populaire","class":"tld_pill_popular"}]}'
 ```
 
 Each content value is escaped as normal template text. Default values are also
@@ -218,6 +230,14 @@ passed through `t()`, so they can be translated in
 `src/Locale/<locale>/default.po`. Custom reseller wording is displayed as
 provided and does not require a code deployment. Use the existing feature
 flags to remove product areas that are not sold.
+
+Domain badge prices are refreshed from the Camoo.Hosting SDK domain-prices
+endpoint and cached for one hour. This keeps the homepage aligned with the
+reseller's active domain packages; configured
+`tld_badges` values still control the labels, tags, and ordering. Set
+`DOMAIN_PRICES_FROM_SDK=false` only when a deployment intentionally wants to
+hide SDK-driven domain pricing. The local deterministic availability fixture
+may provide these values during development, but is disabled by default.
 
 #### Enable only the products you sell
 

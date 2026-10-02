@@ -1,23 +1,24 @@
 {% block domainwhois %}
+    {% set domainContent=showcaseContent.pages.domain|default({}) %}
     <!-- search_area_start -->
     <div class="search_area">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="search_title">
-                        <h3>Résultats</h3>
+                        <h3>{{ t(domainContent.results|default('Résultats')) }}</h3>
                     </div>
                 </div>
             </div>
             <div class="row mb-20">
                 <div class="col-xl-6">
                     <div class="search_result_name">
-                        <h4>Nom de domaine</h4>
+                        <h4>{{ t(domainContent.name|default('Nom de domaine')) }}</h4>
                     </div>
                 </div>
                 <div class="col-xl-6">
                     <div class="search_result_prise text-right">
-                        <h4>Prix</h4>
+                        <h4>{{ t(domainContent.price|default('Prix')) }}</h4>
                     </div>
                 </div>
             </div>

@@ -11,6 +11,8 @@ use CAMOO\Utils\Cart;
 use CAMOO\Utils\Configure;
 use Psr\Http\Message\ResponseInterface;
 
+use function Cake\I18n\__;
+
 /**
  * Class UsersController
  *
@@ -30,7 +32,7 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'get']);
         if ($this->request->is('get')) {
-            return $this->redirect('/#join');
+            return $this->redirect('/register');
         }
 
         if ($this->request->is('post')) {
@@ -38,21 +40,44 @@ class UsersController extends AppController
             $data['user_ip'] = $this->request->getRemoteIp();
             $oNewRequest = $this->UsersRest->newRequest($data, true, ['action' => 'add']);
 
-            if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'add'])) && !empty($xRet['id'])) {
-                $oNewRequest = $this->UsersRest->newRequest([$xRet['id']], false);
-                if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
-                    $this->doLogin($hUser);
+            if (empty($oNewRequest->getErrors())) {
+                try {
+                    $xRet = $oNewRequest->send(['::customers', 'add']);
+                    if (!empty($xRet['id'])) {
+                        $oNewRequest = $this->UsersRest->newRequest([$xRet['id']], false);
+                        if ($hUser = $oNewRequest->send(['::customers', 'getById'], false)) {
+                            $this->doLogin($hUser);
 
-                    return $this->redirect('/');
+                            return $this->redirect('/');
+                        }
+                    }
+                } catch (\Throwable) {
+                    $this->request->Flash->error(__('Inscription impossible pour le moment. Vérifiez les informations saisies et réessayez.'));
+
+                    return $this->redirect('/register');
                 }
             }
 
             if (!empty($oNewRequest->getErrors())) {
                 $this->showValidateErrors($oNewRequest);
+            } else {
+                $this->request->Flash->error(__('Inscription impossible. Vérifiez les informations saisies puis réessayez.'));
             }
         }
 
-        return $this->redirect('/');
+        return $this->redirect('/register');
+    }
+
+    public function register(): ResponseInterface
+    {
+        $this->request->allowMethod(['get']);
+        if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
+            return $this->redirect('/');
+        }
+
+        $this->set('page_title', $this->showcaseText('pages.auth.register_title', __('Créer un compte')));
+
+        return $this->render();
     }
 
     public function login(): ResponseInterface
@@ -60,7 +85,13 @@ class UsersController extends AppController
         $this->request->allowMethod(['post', 'get']);
 
         if ($this->request->is('get')) {
-            return $this->redirect('/#login');
+            if ($this->request->getSession()->check('loggedin') && $this->request->getSession()->read('loggedin') === true) {
+                return $this->redirect('/');
+            }
+
+            $this->set('page_title', $this->showcaseText('pages.auth.login_title', __('Connexion')));
+
+            return $this->render();
         }
 
         if ($this->request->is('post')) {
@@ -74,16 +105,26 @@ class UsersController extends AppController
             ];
 
             $oNewRequest = $this->UsersRest->newRequest($data, true, ['validation' => 'login']);
-            if (empty($oNewRequest->getErrors()) && ($xRet = $oNewRequest->send(['::customers', 'auth']))) {
-                $this->doLogin($xRet);
+            if (!empty($oNewRequest->getErrors())) {
+                $this->showValidateErrors($oNewRequest);
 
-                return $this->redirect('/');
+                return $this->redirect('/login');
             }
 
-            $this->request->Flash->error("Nom d'utilisateur ou mot de passe incorrect");
+            try {
+                if ($xRet = $oNewRequest->send(['::customers', 'auth'])) {
+                    $this->doLogin($xRet);
+
+                    return $this->redirect('/');
+                }
+            } catch (\Throwable) {
+                // Keep provider details out of the customer-facing response.
+            }
+
+            $this->request->Flash->error(__('Connexion impossible. Vérifiez votre e-mail et votre mot de passe, puis réessayez.'));
         }
 
-        return $this->redirect('/');
+        return $this->redirect('/login');
     }
 
     public function logout(): ResponseInterface

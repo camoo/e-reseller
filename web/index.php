@@ -1,10 +1,19 @@
 <?php
+declare(strict_types=1);
+
+if (PHP_SAPI === 'cli-server') {
+    $path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+    if ($path !== '/' && is_file(__DIR__ . $path)) {
+        return false;
+    }
+}
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $publicRoutes = [
     '/',
     '/login',
+    '/register',
     '/join',
     '/domain',
     '/about-us',
@@ -14,6 +23,7 @@ $publicRoutes = [
     '/support/terms',
     '/support/privacy',
     '/contact',
+    '/newsletter/subscribe',
     '/domain-whois',
     '/domain-add-to-basket',
     '/domain-remove-basket',
@@ -24,6 +34,10 @@ $publicRoutes = [
     '/domains/is-valid',
     '/domains/decision',
     '/domains/decision/',
+    '/robots.txt',
+    '/sitemap.xml',
+    '/llms.txt',
+    '/llm.txt',
 ];
 $middlewares = [
     new \CAMOO\Http\Middleware\AuthenticationMiddleware(
@@ -44,6 +58,7 @@ $middlewares = [
     new \CAMOO\Http\Middleware\AuthorizationMiddleware(
         static fn (\Psr\Http\Message\ServerRequestInterface $request): bool =>
             in_array($request->getUri()->getPath(), $publicRoutes, true)
+            || str_starts_with($request->getUri()->getPath(), '/.well-known/')
             || $request->getAttribute('identity') !== null,
         new \Camoo\Http\Curl\Infrastructure\Response(
             body: new \Camoo\Http\Curl\Domain\Entity\Stream(''),

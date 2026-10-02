@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" width="460" height="120" role="img" aria-labelledby="logo-title logo-desc">
+  <title id="logo-title">Domain.cm</title>
+  <desc id="logo-desc">Domain registration and cloud hosting platform for Cameroon and Africa</desc>
+  <defs>
+    <!-- Soft ambient drop shadow for the emblem -->
+    <filter id="badge-shadow" x="-20%" y="-20%" width="145%" height="145%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0A2540" flood-opacity="0.14" />
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#0A2540" flood-opacity="0.08" />
+    </filter>
+
+    <!-- Rich Cameroon flag gradients -->
+    <linearGradient id="cm-green" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#009A60" />
+      <stop offset="100%" stop-color="#007548" />
+    </linearGradient>
+    <linearGradient id="cm-red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E11837" />
+      <stop offset="100%" stop-color="#B80E25" />
+    </linearGradient>
+    <linearGradient id="cm-yellow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD61E" />
+      <stop offset="100%" stop-color="#F2B700" />
+    </linearGradient>
+
+    <!-- Star gradient and depth -->
+    <linearGradient id="star-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="35%" stop-color="#FFE762" />
+      <stop offset="100%" stop-color="#EAA600" />
+    </linearGradient>
+    <filter id="star-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#5C040F" flood-opacity="0.55" />
+    </filter>
+
+    <!-- Emblem squircle clip -->
+    <clipPath id="badge-clip">
+      <rect x="12" y="26" width="90" height="68" rx="18" ry="18" />
+    </clipPath>
+  </defs>
+
+  <!-- CAMEROON DOMAIN EMBLEM -->
+  <g id="emblem" filter="url(#badge-shadow)">
+    <!-- Flag base clipped to smooth squircle -->
+    <g clip-path="url(#badge-clip)">
+      <rect x="12" y="26" width="30" height="68" fill="url(#cm-green)" />
+      <rect x="42" y="26" width="30" height="68" fill="url(#cm-red)" />
+      <rect x="72" y="26" width="30" height="68" fill="url(#cm-yellow)" />
+
+      <!-- Subtle inner ambient top lighting -->
+      <path d="M 12,26 L 102,26 L 102,48 Q 57,56 12,48 Z" fill="#FFFFFF" fill-opacity="0.14" />
+    </g>
+
+    <!-- Defining outer keyline & inner highlight for edge contrast -->
+    <rect x="12" y="26" width="90" height="68" rx="18" ry="18" fill="none" stroke="#0A2540" stroke-opacity="0.10" stroke-width="1.2" />
+    <rect x="13.2" y="27.2" width="87.6" height="65.6" rx="16.8" ry="16.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.30" stroke-width="1" />
+
+    <!-- Center Cameroon Star (centered at x=57, y=60) -->
+    <path filter="url(#star-shadow)" d="M 57,46.2 L 60.8,54.8 L 70.1,55.7 L 63.1,62 L 65.1,71.1 L 57,66.4 L 48.9,71.1 L 50.9,62 L 43.9,55.7 L 53.2,54.8 Z" fill="url(#star-gold)" />
+  </g>
+
+  <!-- WORDMARK: Domain -->
+  <text x="122" y="80" fill="#0A2540" font-family="system-ui, -apple-system, 'SF Pro Display', 'Plus Jakarta Sans', Inter, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif" font-size="68" font-weight="800" letter-spacing="-1">Domain</text>
+
+  <!-- TLD BADGE: .cm -->
+  <g id="tld-badge" transform="translate(378, 38)">
+    <rect x="0" y="0" width="70" height="34" rx="9" fill="#009A60" />
+    <text x="35" y="24" text-anchor="middle" fill="#FFFFFF" font-family="system-ui, -apple-system, 'SF Pro Display', 'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="800" letter-spacing="0.5">.cm</text>
+  </g>
+</svg>

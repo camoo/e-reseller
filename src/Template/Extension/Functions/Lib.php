@@ -6,6 +6,7 @@ namespace App\Template\Extension\Functions;
 
 use Camoo\Cache\Cache;
 use CAMOO\Template\Extension\FunctionHelper;
+use CAMOO\Utils\Cart as BasketRepository;
 use CAMOO\Utils\Configure;
 use function Cake\I18n\__;
 
@@ -34,7 +35,11 @@ final class Lib extends FunctionHelper
 
     public function getDomainWhoisResult($inp): string
     {
-        $oBasket = $this->Basket->getItems();
+        $oBasket = BasketRepository::create($this->request);
+        if ($oBasket === null) {
+            return '';
+        }
+
         $result = '';
         if (($xRet = Cache::reads($inp, '_camoo_hosting_1hour')) !== false && is_array($xRet)) {
             foreach ($xRet as $domain => $value) {

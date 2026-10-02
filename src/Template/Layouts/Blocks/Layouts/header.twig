@@ -1,4 +1,5 @@
 {% block header %}
+    {% set navigation=showcaseContent.navigation|default({}) %}
     <!-- header-start -->
     <header>
         <div class="header-area ">
@@ -16,17 +17,17 @@
                             <div class="main-menu  d-none d-lg-block">
                                 <nav>
                                     <ul id="navigation">
-                                        <li><a class="{{ pages_active }}" href="/">{{ t('Accueil') }}</a></li>
+                                        <li><a class="{{ pages_active }}" href="/">{{ t(navigation.home|default('Accueil')) }}</a></li>
                                         {% if feature_enabled('domains') %}
-                                            <li><a href="/#domainwhois">{{ t('Domaines & SSL') }}</a></li>
+                                            <li><a href="/#domainwhois">{{ t(navigation.domains|default('Domaines & SSL')) }}</a></li>
                                         {% endif %}
                                         {% if feature_enabled('hosting') %}
-                                            <li><a class="{{ packages_active }}" href="/packages">{{ t('Package') }}</a></li>
+                                            <li><a class="{{ packages_active }}" href="/packages">{{ t(navigation.hosting|default('Package')) }}</a></li>
                                         {% endif %}
-                                        <li><a href="/support">{{ t('Support') }} <i class="ti-angle-down"></i></a>
+                                        <li><a href="/support">{{ t(navigation.support|default('Support')) }} <i class="ti-angle-down"></i></a>
                                             <ul class="submenu">
-                                                <li><a href="/support/terms">{{ t('Terms') }}</a></li>
-                                                <li><a href="/support/privacy">{{ t('Privacy') }}</a></li>
+                                                <li><a href="/support/terms">{{ t(navigation.terms|default('Terms')) }}</a></li>
+                                                <li><a href="/support/privacy">{{ t(navigation.privacy|default('Privacy')) }}</a></li>
                                             </ul>
                                         </li>
                                         <!-- li><a href="#">pages <i class="ti-angle-down"></i></a>
@@ -35,8 +36,8 @@
                                             </ul>
                                         </li -->
                                         <!--li><a class="{{ support_active }}" href="/support">Support</a></li -->
-                                        <li><a class="{{ aboutUs_active }}" href="/about-us">{{ t('About') }}</a></li>
-                                        <li><a class="{{ contact_active }}" href="/contact">{{ t('Contact') }}</a></li>
+                                        <li><a class="{{ aboutUs_active }}" href="/about-us">{{ t(navigation.about|default('About')) }}</a></li>
+                                        <li><a class="{{ contact_active }}" href="/contact">{{ t(navigation.contact|default('Contact')) }}</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -46,18 +47,18 @@
                                 {% if feature_enabled('domains') or feature_enabled('hosting') %}
                                 <div id="line-cart"
                                     class="header-cart rs-pointer{% if basket_counter() < 1 %} invisible{% endif %}">
-                                    <button type="button" class="header-cart-trigger" aria-label="{{ t('Votre Panier') }}">
+                                    <button type="button" class="header-cart-trigger" aria-label="{{ t(navigation.cart_title|default('Votre Panier')) }}">
                                         <span class="icon-cart" aria-hidden="true">
                                             <span class="cart-line-1"></span>
                                             <span class="cart-line-2"></span>
                                             <span class="cart-line-3"></span>
                                             <span class="cart-wheel"></span>
                                         </span>
-                                        <span class="cart-label">{{ t('Panier') }}</span>
+                                        <span class="cart-label">{{ t(navigation.cart|default('Panier')) }}</span>
                                         <span id="cart-count" class="w3-badge w3-red">{{ basket_counter() }}</span>
                                     </button>
                                     <ul class="submenu ul-basket">
-                                        <li class="title">{{ t('Votre Panier') }}</li>
+                                        <li class="title">{{ t(navigation.cart_title|default('Votre Panier')) }}</li>
                                         {% for key,item in basket_items() %}
                                             {% if key == "hosting" %}
                                                 {% for idex,hash in item %}
@@ -80,7 +81,7 @@
                                             {% endif %}
                                         {% endfor %}
                                         <li class="kasse">
-                                            <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>{{ t('à la caisse') }}</span></a>
+                                            <a class="boxed_btn_green" href="/basket" id="camoo-kasse"><span>{{ t(navigation.checkout|default('à la caisse')) }}</span></a>
                                         </li>
                                     </ul>
 
@@ -90,7 +91,7 @@
                                     {{ form_start('logout', {'url': '/logout', 'class': 'd-inline'}) }}
                                     <button type="submit" id="camoo-logout" class="login border-0 bg-transparent">
                                         <i class="flaticon-lock"></i>
-                                        <span id="logout">{{ t('Déconnexion') }}</span>
+                                        <span id="logout">{{ t(navigation.logout|default('Déconnexion')) }}</span>
                                     </button>
                                     {{ form_end() }}
                                     <div class="live_chat_btn">
@@ -100,9 +101,12 @@
                                         </a>
                                     </div>
                                 {% else %}
-                                    <a href="#test-form" id="camoo-login" class="login popup-with-form">
+                                    <a href="/login" id="camoo-login" class="login">
                                         <i class="flaticon-user"></i>
-                                        <span id="login">{{ t('Connexion') }}</span>
+                                        <span id="login">{{ t(navigation.login|default('Connexion')) }}</span>
+                                    </a>
+                                    <a href="/register" id="camoo-register" class="header-register-cta">
+                                        {{ t(navigation.register|default('Créer un compte')) }}
                                     </a>
                                 {% endif %}
                             </div>
@@ -112,12 +116,15 @@
                             <div class="mobile-header-actions d-flex d-lg-none">
                                 {% if is_loggedin() %}
                                     {{ form_start('logout-mobile', {'url': '/logout'}) }}
-                                    <button type="submit" class="login border-0 bg-transparent">{{ t('Déconnexion') }}</button>
+                                    <button type="submit" class="login border-0 bg-transparent">{{ t(navigation.logout|default('Déconnexion')) }}</button>
                                     {{ form_end() }}
                                 {% else %}
-                                    <a href="#test-form" id="camoo-login-mobile" class="login popup-with-form">
+                                    <a href="/login" id="camoo-login-mobile" class="login">
                                         <i class="flaticon-user"></i>
-                                        <span>{{ t('Connexion') }}</span>
+                                        <span>{{ t(navigation.login|default('Connexion')) }}</span>
+                                    </a>
+                                    <a href="/register" id="camoo-register-mobile" class="header-register-cta">
+                                        {{ t(navigation.register|default('Créer un compte')) }}
                                     </a>
                                 {% endif %}
                             </div>

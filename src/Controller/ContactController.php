@@ -17,6 +17,8 @@ class ContactController extends AppController
 {
     public function overview(): ResponseInterface
     {
+        $this->set('page_title', $this->showcaseText('pages.contact.title', 'Contactez-nous'));
+
         if ($this->request->is('post')) {
             $email = $this->request->getData('email');
             if ($this->isValidEmail($email)) {

@@ -1,0 +1,50 @@
+{% set field_prefix = field_prefix|default('') %}
+{% set authContent=showcaseContent.pages.auth|default({}) %}
+{{ form_start(form_name|default('join'), {'url':'/join', 'class': form_class|default('camoo-form-spining')}) }}
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="div_form_add">
+            <div class="input text required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}name">{{ t('Nom') }}</label>{% endif %}
+                {{ form_input('name', {'id': field_prefix ~ 'name', 'placeholder' : t('Votre Nom'), 'required' : 'required', 'autocomplete': 'family-name'}) }}
+            </div>
+            <div class="input text required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}firstname">{{ t('Prénom') }}</label>{% endif %}
+                {{ form_input('firstname', {'id': field_prefix ~ 'firstname', 'placeholder' : t('Votre Prénom'), 'required' : 'required', 'autocomplete': 'given-name'}) }}
+            </div>
+            <div class="input password required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}password">{{ t('Mot de passe') }}</label>{% endif %}
+                {{ form_input('password', {'id': field_prefix ~ 'password', 'placeholder' : t('Mot de passe'), 'required' : 'required', 'autocomplete': 'new-password'}) }}
+            </div>
+            <div class="input password">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}password_confirm">{{ t('Confirmation du mot de passe') }}</label>{% endif %}
+                {{ form_input('password_confirm', {'id': field_prefix ~ 'password_confirm', 'type': 'password', 'placeholder' : t('Confirmer votre Mot de passe'), 'required' : 'required', 'autocomplete': 'new-password'}) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="div_form_add">
+                <div class="input email required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}email">{{ t('Adresse e-mail') }}</label>{% endif %}
+                {{ form_input('email', {'id': field_prefix ~ 'email', 'placeholder' : t('Votre E-mail'), 'required' : 'required', 'autocomplete': 'email'}) }}
+                </div>
+                <div class="input text required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}city">{{ t('Ville') }}</label>{% endif %}
+                {{ form_input('city', {'id': field_prefix ~ 'city', 'placeholder' : t('Votre ville'), 'required' : 'required', 'autocomplete': 'address-level2'}) }}
+                </div>
+                <div class="input phone required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}phone">{{ t('Téléphone') }}</label>{% endif %}
+                {{ form_input('phone', {'id': field_prefix ~ 'phone', 'type':'number', 'placeholder' : t('Votre téléphone'), 'required' : 'required', 'autocomplete': 'tel'}) }}
+            </div>
+            <div class="input text required">
+                {% if show_labels|default(false) %}<label for="{{ field_prefix }}address">{{ t('Adresse') }}</label>{% endif %}
+                {{ form_input('address', {'id': field_prefix ~ 'address', 'placeholder' : t('Votre adresse (Rue/Quartier)'), 'required' : 'required', 'autocomplete': 'street-address'}) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-12">
+        {{ form_input('submit', {'id': form_submit_id|default('user-join'), 'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : t(authContent.register_link|default('Créer votre compte'))}) }}
+    </div>
+</div>
+{{ form_end() }}

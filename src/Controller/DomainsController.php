@@ -207,7 +207,7 @@ class DomainsController extends AppController
 
     public function decision(): ResponseInterface
     {
-        $this->set('page_title', 'Indiquez un nom de domaine');
+        $this->set('page_title', $this->showcaseText('pages.domain.decision_title', 'Indiquez un nom de domaine'));
         $itemKeyId = $this->request->getQuery('kid');
         if (empty($itemKeyId)) {
             return $this->redirect('/');

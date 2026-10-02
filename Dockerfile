@@ -23,4 +23,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 
 # Default command: start PHP built-in web server
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "web"]
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "web", "web/index.php"]

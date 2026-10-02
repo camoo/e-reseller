@@ -1,0 +1,13 @@
+{% set field_prefix = field_prefix|default('') %}
+{% set authContent=showcaseContent.pages.auth|default({}) %}
+{{ form_start(form_name|default('login'), {'url':'/login', 'class': form_class|default('camoo-form-spining')}) }}
+<div class="auth-form-field">
+    {% if show_labels|default(false) %}<label for="{{ field_prefix }}username">{{ t('Adresse e-mail') }}</label>{% endif %}
+    {{ form_input('username', {'id': field_prefix ~ 'username', 'type': 'email', 'placeholder' : t('Votre E-Mail'), 'required' : 'required', 'autocomplete': 'email'}) }}
+</div>
+<div class="auth-form-field">
+    {% if show_labels|default(false) %}<label for="{{ field_prefix }}passwd">{{ t('Mot de passe') }}</label>{% endif %}
+    {{ form_input('passwd', {'id': field_prefix ~ 'passwd', 'type' : 'password', 'placeholder' : t('Mot de passe'), 'required': 'required', 'autocomplete': 'current-password'}) }}
+</div>
+{{ form_input('submit', {'id': submit_id|default('user-login'), 'type' : 'submit', 'class' : 'boxed_btn_green', 'value' : t(authContent.login_link|default('Se connecter'))}) }}
+{{ form_end() }}

@@ -1,0 +1,26 @@
+{% extends "Layouts/pages.twig" %}
+{% block content %}
+    {% set authContent=showcaseContent.pages.auth|default({}) %}
+    <section class="auth-page login-page">
+        <div class="container">
+            <div class="auth-card">
+                <div class="auth-card-intro">
+                    <span class="registration-eyebrow">{{ t(authContent.login_title|default('Connexion')) }}</span>
+                    <h1>{{ t(authContent.login_title|default('Connexion')) }}</h1>
+                    <p>{{ t(authContent.login_description|default('Connectez-vous pour gérer vos domaines, vos services et vos commandes.')) }}</p>
+                </div>
+                {% include 'Layouts/Blocks/Layouts/login-form.twig' with {
+                    'form_name': 'login-page',
+                    'form_class': 'camoo-form-spining auth-form',
+                    'field_prefix': 'login-',
+                    'show_labels': true,
+                    'submit_id': 'login-submit'
+                } %}
+                <p class="auth-switch">
+                    {{ t('Pas encore de compte ?') }}
+                    <a href="/register">{{ t(authContent.register_link|default('Créer un compte')) }}</a>
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -10,6 +10,8 @@ final class AboutUsController extends AppController
 {
     public function overview(): ResponseInterface
     {
+        $this->set('page_title', $this->showcaseText('pages.about.title', 'À propos'));
+
         return $this->render();
     }
 }
