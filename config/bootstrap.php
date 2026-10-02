@@ -14,7 +14,7 @@ use Cake\I18n\I18n;
 use josegonzalez\Dotenv\Loader;
 
 if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
-    (new Loader(CONFIG . '.env'))->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
+    new Loader(CONFIG . '.env')->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
 }
 
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
@@ -70,6 +70,11 @@ if (!empty($xConfigHosting)) {
     // Homepage content is intentionally data-driven so a reseller can edit
     // merchandising copy and feature cards without modifying Twig templates.
     $homeContent = Configure::read('HomeContent');
+    if (!is_array($homeContent)) {
+        // Older production deployments may not have the HomeContent defaults
+        // yet, but pricing and remote overrides must still be safe to apply.
+        $homeContent = [];
+    }
     $mergeHomeContent = static function (array $defaults, array $override) use (&$mergeHomeContent): array {
         foreach ($override as $key => $value) {
             // Lists represent editable collections: supplying one replaces
