@@ -1714,6 +1714,30 @@ input:focus-visible {
     border: 0 !important;
 }
 
+.newsletter_feedback {
+    display: none;
+    padding: 10px 14px;
+    border-radius: var(--camoo-radius-pill, 8px);
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.newsletter_feedback.is-success {
+    display: block;
+    background: rgba(34, 197, 94, 0.15);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    color: #4ade80;
+}
+
+.newsletter_feedback.is-error {
+    display: block;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #f87171;
+}
+
 .copy-right_text {
     padding: 28px 0;
 }

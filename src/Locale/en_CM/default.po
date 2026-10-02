@@ -20,3 +20,12 @@ msgstr "Terms and conditions"
 
 msgid "Privacy"
 msgstr "Privacy"
+
+msgid "Merci ! Votre adresse e-mail est maintenant inscrite à notre newsletter."
+msgstr "Thank you! You are amazing, your email address is now subscribed to our newsletter."
+
+msgid "Veuillez saisir une adresse e-mail valide."
+msgstr "Please enter a valid email address."
+
+msgid "Votre inscription à la newsletter n’a pas pu être enregistrée. Veuillez réessayer plus tard."
+msgstr "Your newsletter subscription could not be saved. Please try again later."

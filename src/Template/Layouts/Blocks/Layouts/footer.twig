@@ -67,7 +67,7 @@
                             <h3 class="footer_title">
                                 {{ t(footerContent.newsletter_title|default('Newsletter')) }}
                             </h3>
-                            {{ form_start('newsletter', {'url':'/newsletter/subscribe', 'class':'newsletter_form'}) }}
+                            {{ form_start('newsletter', {'url':'/newsletter/subscribe', 'class':'newsletter_form', 'id':'newsletter'}) }}
                                 <label>
                                     <input type="email" name="email" autocomplete="email" required placeholder="{{ t(footerContent.newsletter_placeholder|default('Votre E-mail')) }}">
                                 </label>
@@ -77,6 +77,7 @@
                                 </label>
                                 <button type="submit">{{ t(footerContent.newsletter_button|default("S'abonner")) }}</button>
                             {{ form_end() }}
+                            <div class="newsletter_feedback" id="newsletter-feedback" role="alert" aria-live="polite"></div>
                             <p class="newsletter_text">{{ t(footerContent.newsletter_description|default('Abonnez-vous à notre newsletter pour ne pas rater nos dernières publications')) }}</p>
                         </div>
                     </div>
