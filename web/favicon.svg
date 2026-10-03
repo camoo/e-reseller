@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Domain.cm Favicon">
+  <defs>
+    <!-- Cameroon Flag Vertical Stripe Gradients (Matching logo.svg) -->
+    <linearGradient id="cm-green" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#009A60" />
+      <stop offset="100%" stop-color="#007548" />
+    </linearGradient>
+    <linearGradient id="cm-red" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#E11837" />
+      <stop offset="100%" stop-color="#B80E25" />
+    </linearGradient>
+    <linearGradient id="cm-yellow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFD61E" />
+      <stop offset="100%" stop-color="#F2B700" />
+    </linearGradient>
+
+    <!-- Star Gold Gradient (Matching logo.svg) -->
+    <linearGradient id="star-gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="35%" stop-color="#FFE762" />
+      <stop offset="100%" stop-color="#EAA600" />
+    </linearGradient>
+
+    <!-- Subtle star shadow -->
+    <filter id="star-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#5C040F" flood-opacity="0.6" />
+    </filter>
+
+    <!-- Favicon Squircle Clip -->
+    <clipPath id="fav-squircle">
+      <rect x="2" y="2" width="60" height="60" rx="16" ry="16" />
+    </clipPath>
+  </defs>
+
+  <!-- Squircle Flag Body -->
+  <g clip-path="url(#fav-squircle)">
+    <!-- 3 Vertical Stripes: Green, Red, Yellow -->
+    <rect x="2" y="2" width="20" height="60" fill="url(#cm-green)" />
+    <rect x="22" y="2" width="20" height="60" fill="url(#cm-red)" />
+    <rect x="42" y="2" width="20" height="60" fill="url(#cm-yellow)" />
+
+    <!-- Ambient gloss / top lighting -->
+    <path d="M 2,2 L 62,2 L 62,20 Q 32,28 2,20 Z" fill="#FFFFFF" fill-opacity="0.16" />
+  </g>
+
+  <!-- Outer keyline for contrast against dark/light browser chrome -->
+  <rect x="2" y="2" width="60" height="60" rx="16" ry="16" fill="none" stroke="#0A2540" stroke-opacity="0.15" stroke-width="1.2" />
+  <rect x="3.2" y="3.2" width="57.6" height="57.6" rx="14.8" ry="14.8" fill="none" stroke="#FFFFFF" stroke-opacity="0.30" stroke-width="1" />
+
+  <!-- Center Gold Star (Matching logo.svg geometry) -->
+  <path filter="url(#star-shadow)" d="M 32.0,16.1 L 36.4,26.0 L 47.1,27.1 L 39.0,34.3 L 41.3,44.8 L 32.0,39.4 L 22.7,44.8 L 25.0,34.3 L 16.9,27.1 L 27.6,26.0 Z" fill="url(#star-gold)" />
+</svg>

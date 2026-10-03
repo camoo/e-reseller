@@ -2,37 +2,45 @@
     {% set hero=showcaseContent.hero|default({}) %}
     <!-- slider_area_start -->
     {% if feature_enabled('domains') %}
-    <div class="slider_area">
-        <div class="single_slider d-flex align-items-center justify-content-center slider_bg_1 overlay2">
+    <div class="slider_area cr-hero-area">
+        <div class="single_slider d-flex align-items-center justify-content-center cr-hero-slider">
             <div class="container">
-                {{ 'flash'|show_flash }}
                 <div class="row align-items-center justify-content-center">
-                    <div class="col-xl-9">
-                        <div class="slider_text text-center">
-                            <p>{{ t(hero.eyebrow|default('Nous sommes le meilleur fournisseur de nom de domaine et Hébergeur Web au Cameroun')) }}</p>
-                            <h3>{{ t(hero.title|default('Trouvez votre domaine')) }}</h3>
-                            <div class="find_dowmain">
-                                {{ form_start('domain-lookup', {'id':'domainwhois', 'class': 'find_dowmain_form'}) }}
-                                {{ form_input('domain', {'placeholder' : t(hero.search_placeholder|default('Rechercher votre nom de domaine')), 'required' : 'required'}) }}
-                                {{ form_input('submit', {'type' : 'submit', 'value' : t(hero.search_button|default('Lancer')), 'id' : 'finddomain'}) }}
+                    <div class="col-xl-10 col-lg-11">
+                        <div class="slider_text text-center cr-hero-text">
+                            <div class="cr-hero-eyebrow">
+                                <span class="cr-pulse-dot"></span>
+                                <span class="cr-eyebrow-label">{{ t(hero.eyebrow|default('Plateforme Officielle de Noms de Domaine & Solutions Cloud')) }}</span>
+                            </div>
+                            <h3 class="cr-hero-title">{{ t(hero.title|default('Trouvez votre domaine idéal')) }}</h3>
+                            <p class="cr-hero-subtitle">{{ t('Enregistrez votre nom de domaine en quelques secondes avec gestion DNS complète, protection anti-vol et support réactif 7j/7.') }}</p>
+
+                            <div class="find_dowmain cr-search-container">
+                                {{ form_start('domain-lookup', {'id':'domainwhois', 'class': 'find_dowmain_form cr-search-form'}) }}
+                                <i class="fa fa-search cr-search-lens" aria-hidden="true"></i>
+                                {{ form_input('domain', {'placeholder' : t(hero.search_placeholder|default('Tapez le nom de domaine souhaité (ex: monentreprise.cm)...')), 'required' : 'required', 'autocomplete' : 'off'}) }}
+                                {{ form_input('submit', {'type' : 'submit', 'value' : t(hero.search_button|default('Rechercher')), 'id' : 'finddomain'}) }}
                                 {{ form_end() }}
                             </div>
-                            <div class="hero-account-cta">
+
+                            <div class="hero-account-cta cr-hero-cta">
                                 <span>{{ t(hero.register_prompt|default('Nouveau client ?')) }}</span>
-                                <a href="/register" id="hero-register-cta" class="hero-register-cta">{{ t(hero.register_button|default('Créer un compte')) }}</a>
+                                <a href="/register" id="hero-register-cta" class="hero-register-cta">{{ t(hero.register_button|default('Créer un compte')) }} <i class="fa fa-arrow-right cr-arrow-cta"></i></a>
                             </div>
-                            <div class="domain_tld_pills d-flex justify-content-center flex-wrap align-items-center">
+
+                            <div class="domain_tld_pills d-flex justify-content-center flex-wrap align-items-center cr-hero-pills">
                                 {% for badge in homeContent.tld_badges|default([]) %}
-                                    <div class="tld_pill {{ badge.class|default('') }}">
+                                    <div class="tld_pill cr-pill-item {{ badge.class|default('') }}" data-tld="{{ badge.name|default('') }}" title="{{ t('Rechercher en') }} {{ badge.name|default('') }}">
                                         <strong class="tld_name">{{ badge.name|default('') }}</strong>
                                         {% if badge.price|default('') is not empty %}<span class="tld_price">{{ t(badge.price) }}</span>{% endif %}
                                         {% if badge.tag|default('') is not empty %}<span class="tld_tag">{{ t(badge.tag) }}</span>{% endif %}
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="hero-trust d-flex justify-content-center flex-wrap" aria-label="{{ t('Why choose us') }}">
+
+                            <div class="hero-trust d-flex justify-content-center flex-wrap cr-trust-badges" aria-label="{{ t('Why choose us') }}">
                                 {% for trust in hero.trust|default([]) %}
-                                    <span><i class="{{ trust.icon|default('fa fa-check-circle') }}" aria-hidden="true"></i>{{ t(trust.label|default('')) }}</span>
+                                    <span class="cr-trust-item"><i class="{{ trust.icon|default('fa fa-check-circle') }}" aria-hidden="true"></i> {{ t(trust.label|default('')) }}</span>
                                 {% endfor %}
                             </div>
                         </div>
@@ -41,6 +49,53 @@
             </div>
         </div>
     </div>
+
+    <!-- Our Latest Promos (ConnectReseller Showcase) -->
+    {% if homeContent.tld_badges|default([])|length > 0 %}
+    <section class="cr-promos-section">
+        <div class="container">
+            <div class="cr-section-header text-center">
+                <span class="cr-section-badge">{{ t('Promotions en cours') }}</span>
+                <h2 class="cr-section-title">{{ t('Nos Meilleures Offres de Noms de Domaine') }}</h2>
+                <p class="cr-section-desc">{{ t('Profitez des extensions les plus populaires aux tarifs les plus compétitifs avec activation immédiate.') }}</p>
+            </div>
+            <div class="row cr-promos-row justify-content-center">
+                {% for badge in homeContent.tld_badges|default([]) %}
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 cr-promo-col mb-4">
+                        <div class="cr-promo-card {{ badge.class|default('') }}">
+                            <div class="cr-promo-card-top">
+                                <div class="cr-promo-tld-box">
+                                    <span class="cr-promo-tld-dot"></span>
+                                    <h4 class="cr-promo-tld-name">{{ badge.name|default('') }}</h4>
+                                </div>
+                                {% if badge.tag|default('') is not empty %}
+                                    <span class="cr-promo-chip cr-chip-highlight">{{ t(badge.tag) }}</span>
+                                {% else %}
+                                    <span class="cr-promo-chip">{{ t('Recommandé') }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="cr-promo-card-price">
+                                <span class="cr-promo-price-prefix">{{ t('À partir de') }}</span>
+                                <div class="cr-promo-amount">{{ t(badge.price|default('Consulter')) }}</div>
+                            </div>
+                            <ul class="cr-promo-features-list">
+                                <li><i class="fa fa-check-circle" aria-hidden="true"></i> {{ t('Gestion DNS temps réel gratuite') }}</li>
+                                <li><i class="fa fa-check-circle" aria-hidden="true"></i> {{ t('Verrouillage anti-vol & confidentialité') }}</li>
+                                <li><i class="fa fa-check-circle" aria-hidden="true"></i> {{ t('Redirection Web & adresses email') }}</li>
+                            </ul>
+                            <div class="cr-promo-card-action">
+                                <a href="#domainwhois" class="cr-promo-action-btn" data-tld="{{ badge.name|default('') }}">
+                                    <span>{{ t('Vérifier ce domaine') }}</span>
+                                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
     {% endif %}
     <!-- slider_area_end -->
 {% endblock %}

@@ -40,6 +40,27 @@ var DomainWhois=(function($){
 				evt.preventDefault();
 			});
 
+			$(document).on('click', '[data-tld]', function(evt){
+				var tld = $(this).data('tld');
+				if (tld && tld.charAt(0) === '.') {
+					var input = $('#domainwhois').find('input[name=domain]');
+					if (input.length > 0) {
+						var current = input.val().trim();
+						if (current === '' || current.indexOf('.') === -1) {
+							var baseName = current !== '' ? current : 'monentreprise';
+							input.val(baseName + tld);
+						} else {
+							var nameWithoutExt = current.split('.')[0];
+							input.val(nameWithoutExt + tld);
+						}
+						$('html, body').animate({
+							scrollTop: $('#domainwhois').offset().top - 120
+						}, 350);
+						input.focus();
+						evt.preventDefault();
+					}
+				}
+			});
 		},
 
 		addToBasket: function(src)

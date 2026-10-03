@@ -14,8 +14,10 @@
     {% block head %}
         <title>{{ title }}</title>
         <meta charset="utf-8"/>
-        <link href="/{{ get_favicon_name() }}{{ asset_version(get_favicon_name()) }}" type="image/x-icon" rel="icon"/>
+        <link href="/favicon.svg{{ asset_version('favicon.svg') }}" type="image/svg+xml" rel="icon"/>
+        <link href="/{{ get_favicon_name() }}{{ asset_version(get_favicon_name()) }}" type="image/x-icon" rel="alternate icon"/>
         <link href="/{{ get_favicon_name() }}{{ asset_version(get_favicon_name()) }}" type="image/x-icon" rel="shortcut icon"/>
+        <link href="/apple-touch-icon.png{{ asset_version('apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180"/>
         <meta name="copyright" content="{{ seo.copyright|default(siteConfig.company_name|default(siteConfig.title_for_layout)) }}"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta name="description" content="{{ description }}">
@@ -31,6 +33,11 @@
 <body>
 <div id="header">
     {% include 'Layouts/Blocks/Layouts/header.twig' %}
+</div>
+<div class="cr-flash-container">
+    <div class="container">
+        {{ 'flash'|show_flash }}
+    </div>
 </div>
 <div id="rs-slider">{% include 'Layouts/Blocks/Layouts/slider.twig' %}</div>
 <div id="rs-prising">{% include 'Layouts/Blocks/Layouts/prising.twig' %}</div>
