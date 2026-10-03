@@ -122,8 +122,9 @@ input:focus-visible {
     transform: scale(1.03);
 }
 
+.header-area .main-header-area .main-menu ul li a,
 .main-menu ul li a {
-    color: var(--camoo-ink);
+    color: var(--camoo-ink) !important;
     font-weight: 650;
     font-size: 15px;
     padding: 10px 16px;
@@ -131,10 +132,35 @@ input:focus-visible {
     transition: all 0.2s ease;
 }
 
+.header-area .main-header-area .main-menu ul li a:hover,
+.header-area .main-header-area .main-menu ul li a.active,
 .main-menu ul li a:hover,
 .main-menu ul li a.active {
-    color: var(--camoo-brand);
-    background: var(--camoo-brand-light);
+    color: var(--camoo-brand) !important;
+    background: var(--camoo-brand-light) !important;
+}
+
+.header-area .main-header-area .main-menu ul li a::before {
+    display: none !important;
+}
+
+.header-area .main-header-area .main-menu ul li .submenu li a,
+.main-menu ul li .submenu li a {
+    color: var(--camoo-ink) !important;
+    padding: 10px 16px;
+    border-radius: var(--camoo-radius-sm);
+    font-weight: 550;
+    font-size: 14px;
+}
+
+.header-area .main-header-area .main-menu ul li .submenu li a:hover,
+.main-menu ul li .submenu li a:hover {
+    color: var(--camoo-brand) !important;
+    background: var(--camoo-brand-light) !important;
+}
+
+.header-area .main-header-area .main-menu ul li .submenu li a::before {
+    display: none !important;
 }
 
 .main-menu ul#navigation {
@@ -782,6 +808,11 @@ input:focus-visible {
     margin: 0;
     font-size: clamp(2rem, 4vw, 3.25rem);
     line-height: 1.15;
+}
+
+.breadcam_bg {
+    background-image: none !important;
+    background: var(--camoo-brand-gradient) !important;
 }
 
 .registration-page {

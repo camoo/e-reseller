@@ -13,11 +13,58 @@ use CAMOO\Utils\Configure;
 use Cake\I18n\I18n;
 use josegonzalez\Dotenv\Loader;
 
-if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
-    new Loader(CONFIG . '.env')->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
+$dotenvCandidates = [
+    CONFIG . '.env',
+    CONFIG . 'config.env',
+    ROOT . DS . '.env',
+    ROOT . DS . 'config.env',
+];
+foreach ($dotenvCandidates as $dotenvFile) {
+    if (is_file($dotenvFile) && is_readable($dotenvFile)) {
+        new Loader($dotenvFile)->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
+    }
 }
 
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
+
+// Provide baseline configuration defaults for deployments with older config/app.php
+$distConfigPath = CONFIG . 'app.php.dist';
+$distConfig = null;
+if (is_file($distConfigPath) && is_readable($distConfigPath)) {
+    $distConfig = require $distConfigPath;
+}
+
+if (is_array($distConfig)) {
+    foreach (['HomeContent', 'DomainPricing', 'DomainAvailability', 'WellKnown'] as $configSection) {
+        if (!is_array(Configure::read($configSection)) && isset($distConfig[$configSection])) {
+            Configure::write($configSection, $distConfig[$configSection]);
+        }
+    }
+}
+
+$readEnvFeature = static function (string $feature): bool {
+    $val = getenv('FEATURE_' . strtoupper($feature));
+    if ($val === false || trim((string)$val) === '') {
+        return true;
+    }
+
+    return filter_var($val, FILTER_VALIDATE_BOOL);
+};
+
+$defaultFeatures = [
+    'domains' => $readEnvFeature('domains'),
+    'emails' => $readEnvFeature('emails'),
+    'ssl' => $readEnvFeature('ssl'),
+    'hosting' => $readEnvFeature('hosting'),
+    'servers' => $readEnvFeature('servers'),
+];
+
+$existingFeatures = Configure::read('Features');
+if (!is_array($existingFeatures)) {
+    Configure::write('Features', $defaultFeatures);
+} else {
+    Configure::write('Features', array_merge($defaultFeatures, $existingFeatures));
+}
 
 // CakePHP's translation helpers are function-based and are not guaranteed to
 // be loaded by Composer when only the I18n classes are referenced.
