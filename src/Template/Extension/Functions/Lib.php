@@ -155,7 +155,17 @@ final class Lib extends FunctionHelper
     {
         $features = Configure::read('Features');
 
-        return is_array($features) && ($features[$feature] ?? false) === true;
+        if (!is_array($features) || !array_key_exists($feature, $features)) {
+            $envVar = 'FEATURE_' . strtoupper($feature);
+            $val = getenv($envVar);
+            if ($val !== false && trim((string)$val) !== '') {
+                return filter_var($val, FILTER_VALIDATE_BOOL);
+            }
+
+            return true;
+        }
+
+        return ($features[$feature] ?? false) === true;
     }
 
     private function escape(string $value): string

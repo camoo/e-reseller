@@ -1,20 +1,247 @@
 <?php
+
+declare(strict_types=1);
+
+$configuredDomain = defined('DOMAIN_NAME') ? DOMAIN_NAME : null;
+$cookieDomain = parse_url(
+    str_contains((string)$configuredDomain, '://') ? $configuredDomain : 'http://' . $configuredDomain,
+    PHP_URL_HOST,
+) ?: null;
+
 return [
     'debug' => defined('DEV_MODE') ? DEV_MODE : false,
     'Error' => [
-        // Keep framework deprecations from turning valid responses into blank pages.
+        // CakePHP 5.1+ reports framework deprecations through E_USER_DEPRECATED.
+        // They must not abort otherwise valid web responses in development.
         'errorLevel' => E_ALL & ~E_USER_DEPRECATED,
     ],
     'App' => [
-		'namespace' => 'App',
-		'defaultLanguage' => 'fr_CM',
-		'paths' => [
+        'namespace' => 'App',
+        // Override with APP_LOCALE in config/.env without changing shared code.
+        'defaultLanguage' => getenv('APP_LOCALE') ?: 'fr_CM',
+        'paths' => [
             'locales' => APP . 'Locale' . DS,
         ],
     ],
     'Security' => [
         'csrf_lifetime' => 1800, // 30 min
         'csrf_single_once' => false,
+    ],
+    'Features' => [
+        'domains' => filter_var(getenv('FEATURE_DOMAINS') ?: 'true', FILTER_VALIDATE_BOOL),
+        'emails' => filter_var(getenv('FEATURE_EMAILS') ?: 'true', FILTER_VALIDATE_BOOL),
+        'ssl' => filter_var(getenv('FEATURE_SSL') ?: 'true', FILTER_VALIDATE_BOOL),
+        'hosting' => filter_var(getenv('FEATURE_HOSTING') ?: 'true', FILTER_VALIDATE_BOOL),
+        'servers' => filter_var(getenv('FEATURE_SERVERS') ?: 'true', FILTER_VALIDATE_BOOL),
+    ],
+    // Deterministic rows for local UI testing when the hosting provider is
+    // unavailable. Keep disabled by default outside the local Compose stack.
+    'DomainAvailability' => [
+        'local' => [
+            'enabled' => filter_var(getenv('LOCAL_DOMAIN_AVAILABILITY') ?: 'false', FILTER_VALIDATE_BOOL),
+            'taken_tlds' => array_values(array_filter(array_map(
+                'trim',
+                explode(',', (string)(getenv('LOCAL_DOMAIN_TAKEN_TLDS') ?: '')),
+            ))),
+            'prices' => [
+                'cm' => 6500,
+                'com' => 7500,
+                'net' => 8500,
+                'org' => 9000,
+                'info' => 7500,
+                'biz' => 7500,
+                'site' => 7500,
+                'pro' => 7500,
+                'host' => 7500,
+            ],
+        ],
+    ],
+    'DomainPricing' => [
+        'enabled' => filter_var(getenv('DOMAIN_PRICES_FROM_SDK') ?: 'true', FILTER_VALIDATE_BOOL),
+        'tlds' => ['cm', 'com', 'net', 'org'],
+    ],
+    // Homepage copy and merchandising defaults. Resellers can override this
+    // tree from the hosting configuration API or with HOME_CONTENT_JSON.
+    'HomeContent' => [
+        // Site-wide showcase copy. Values supplied by a reseller through the
+        // hosting configuration API override these defaults recursively.
+        'seo' => [
+            'title' => '',
+            'description' => '',
+            'keywords' => '',
+            'copyright' => '',
+            'abstract' => '',
+            'author' => '',
+            'robots' => 'index,follow',
+            'generator' => '',
+        ],
+        // Empty values keep the generated discovery files. Reseller-managed
+        // values arrive here from the hosting configuration API.
+        'well_known' => [
+            'robots' => '',
+            'sitemap' => '',
+            'llms' => '',
+            'security_txt' => '',
+            'change_password_redirect' => '',
+            'sitemap_urls' => '',
+            'resources' => [],
+        ],
+        'navigation' => [
+            'home' => 'Accueil',
+            'domains' => 'Domaines & SSL',
+            'hosting' => 'Package',
+            'support' => 'Support',
+            'terms' => 'Terms',
+            'privacy' => 'Privacy',
+            'about' => 'About',
+            'contact' => 'Contact',
+            'login' => 'Connexion',
+            'register' => 'Créer un compte',
+            'logout' => 'Déconnexion',
+            'cart' => 'Panier',
+            'cart_title' => 'Votre Panier',
+            'checkout' => 'à la caisse',
+        ],
+        'hero' => [
+            'eyebrow' => 'Nous sommes le meilleur fournisseur de nom de domaine et Hébergeur Web au Cameroun',
+            'title' => 'Trouvez votre domaine',
+            'search_placeholder' => 'Rechercher votre nom de domaine',
+            'search_button' => 'Lancer',
+            'register_prompt' => 'Nouveau client ?',
+            'register_button' => 'Créer un compte',
+            'trust' => [
+                ['icon' => 'fa fa-check-circle', 'label' => 'Recherche rapide'],
+                ['icon' => 'fa fa-shield', 'label' => 'Paiement sécurisé'],
+                ['icon' => 'fa fa-life-ring', 'label' => 'Support disponible'],
+            ],
+        ],
+        'support_block' => [
+            'title' => 'Support 7j/7',
+            'description' => 'Notre équipe technique répond à toutes vos preoccupations dans un bref délais.',
+            'button' => 'Demandez une assistance',
+        ],
+        'questions' => [
+            'title' => 'Avez-vous des questions?',
+            'button' => 'Contact',
+        ],
+        'footer' => [
+            'services_title' => 'service',
+            'navigation_title' => 'Navigation',
+            'newsletter_title' => 'Newsletter',
+            'newsletter_placeholder' => 'Votre E-mail',
+            'newsletter_button' => "S'abonner",
+            'newsletter_description' => 'Abonnez-vous à notre newsletter pour ne pas rater nos dernières publications',
+            'copyright_prefix' => 'Copyright',
+        ],
+        'pages' => [
+            'about' => ['title' => 'À propos'],
+            'support' => ['title' => 'Support'],
+            'terms' => ['title' => 'Terms and conditions'],
+            'privacy' => ['title' => 'Privacy'],
+            'contact' => [
+                'title' => 'Contactez-nous',
+                'intro' => 'Une question sur un domaine, un hébergement ou votre commande ? Notre équipe est là pour vous aider.',
+                'form_title' => 'Parlons de votre projet',
+                'form_description' => 'Décrivez-nous votre besoin. Nous vous répondrons avec une proposition claire et adaptée.',
+                'message_placeholder' => 'Votre Message',
+                'name_placeholder' => 'Votre nom',
+                'email_placeholder' => 'Votre E-mail',
+                'subject_placeholder' => "L'objet",
+                'submit' => 'Envoyez',
+                'availability' => '7j/7',
+                'availability_description' => 'Contactez-nous à tout moment!',
+                'response_title' => 'Une réponse qui vous fait avancer',
+                'response_description' => 'Besoin d’un conseil avant de commander ? Envoyez-nous votre projet et recevez une réponse personnalisée.',
+                'reasons' => [
+                    ['icon' => 'ti-world', 'title' => 'Choisir un domaine', 'description' => 'Trouvez le nom idéal et vérifiez sa disponibilité.'],
+                    ['icon' => 'ti-server', 'title' => 'Héberger votre site', 'description' => 'Comparez nos offres et choisissez la solution adaptée.'],
+                    ['icon' => 'ti-help-alt', 'title' => 'Obtenir de l’aide', 'description' => 'Notre équipe vous accompagne avant et après votre achat.'],
+                ],
+            ],
+            'packages' => ['title' => 'Shared Web Hosting'],
+            'basket' => [
+                'title' => 'Votre Panier',
+                'items_prefix' => 'Vous avez',
+                'item_singular' => 'élément',
+                'item_plural' => 'éléments',
+                'items_suffix' => 'dans le panier',
+                'login_button' => 'Se connecter ou créer un compte',
+                'payment_title' => 'Choisissez un mode de paiement pour finaliser votre achat',
+                'payment_options' => 'Options de paiement',
+                'payment_description' => 'Ajoutez votre commande maintenant ou payez plus tard par chèque/espèces ou dépôt.',
+                'terms_prefix' => 'En cliquant sur "Payer hors ligne" ou "Payer par Mobile Money", vous acceptez les',
+                'terms_link' => 'Terms & Conditions',
+                'privacy_link' => 'associated agreements',
+                'offline' => 'Payer hors ligne',
+                'mobile_money' => 'Payer par Mobile Money',
+                'visa_title' => 'VISA Only Payment Gateway',
+                'visa_description' => 'This offer is applicable only to VISA card holders',
+                'visa_button' => 'Pay Now',
+            ],
+            'domain' => [
+                'results' => 'Résultats',
+                'name' => 'Nom de domaine',
+                'price' => 'Prix',
+                'decision_title' => 'Indiquez un nom de domaine pour votre commande',
+                'new_domain' => 'Je veux un nouveau nom de domaine',
+                'existing_domain' => "J’ai déjà un nom de domaine",
+                'search_placeholder' => 'Rechercher votre nom de domaine',
+                'domain_placeholder' => 'Entrer le domaine souhaité',
+                'continue_button' => 'Recherchez et ajoutez un domaine',
+                'invalid_domain' => 'Caractères invalides détectés. Veuillez corriger cette erreur pour continuer',
+            ],
+            'auth' => [
+                'login_title' => 'Connexion',
+                'login_description' => 'Connectez-vous pour gérer vos domaines, vos services et vos commandes.',
+                'register_eyebrow' => 'Nouveau client',
+                'register_title' => 'Créer un compte',
+                'register_description' => 'Créez votre compte pour commander vos domaines, hébergements et services en ligne.',
+                'register_requirements_title' => 'Préparez ces informations',
+                'register_requirements' => 'Nom et prénom, adresse e-mail, mot de passe sécurisé, ville, téléphone et adresse complète.',
+                'register_password_hint' => 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.',
+                'register_link' => 'Créer un compte',
+                'login_link' => 'Connexion',
+            ],
+            'error' => [
+                'title' => 'Oops la!',
+                'home_button' => 'Page d’accueil',
+            ],
+        ],
+        'tld_badges' => [
+            ['name' => '.com'],
+            ['name' => '.net'],
+            ['name' => '.org'],
+            ['name' => '.cm', 'tag' => 'Populaire', 'class' => 'tld_pill_popular'],
+            ['name' => '.email', 'price' => 'XAF 5,000', 'tag' => 'Email Included', 'class' => 'tld_pill_email'],
+            ['name' => 'SSL', 'price' => 'Gratuit', 'tag' => 'Secured', 'class' => 'tld_pill_ssl'],
+        ],
+        'pricing' => [
+            'title' => "Choisissez votre plan d'hébergement",
+            'description' => "Notre tableau de contrôle de domaine est conçu pour être facile à utiliser et\npermet de gérer aisément tous les aspects concernant l'administration des noms de domaine.",
+        ],
+        'features' => [
+            'title' => 'Caractéristiques de base',
+            'tabs' => [
+                [
+                    'label' => 'Nos fonctionnalités',
+                    'items' => [
+                        ['title' => 'Nom de domaine offert à vie', 'description' => 'Les noms de domaines inclus sont gratuits aussi longtemps que votre site web est hébergé chez nous et vos factures réglées.', 'icon' => 'flaticon-browser'],
+                        ['title' => 'Certificat SSL Gratuit inclus', 'description' => "Nous y installons sans frais supplémentaires un Certificat SSL de Let's Encrypt. De nos jours un site sécurisé est incontournable. Les clients font confiance à votre site et cela pourrait aussi améliorer votre classement sur les moteurs de recherche.", 'icon' => 'flaticon-security', 'class' => 'blue'],
+                        ['title' => 'Garantie de remboursement de 30 jours', 'description' => 'Pas satisfait ? Aucun problème. Nous remboursons intégralement votre montant versé.', 'icon' => 'flaticon-like', 'class' => 'pink'],
+                        ['title' => 'ModSecurity', 'description' => 'ModSecurity est un module de sécurité pour les serveurs web Linux qui permet de filtrer les requêtes des utilisateurs grâce à des règles qui bloquent les failles de sécurité bien connues.', 'icon' => 'flaticon-lock', 'class' => 'yellow'],
+                    ],
+                ],
+                [
+                    'label' => 'Fonctionnalités avancées',
+                    'items' => [
+                        ['title' => 'WebFTP/phpMyAdmin moderne', 'description' => "Gestion élégante de vos fichiers ou de vos bases de données depuis un navigateur. Transférez/dézippez facilement de gros fichiers de votre ordinateur local vers le serveur distant.", 'icon' => 'flaticon-browser'],
+                        ['title' => 'SSH/SFTP', 'description' => "En fonction du forfait sélectionné, vous disposez d'un compte SSH qui vous permet de vous connecter en ligne de commande sur le serveur et d'avoir accès à des fonctionnalités telles que composer ou npm.", 'icon' => 'flaticon-security', 'class' => 'blue'],
+                        ['title' => 'Sauvegarde journalière', 'description' => 'Pour votre site web, nous assurons les sauvegardes journalières avec notre système de sauvegarde automatique.', 'icon' => 'flaticon-like', 'class' => 'pink'],
+                        ['title' => 'DNS Rapide et gratuit', 'description' => "Vous gérez facilement et gratuitement la redirection ou l'ajout des entrées DNS pour votre nom de domaine dans notre tableau de bord sécurisé.", 'icon' => 'flaticon-lock', 'class' => 'yellow'],
+                    ],
+                ],
+            ],
+        ],
     ],
     'Cache' => [
         /**
@@ -23,16 +250,16 @@ return [
          * in connections.
          */
         '_camoo_model_' => [
-            'className' => 'Cake\Cache\Engine\FileEngine',
-            'duration'  => '+10 minutes',
+            'className' => \Cake\Cache\Engine\FileEngine::class,
+            'duration' => '+10 minutes',
             'serialize' => true,
-            'prefix'    => 'orm_',
-            'path'      => CACHE . 'persistent/model/',
+            'prefix' => 'orm_',
+            'path' => CACHE . 'persistent/model/',
         ],
         '_camoo_hosting_conf' => [
             'duration' => '+ 2 weeks',
             'serialize' => true,
-            'path' => CACHE . 'persistent/',
+            'tmpPath' => CACHE . 'persistent/',
         ],
         '_camoo_hosting_tariff' => [
             'duration' => '+ 12 hours',
@@ -43,7 +270,12 @@ return [
             'duration' => '+ 1 hours',
             'serialize' => true,
             'path' => CACHE . 'persistent/',
-        ]
+        ],
+        '_camoo_hosting_domain_prices' => [
+            'duration' => '+ 1 hours',
+            'serialize' => true,
+            'path' => CACHE . 'persistent/',
+        ],
     ],
     'SmtpTransport' => [
         'default' => [
@@ -54,16 +286,23 @@ return [
             'secure' => defined('SMTP_SECURITY') ? SMTP_SECURITY : null,
             'timeout' => 30,
         ],
-	],
+    ],
     'Session' => [
         'name' => 'CAMOOFMW',
         'cookie' => [
             'lifetime' => 14400,
             'path' => '/',
-            'domain' => defined('DOMAIN_NAME') ? DOMAIN_NAME : null,
+            'domain' => $cookieDomain,
             'secure' => true,
             'httponly' => true,
             'samesite' => 'Lax',
-        ]
-    ]
+        ],
+    ],
+    // Configuration for well-known, robots.txt, sitemap.xml, llms.txt endpoints.
+    // Resellers can override these settings via app.local.php or Configure::write().
+    'WellKnown' => [
+        'change_password_redirect' => '/profile/edit',
+        'resources' => [],
+        'sitemap_urls' => [],
+    ],
 ];

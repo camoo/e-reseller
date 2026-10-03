@@ -7,6 +7,15 @@ use josegonzalez\Dotenv\Loader;
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/config/paths.php';
 require_once CORE_PATH . 'config' . DS . 'bootstrap.php';
-if (is_file(CONFIG . '.env') && is_readable(CONFIG . '.env')) {
-    (new Loader(CONFIG . '.env'))->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
+$dotenvCandidates = [
+    CONFIG . '.env',
+    CONFIG . 'config.env',
+    ROOT . DS . '.env',
+    ROOT . DS . 'config.env',
+];
+foreach ($dotenvCandidates as $dotenvFile) {
+    if (is_file($dotenvFile) && is_readable($dotenvFile)) {
+        (new Loader($dotenvFile))->parse()->skipExisting()->putenv()->toEnv()->toServer()->define();
+    }
 }
+

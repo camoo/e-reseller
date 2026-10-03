@@ -47,7 +47,6 @@ return [
             'sitemap_urls' => '',
         ],
     ],
-    ],
     // Legacy optional overrides for discovery / SEO / well-known resources.
     // Prefer HomeContent.well_known above or the reseller cPanel fields:
     // 'WellKnown' => [
