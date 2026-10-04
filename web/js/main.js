@@ -20,9 +20,11 @@ var menu = $('ul#navigation');
 if(menu.length){
 	menu.slicknav({
 		prependTo: ".mobile_menu",
+		label: "Menu",
 		closedSymbol: '+',
 		openedSymbol:'-'
 	});
+	$('.mobile_menu .slicknav_btn').attr('aria-label', 'Menu');
 };
 // blog-menu
   // $('ul#blog-menu').slicknav({
