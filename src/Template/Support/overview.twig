@@ -1,7 +1,7 @@
 {% extends "Layouts/pages.twig" %}
 {% block content %}
 
-    {{ siteConfig.support }}
+    {{ siteConfig.support|raw }}
 
     {% if siteConfig.support |trim is empty %}
         <!-- core_features_start -->
