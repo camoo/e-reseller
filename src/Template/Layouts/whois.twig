@@ -34,7 +34,7 @@
 <div id="header">
     {% include 'Layouts/Blocks/Layouts/header.twig' %}
 </div>
-<div id="rs-slider">{% include 'Layouts/Blocks/Layouts/slider.twig' %}</div>
+<div id="rs-slider">{% include 'Layouts/Blocks/Layouts/slider.twig' with {'is_whois_page': true} %}</div>
 <div id="content">{% block content %}{% endblock %}</div>
 <div id="rs-footer">{% include 'Layouts/Blocks/Layouts/footer.twig' %}</div>
 {% include 'Layouts/Blocks/Layouts/js.twig' %}

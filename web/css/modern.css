@@ -1781,6 +1781,27 @@ input:focus-visible {
     font-weight: 650;
 }
 
+.single_search .prising_content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.single_search .prising_content a.boxed_btn_green.disable {
+    background: #94a3b8 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.7;
+}
+
+.single_search .prising_content a.premium.disable {
+    background: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    cursor: default;
+}
+
 /* ==========================================================================
    Shopping Cart & Payment Options
    ========================================================================== */

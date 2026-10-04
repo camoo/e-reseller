@@ -76,7 +76,11 @@ class DomainsController extends AppController
             }
 
             if ($xRet === false) {
-                $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
+                try {
+                    $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
+                } catch (\Throwable) {
+                    $xRet = false;
+                }
                 if (!$this->isAvailabilityResult($xRet)) {
                     $xRet = $this->localAvailability($domain);
                 }
@@ -143,12 +147,43 @@ class DomainsController extends AppController
 
     public function overview(): ResponseInterface
     {
-        $domain = $this->request->getQuery('d');
+        $rawDomain = (string)$this->request->getQuery('d');
+        if (empty(trim($rawDomain))) {
+            return $this->redirect('/');
+        }
+
+        $domain = DomainName::normalize($rawDomain);
         if (empty($domain)) {
             return $this->redirect('/');
         }
 
+        $xRet = Cache::reads($domain, '_camoo_hosting_1hour');
+        if ($xRet !== false && !$this->isAvailabilityResult($xRet)) {
+            Cache::deletes($domain, '_camoo_hosting_1hour');
+            $xRet = false;
+        }
+
+        if ($xRet === false) {
+            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
+            $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
+            if (empty($oNewRequest->getErrors())) {
+                try {
+                    $xRet = $oNewRequest->send(['::domains', 'checkAvailability'], false);
+                } catch (\Throwable) {
+                    $xRet = false;
+                }
+                if (!$this->isAvailabilityResult($xRet)) {
+                    $xRet = $this->localAvailability($domain);
+                }
+                if ($this->isAvailabilityResult($xRet)) {
+                    Cache::writes($domain, $xRet, '_camoo_hosting_1hour');
+                }
+            }
+        }
+
         $this->set('domain', $domain);
+        $this->set('searchDomain', $rawDomain !== '' ? $rawDomain : $domain);
+
         return $this->render();
     }
 
