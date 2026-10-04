@@ -18,7 +18,7 @@
                             <div class="find_dowmain cr-search-container">
                                 {{ form_start('domain-lookup', {'id':'domainwhois', 'class': 'find_dowmain_form cr-search-form'}) }}
                                 <i class="fa fa-search cr-search-lens" aria-hidden="true"></i>
-                                {{ form_input('domain', {'placeholder' : t(hero.search_placeholder|default('Tapez le nom de domaine souhaité (ex: monentreprise.cm)...')), 'required' : 'required', 'autocomplete' : 'off'}) }}
+                                {{ form_input('domain', {'value': searchDomain|default(domain|default('')), 'placeholder' : t(hero.search_placeholder|default('Tapez le nom de domaine souhaité (ex: monentreprise.cm)...')), 'required' : 'required', 'autocomplete' : 'off'}) }}
                                 {{ form_input('submit', {'type' : 'submit', 'value' : t(hero.search_button|default('Rechercher')), 'id' : 'finddomain'}) }}
                                 {{ form_end() }}
                             </div>
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Our Latest Promos (ConnectReseller Showcase) -->
-    {% if homeContent.tld_badges|default([])|length > 0 %}
+    {% if not is_whois_page|default(false) and homeContent.tld_badges|default([])|length > 0 %}
     <section class="cr-promos-section">
         <div class="container">
             <div class="cr-section-header text-center">

@@ -107,6 +107,16 @@ final class ControllerResponseTest extends ControllerTestCase
         self::assertSame('/', $response->getHeaderLine('Location'));
     }
 
+    public function testDomainOverviewRendersWithDomainQuery(): void
+    {
+        $controller = $this->createApplicationController(DomainsController::class, 'overview', 'GET', '/domain?d=testcamoo.cm');
+        $controller->getEventManager()->on(new RenderResponseListener());
+        $response = $this->dispatchAction($controller);
+
+        self::assertSame(200, $response->getStatusCode());
+        self::assertNotSame('', (string)$response->getBody());
+    }
+
     public function testLogoutRejectsGetRequests(): void
     {
         $controller = $this->createApplicationController(UsersController::class, 'logout', 'GET');
@@ -115,9 +125,19 @@ final class ControllerResponseTest extends ControllerTestCase
         $this->dispatchAction($controller);
     }
 
-    private function createApplicationController(string $controllerClass, string $action): \CAMOO\Controller\AppController
-    {
-        $controller = $this->createController($controllerClass, $action);
+    private function createApplicationController(
+        string $controllerClass,
+        string $action,
+        string $method = 'GET',
+        string $uri = '/',
+    ): \CAMOO\Controller\AppController {
+        $controller = $this->createController($controllerClass, $action, $method, $uri);
+        $query = parse_url($uri, PHP_URL_QUERY);
+        if (!empty($query)) {
+            parse_str($query, $queryParams);
+            $psr = (new \GuzzleHttp\Psr7\ServerRequest($method, $uri))->withQueryParams($queryParams);
+            $controller->request = new \CAMOO\Http\ServerRequest($psr);
+        }
         $controller->setResponse(new Response());
 
         return $controller;

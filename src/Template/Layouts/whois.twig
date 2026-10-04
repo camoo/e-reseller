@@ -19,7 +19,7 @@
         <link href="/{{ get_favicon_name() }}{{ asset_version(get_favicon_name()) }}" type="image/x-icon" rel="shortcut icon"/>
         <link href="/apple-touch-icon.png{{ asset_version('apple-touch-icon.png') }}" rel="apple-touch-icon" sizes="180x180"/>
         <meta name="copyright" content="{{ seo.copyright|default(siteConfig.company_name|default(siteConfig.title_for_layout)) }}"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
         <meta name="description" content="{{ description }}">
         <meta name="keywords" content="{{ keywords }}">
         <meta name="Security" content="Public">
@@ -34,7 +34,7 @@
 <div id="header">
     {% include 'Layouts/Blocks/Layouts/header.twig' %}
 </div>
-<div id="rs-slider">{% include 'Layouts/Blocks/Layouts/slider.twig' %}</div>
+<div id="rs-slider">{% include 'Layouts/Blocks/Layouts/slider.twig' with {'is_whois_page': true} %}</div>
 <div id="content">{% block content %}{% endblock %}</div>
 <div id="rs-footer">{% include 'Layouts/Blocks/Layouts/footer.twig' %}</div>
 {% include 'Layouts/Blocks/Layouts/js.twig' %}
