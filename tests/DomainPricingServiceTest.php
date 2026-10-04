@@ -29,6 +29,41 @@ final class DomainPricingServiceTest extends TestCase
         self::assertSame(['cm' => 6500, 'com' => 7500], $prices);
     }
 
+    public function testExtractsPricesWithoutOverwritingBaseTldBySubTlds(): void
+    {
+        $prices = DomainPricingService::extractPrices([
+            'status' => 'OK',
+            'result' => [
+                'com' => [
+                    'tld' => 'com',
+                    'price' => 12000,
+                ],
+                'cn.com' => [
+                    'tld' => 'cn.com',
+                    'price' => 48280,
+                ],
+                'co.com' => [
+                    'tld' => 'co.com',
+                    'price' => 31680,
+                ],
+                'co.cm' => [
+                    'tld' => 'co.cm',
+                    'price' => 10000,
+                ],
+                'cm' => [
+                    'tld' => 'cm',
+                    'price' => 7000,
+                ],
+            ],
+        ], ['com', 'cm', 'co.cm']);
+
+        self::assertEquals([
+            'com' => 12000,
+            'co.cm' => 10000,
+            'cm' => 7000,
+        ], $prices);
+    }
+
     public function testAppliesOnlyReturnedPricesToHomepageBadges(): void
     {
         $homeContent = [

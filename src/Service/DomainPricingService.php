@@ -55,10 +55,7 @@ final readonly class DomainPricingService
                 continue;
             }
 
-            $tld = strtolower(ltrim((string)($details['tld'] ?? $domain), '.'));
-            if (str_contains($tld, '.')) {
-                $tld = substr($tld, strrpos($tld, '.') + 1);
-            }
+            $tld = strtolower(ltrim(trim((string)($details['tld'] ?? $domain)), '.'));
             if ($tld === '' || !isset($allowedTlds[$tld])) {
                 continue;
             }
@@ -140,7 +137,7 @@ final readonly class DomainPricingService
         $normalized = [];
         foreach ($tlds as $tld) {
             $tld = strtolower(ltrim(trim((string)$tld), '.'));
-            if ($tld !== '' && preg_match('/^[a-z0-9-]+$/', $tld)) {
+            if ($tld !== '' && preg_match('/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/', $tld)) {
                 $normalized[$tld] = true;
             }
         }
