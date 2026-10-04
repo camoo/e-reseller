@@ -14,6 +14,9 @@ use CAMOO\Interfaces\RestInterface;
 use CAMOO\Model\AppModel;
 use CAMOO\Utils\Cart;
 use CAMOO\Utils\Configure;
+use GuzzleHttp\Psr7\Response as Psr7Response;
+use JsonException;
+use Psr\Http\Message\ResponseInterface;
 
 use function Cake\I18n\__;
 
@@ -28,6 +31,24 @@ class AppController extends BaseController
     use UserDataTrait;
 
     private array $_basket = [Cart::class, 'create'];
+
+    /**
+     * Return JSON through a PSR-7 implementation that initializes headers.
+     *
+     * Some older curl-http-client deployments create their response with a
+     * null header collection. Calling the framework's inherited jsonResponse
+     * then fails while adding Content-Type, even though the action succeeded.
+     *
+     * @throws JsonException
+     */
+    protected function jsonResponse(array $data): ResponseInterface
+    {
+        return new Psr7Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            json_encode($data, JSON_THROW_ON_ERROR),
+        );
+    }
 
     public function initialize(): void
     {

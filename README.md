@@ -280,8 +280,10 @@ template.
 #### Change logo and favicon
 Resellers can replace the logo and favicon without editing templates or PHP:
 
-1. Upload the files to `/home/user/public_html/web/img/` for the logo and
-   `/home/user/public_html/web/` for the favicon.
+1. Upload the logo to `/home/user/public_html/web/img/` and the favicon to
+   `/home/user/public_html/web/`. For compatibility with existing reseller
+   uploads, favicon files in `/home/user/public_html/web/img/` are also
+   supported.
 2. Set the exact filenames in `config/.env`:
 
 ```shell

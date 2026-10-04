@@ -126,6 +126,11 @@ final class Lib extends FunctionHelper
             return 'favicon.ico';
         }
         if (!is_file($imgPath . $filename)) {
+            $imgFilename = 'img' . DS . $filename;
+            if (is_file(WEB . $imgFilename)) {
+                return 'img/' . $filename;
+            }
+
             return 'favicon.ico';
         }
 
