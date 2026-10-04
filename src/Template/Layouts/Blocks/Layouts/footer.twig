@@ -82,6 +82,35 @@
                         </div>
                     </div>
                 </div>
+                {% set paymentMethods = footerContent.payment_methods|default([]) %}
+                {% if paymentMethods|length > 0 %}
+                    <section class="footer_payment-strip" aria-labelledby="footer-payment-title">
+                        {% if footerContent.payment_title|default('Modes de paiement acceptés') is not empty %}
+                            <div class="footer_payment-copy">
+                                <h3 id="footer-payment-title">{{ t(footerContent.payment_title|default('Modes de paiement acceptés')) }}</h3>
+                                {% if footerContent.payment_description|default('') is not empty %}
+                                    <p>{{ t(footerContent.payment_description) }}</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div class="footer_payment-methods">
+                            {% for method in paymentMethods %}
+                                {% if method.label|default('') is not empty and (method.enabled is not defined or method.enabled) %}
+                                    <span class="footer_payment-method footer_payment-method--{{ method.tone|default('default') }}">
+                                        {% if method.image|default('') is not empty %}
+                                            <img class="footer_payment-logo" src="{{ method.image }}" alt="{{ t(method.label) }}" loading="lazy">
+                                        {% elseif method.badge|default('') is not empty %}
+                                            <span class="footer_payment-mark" aria-hidden="true">{{ method.badge }}</span>
+                                        {% elseif method.icon|default('') is not empty %}
+                                            <i class="{{ method.icon }} footer_payment-icon" aria-hidden="true"></i>
+                                        {% endif %}
+                                        <span>{{ t(method.label) }}</span>
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
             </div>
         </div>
         <div class="copy-right_text">

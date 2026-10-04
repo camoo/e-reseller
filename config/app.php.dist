@@ -127,6 +127,15 @@ return [
         'footer' => [
             'services_title' => 'service',
             'navigation_title' => 'Navigation',
+            'payment_title' => 'Modes de paiement acceptés',
+            // Resellers can replace this list through HomeContent.footer or
+            // HOME_CONTENT_JSON. Set enabled to false to hide one method.
+            'payment_methods' => [
+                ['key' => 'orange-money', 'tone' => 'orange', 'label' => 'Orange Money', 'image' => '/img/credit/orange-momo.png'],
+                ['key' => 'mtn-mobile-money', 'tone' => 'mtn', 'label' => 'MTN Mobile Money', 'image' => '/img/credit/mtn-momo.png'],
+                ['key' => 'credit-card', 'tone' => 'card', 'label' => 'Carte bancaire', 'icon' => 'fa fa-credit-card'],
+                ['key' => 'paypal', 'tone' => 'paypal', 'label' => 'PayPal', 'icon' => 'fa fa-paypal'],
+            ],
             'newsletter_title' => 'Newsletter',
             'newsletter_placeholder' => 'Votre E-mail',
             'newsletter_button' => "S'abonner",

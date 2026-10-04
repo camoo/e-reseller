@@ -36,7 +36,38 @@ if (is_file($distConfigPath) && is_readable($distConfigPath)) {
 
 if (is_array($distConfig)) {
     foreach (['HomeContent', 'DomainPricing', 'DomainAvailability', 'WellKnown'] as $configSection) {
-        if (!is_array(Configure::read($configSection)) && isset($distConfig[$configSection])) {
+        if (!isset($distConfig[$configSection]) || !is_array($distConfig[$configSection])) {
+            continue;
+        }
+
+        $configuredSection = Configure::read($configSection);
+        if ($configSection === 'HomeContent' && is_array($configuredSection)) {
+            // Keep older generated app.php files compatible with new
+            // configurable presentation defaults while preserving any
+            // reseller-specific values already defined there.
+            $mergeDefaults = static function (array $defaults, array $configured) use (&$mergeDefaults): array {
+                foreach ($configured as $key => $value) {
+                    if (
+                        is_array($value)
+                        && is_array($defaults[$key] ?? null)
+                        && !array_is_list($value)
+                        && !array_is_list($defaults[$key])
+                    ) {
+                        $defaults[$key] = $mergeDefaults($defaults[$key], $value);
+                        continue;
+                    }
+
+                    $defaults[$key] = $value;
+                }
+
+                return $defaults;
+            };
+
+            Configure::write($configSection, $mergeDefaults($distConfig[$configSection], $configuredSection));
+            continue;
+        }
+
+        if (!is_array($configuredSection)) {
             Configure::write($configSection, $distConfig[$configSection]);
         }
     }
