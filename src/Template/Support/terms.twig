@@ -4,7 +4,7 @@
     <!-- core_features_start -->
     <div class="core_features2 faq_area">
         <div class="container">
-            {{ siteConfig.terms }}
+            {{ siteConfig.terms|raw }}
             {% if siteConfig.terms |trim is empty %}
                 <p>{{ t('Terms content is missing !') }}</p>
             {% endif %}

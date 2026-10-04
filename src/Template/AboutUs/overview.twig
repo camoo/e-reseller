@@ -1,7 +1,7 @@
 {% extends "Layouts/pages.twig" %}
 {% block content %}
 
-{{ siteConfig.about_us }}
+{{ siteConfig.about_us|raw }}
 
 <!-- have_question_statr -->
 <div id="have-question">{% include 'Layouts/Blocks/Layouts/havequestion.twig' %}</div>
