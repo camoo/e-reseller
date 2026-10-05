@@ -1011,16 +1011,16 @@
         },
         {
             "name": "camoo/curl-http-client",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/curl-http-client.git",
-                "reference": "232e7d7eddf483e64da4c084483a67d71dfc0d62"
+                "reference": "bff6cb29ea70dfef52664c267036c6673bb60326"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/curl-http-client/zipball/232e7d7eddf483e64da4c084483a67d71dfc0d62",
-                "reference": "232e7d7eddf483e64da4c084483a67d71dfc0d62",
+                "url": "https://api.github.com/repos/camoo/curl-http-client/zipball/bff6cb29ea70dfef52664c267036c6673bb60326",
+                "reference": "bff6cb29ea70dfef52664c267036c6673bb60326",
                 "shasum": ""
             },
             "require": {
@@ -1061,7 +1061,7 @@
                 "issues": "https://github.com/camoo/curl-http-client/issues",
                 "source": "https://github.com/camoo/curl-http-client"
             },
-            "time": "2026-09-12T12:15:00+00:00"
+            "time": "2026-10-05T13:27:33+00:00"
         },
         {
             "name": "camoo/framework",
@@ -1216,16 +1216,16 @@
         },
         {
             "name": "camoo/http-header-parser",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/camoo/http-header-parser.git",
-                "reference": "350ea05fa68c67f321d692f33d49de1434605528"
+                "reference": "47943237b31437307188c74e219fc1def4c05357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/camoo/http-header-parser/zipball/350ea05fa68c67f321d692f33d49de1434605528",
-                "reference": "350ea05fa68c67f321d692f33d49de1434605528",
+                "url": "https://api.github.com/repos/camoo/http-header-parser/zipball/47943237b31437307188c74e219fc1def4c05357",
+                "reference": "47943237b31437307188c74e219fc1def4c05357",
                 "shasum": ""
             },
             "require": {
@@ -1266,9 +1266,9 @@
                 "parser"
             ],
             "support": {
-                "source": "https://github.com/camoo/http-header-parser/tree/1.0.1"
+                "source": "https://github.com/camoo/http-header-parser/tree/1.0.2"
             },
-            "time": "2023-06-19T05:54:46+00:00"
+            "time": "2026-10-05T13:17:49+00:00"
         },
         {
             "name": "camoo/inflector",
