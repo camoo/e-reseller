@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use CAMOO\Utils\Configure;
-use Camoo\Http\Curl\Domain\Entity\Stream;
-use Camoo\Http\Curl\Infrastructure\Response;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 
 class WellKnownController extends AppController
@@ -418,19 +417,9 @@ class WellKnownController extends AppController
         int $status = 200,
         array $headers = [],
     ): ResponseInterface {
-        $response = $this->response ?? new Response();
-        $stream = new Stream($content);
+        $headers = array_merge(['Content-Type' => $contentType], $headers);
 
-        $response = $response
-            ->withStatus($status)
-            ->withHeader('Content-Type', $contentType)
-            ->withBody($stream);
-
-        foreach ($headers as $header => $value) {
-            $response = $response->withHeader($header, $value);
-        }
-
-        return $this->response = $response;
+        return $this->response = new Response($status, $headers, $content);
     }
 
     private function findLocalOverrideFile(string $filename): ?string

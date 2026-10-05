@@ -77,11 +77,9 @@ try {
 http_response_code($statusCode);
 
 try {
-    foreach ($response->getHeaders() as $headerLines) {
-        foreach ($headerLines as $name => $value) {
-            foreach ((array)$value as $line) {
-                header($name . ': ' . $line, false);
-            }
+    foreach ($response->getHeaders() as $name => $values) {
+        foreach ((array)$values as $line) {
+            header($name . ': ' . $line, false);
         }
     }
 } catch (\Throwable) {
