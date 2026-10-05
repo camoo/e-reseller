@@ -43,6 +43,7 @@ return [
         $routeCollector->addRoute('GET', '/llms.txt', ['controller' => 'WellKnown', 'action' => 'llms']);
         $routeCollector->addRoute('GET', '/llm.txt', ['controller' => 'WellKnown', 'action' => 'llms']);
         $routeCollector->addRoute('GET', '/.well-known/security.txt', ['controller' => 'WellKnown', 'action' => 'securityTxt']);
+        $routeCollector->addRoute('GET', '/security.txt', ['controller' => 'WellKnown', 'action' => 'securityTxt']);
         $routeCollector->addRoute('GET', '/.well-known/change-password', ['controller' => 'WellKnown', 'action' => 'changePassword']);
         $routeCollector->addRoute('GET', '/.well-known/{resource:.+}', ['controller' => 'WellKnown', 'action' => 'resource']);
     }),

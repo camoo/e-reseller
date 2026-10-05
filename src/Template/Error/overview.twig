@@ -1,30 +1,38 @@
 {% extends "Layouts/pages.twig" %}
 {% block content %}
     {% set errorContent=showcaseContent.pages.error|default({}) %}
-    <!-- search_area_start -->
-    <div class="search_area">
+    {% set errorCode=code|default(404) %}
+    <!-- error_area_start -->
+    <div class="search_area error_area" style="padding: 80px 0 100px;">
         <div class="container">
-            <!-- .row start -->
-            <div class="row section-info">
-                <div class="col-md-8 col-md-offset-2">
-                    <h2 class="section-title normal-case">{{ t(errorContent.title|default('Oops la!')) }}</h2>
+            <div class="row section-info text-center">
+                <div class="col-md-8 col-md-offset-2 col-lg-8 mx-auto">
+                    <div class="error-badge-wrapper" style="margin-bottom: 16px;">
+                        <span class="error-code-badge" style="display: inline-block; font-size: 80px; font-weight: 800; line-height: 1; letter-spacing: -2px; color: var(--camoo-brand, #0070ba);">
+                            {{ errorCode }}
+                        </span>
+                    </div>
+                    <h2 class="section-title normal-case" style="margin-bottom: 15px;">{{ t(title|default(errorContent.title|default('Oops la!'))) }}</h2>
                     <div class="big-divider"></div>
                     <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <p class="section-description">{{ message }}</p>
+                        <div class="col-md-10 col-md-offset-1 mx-auto">
+                            <p class="section-description" style="font-size: 16px; line-height: 1.6; margin-top: 15px;">{{ t(message|default('La page ou ressource demandée est introuvable ou indisponible.')) }}</p>
                         </div>
                     </div>
                 </div>
-            </div><!-- .row end -->
+            </div>
 
-            <!-- .row start -->
-            <div class="row text-center">
-                <div class="col-md-12">
+            <div class="row text-center" style="margin-top: 30px;">
+                <div class="col-md-12" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                     <a href="/" class="boxed_btn_green">{{ t(errorContent.home_button|default('Page d’accueil')) }}</a>
+                    <a href="javascript:history.back()" class="boxed_btn_outline">{{ t('Retour') }}</a>
+                    {% if errorCode == 401 and not is_loggedin() %}
+                        <a href="#test-form" class="boxed_btn_green popup-with-form">{{ t('Se connecter') }}</a>
+                    {% endif %}
                 </div>
-            </div><!-- .row end -->
+            </div>
             <div class="row"></div>
-
         </div>
     </div>
+    <!-- error_area_end -->
 {% endblock %}

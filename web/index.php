@@ -37,15 +37,15 @@ $publicRoutes = [
     '/robots.txt',
     '/sitemap.xml',
     '/llms.txt',
-    '/llm.txt',
+    '/security.txt',
 ];
 $middlewares = [
     new \CAMOO\Http\Middleware\AuthenticationMiddleware(
         static function (\Psr\Http\Message\ServerRequestInterface $request): ?array {
             $session = \CAMOO\Http\Session::create($request->getCookieParams());
-            $user = (new \CAMOO\Http\SessionSegment(
+            $user = new \CAMOO\Http\SessionSegment(
                 $session->segment(\CAMOO\Http\Session::SEG_NAME),
-            ))->read('Auth.User');
+            )->read('Auth.User');
 
             return is_array($user) && !empty($user['id']) ? $user : null;
         },
@@ -66,12 +66,49 @@ $middlewares = [
         ),
     ),
 ];
-$caller = new \CAMOO\Http\Caller(dirname(__DIR__) . '/config', $middlewares);
-$response = $caller->getResponse();
+
+try {
+    $caller = new \CAMOO\Http\Caller(dirname(__DIR__) . '/config', $middlewares);
+    $response = $caller->getResponse();
+} catch (\Throwable $exception) {
+    if (\CAMOO\Utils\Configure::read('debug')) {
+        throw $exception;
+    }
+    $code = ($exception->getCode() >= 400 && $exception->getCode() < 600) ? (int)$exception->getCode() : 500;
+    $response = new \App\Controller\ErrorController()->renderError($code, $exception->getMessage());
+}
+
 $statusCode = 200;
 try {
     $statusCode = $response->getStatusCode();
 } catch (\Throwable) {
+}
+
+if ($statusCode >= 400) {
+    $isAjax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower((string)$_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest')
+        || (isset($_SERVER['HTTP_ACCEPT']) && str_contains(strtolower((string)$_SERVER['HTTP_ACCEPT']), 'application/json'));
+
+    $bodySize = 0;
+    try {
+        $bodySize = $response->getBody()->getSize() ?? 0;
+    } catch (\Throwable) {
+    }
+
+    if ($bodySize === 0) {
+        if ($isAjax) {
+            $response = new \GuzzleHttp\Psr7\Response(
+                $statusCode,
+                ['Content-Type' => 'application/json'],
+                json_encode([
+                    'status' => false,
+                    'code' => $statusCode,
+                    'message' => $statusCode === 404 ? 'Not Found' : ($statusCode === 403 ? 'Forbidden' : 'Error'),
+                ], JSON_THROW_ON_ERROR)
+            );
+        } else {
+            $response = new \App\Controller\ErrorController()->renderError($statusCode);
+        }
+    }
 }
 
 http_response_code($statusCode);
