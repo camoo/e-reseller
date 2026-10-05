@@ -98,7 +98,8 @@ var DomainWhois=(function($){
 				success : function (data) {
 					if ( data.status === true ) {
 						// Show basket
-						me.updateBasket(true);
+						var itemPrice = (data.item && data.item.price) ? data.item.price : $(src).data('price');
+						me.updateBasket(true, domain, itemPrice);
 						var $div = $(src).closest('div');
 						$($div).find('.trigger-domain').addClass('disable').html('Dans le panier');
 					} else {
@@ -133,7 +134,7 @@ var DomainWhois=(function($){
 				data : jsonData,
 				success : function (data) {
 					if ( data.status === true ) {
-						me.updateBasket(false);
+						me.updateBasket(false, domain);
 					}
 				},
 				error: function ( jqXHR, textStatus,  errorThrown ) {
@@ -146,7 +147,7 @@ var DomainWhois=(function($){
 			});
 		},
 
-		updateBasket: function(bIncrement)
+		updateBasket: function(bIncrement, domain, price)
 		{
 			var xCount = $('span#cart-count').html();
 			var iCount = xCount.replace(/^\s*|\s*$/g, '') === ''? 0 : parseInt(xCount);
@@ -154,8 +155,14 @@ var DomainWhois=(function($){
 			if (bIncrement) {
 				$('#line-cart').removeClass('invisible');
 				iCount++;
+				if (domain) {
+					me.addItemToBasketDropdown(domain, price);
+				}
 			}else {
 				iCount--;
+				if (domain) {
+					me.removeItemFromBasketDropdown(domain);
+				}
 			}
 			if ( iCount < 1 ) {
 				$('span#cart-count').html(0);
@@ -163,6 +170,42 @@ var DomainWhois=(function($){
 			} else{
 				$('span#cart-count').html(iCount);
 			}
+		},
+
+		addItemToBasketDropdown: function(domain, price)
+		{
+			var $ulBasket = $('.ul-basket');
+			if ($ulBasket.length === 0) {
+				return;
+			}
+			var existing = $ulBasket.find('li.cart-item[data-cart-sku="' + domain + '"]');
+			if (existing.length > 0) {
+				return;
+			}
+			var displayPrice = price ? (' XAF ' + price) : '';
+			var itemHtml = '<li class="cart-item" data-cart-sku="' + domain + '">' +
+				'<div class="cart-item-description">' +
+				'<span title="' + domain + '" class="cart-key"><strong>' + domain + '</strong></span>' +
+				'<span class="cart-price">' + displayPrice + '</span>' +
+				'<span title="Supprimer" data-sku="' + domain + '" class="delete-btn delete-cart-item"></span>' +
+				'</div>' +
+				'</li>';
+
+			var $kasse = $ulBasket.find('li.kasse');
+			if ($kasse.length > 0) {
+				$(itemHtml).insertBefore($kasse);
+			} else {
+				$ulBasket.append(itemHtml);
+			}
+		},
+
+		removeItemFromBasketDropdown: function(domain)
+		{
+			var $ulBasket = $('.ul-basket');
+			if ($ulBasket.length === 0) {
+				return;
+			}
+			$ulBasket.find('li.cart-item[data-cart-sku="' + domain + '"]').remove();
 		},
 
 		/**

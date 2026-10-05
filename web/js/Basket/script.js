@@ -51,7 +51,7 @@ const Cart = (function ($) {
          */
         registerEvents: function () {
 
-            $('.delete-cart-item').on('click', function (evt) {
+            $(document).on('click', '.delete-cart-item', function (evt) {
                 showSpinner();
                 const sku = $(this).data('sku');
 

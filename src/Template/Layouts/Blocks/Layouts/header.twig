@@ -62,19 +62,19 @@
                                         {% for key,item in basket_items() %}
                                             {% if key == "hosting" %}
                                                 {% for idex,hash in item %}
-                                                    <li class="cart-item" id="{{ hash.id }}">
+                                                    <li class="cart-item" id="{{ hash.id }}" data-cart-sku="{{ hash.sku }}">
                                                         <div class="cart-item-description">
                                                             <span title="{{ hash.name }}" class="cart-key"><strong>{{ hash.human_name }}</strong></span>
-                                                            <span> XAF {{ hash.price }}</span>
+                                                            <span class="cart-price"> XAF {{ hash.price }}</span>
                                                             <span title="Supprimer" data-id="{{ hash.id }}" data-type="hosting" data-sku="{{ hash.sku }}" class="delete-btn delete-cart-item"></span>
                                                         </div>
                                                     </li>
                                                 {% endfor %}
                                             {% else %}
-                                                <li class="cart-item">
+                                                <li class="cart-item" data-cart-sku="{{ key }}">
                                                     <div class="cart-item-description">
                                                         <span title="{{ key }}" class="cart-key"><strong>{{ key }}</strong></span>
-                                                        <span> XAF {{ item.price }}</span>
+                                                        <span class="cart-price"> XAF {{ item.price }}</span>
                                                         <span title="Supprimer" data-sku="{{ key }}" class="delete-btn delete-cart-item"></span>
                                                     </div>
                                                 </li>
