@@ -74,6 +74,7 @@ try {
     if (\CAMOO\Utils\Configure::read('debug')) {
         throw $exception;
     }
+    \App\Lib\ErrorLogger::log($exception);
     $code = ($exception->getCode() >= 400 && $exception->getCode() < 600) ? (int)$exception->getCode() : 500;
     $response = new \App\Controller\ErrorController()->renderError($code, $exception->getMessage());
 }
@@ -82,6 +83,10 @@ $statusCode = 200;
 try {
     $statusCode = $response->getStatusCode();
 } catch (\Throwable) {
+}
+
+if ($statusCode >= 400 && !\App\Lib\ErrorLogger::hasLogged()) {
+    \App\Lib\ErrorLogger::logHttpError($statusCode);
 }
 
 if ($statusCode >= 400) {
