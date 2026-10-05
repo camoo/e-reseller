@@ -56,7 +56,7 @@ class DomainsController extends AppController
             $status = false;
             $domain = DomainName::normalize((string)$this->request->getData('domain'));
 
-            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
+            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->getAllowedExtensions())];
             $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
 
             if (!empty($oNewRequest->getErrors())) {
@@ -86,6 +86,8 @@ class DomainsController extends AppController
                 }
 
                 if ($this->isAvailabilityResult($xRet)) {
+                    $primaryTlds = (array)Configure::read('DomainSearch.primary_tlds', ['cm']);
+                    $xRet = DomainName::sortAvailabilityResults($xRet, $primaryTlds);
                     Cache::writes($domain, $xRet, '_camoo_hosting_1hour');
                 }
             }
@@ -100,6 +102,31 @@ class DomainsController extends AppController
         }
 
         throw new Exception('Unknown error !');
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getAllowedExtensions(): array
+    {
+        $primaryTlds = (array)Configure::read('DomainSearch.primary_tlds', ['cm']);
+        $extensions = $this->allowedExtensions;
+        $primary = [];
+        $others = [];
+
+        foreach ($primaryTlds as $tld) {
+            $tld = strtolower(ltrim(trim((string)$tld), '.'));
+            if (in_array($tld, $extensions, true) && !in_array($tld, $primary, true)) {
+                $primary[] = $tld;
+            }
+        }
+        foreach ($extensions as $ext) {
+            if (!in_array($ext, $primary, true)) {
+                $others[] = $ext;
+            }
+        }
+
+        return array_merge($primary, $others);
     }
 
     private function isAvailabilityResult(mixed $result): bool
@@ -133,7 +160,7 @@ class DomainsController extends AppController
         $takenTlds = is_array($config['taken_tlds'] ?? null) ? $config['taken_tlds'] : [];
         $result = [];
 
-        foreach ($this->allowedExtensions as $tld) {
+        foreach ($this->getAllowedExtensions() as $tld) {
             $result[$domain . '.' . $tld] = [
                 'status' => in_array($tld, $takenTlds, true) ? 'N' : 'Y',
                 'price' => [
@@ -164,7 +191,7 @@ class DomainsController extends AppController
         }
 
         if ($xRet === false) {
-            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->allowedExtensions)];
+            $asInput = ['domain' => $domain, 'tlds' => implode(',', $this->getAllowedExtensions())];
             $oNewRequest = $this->DomainsRest->newRequest($asInput, true, ['validation' => 'whois']);
             if (empty($oNewRequest->getErrors())) {
                 try {
@@ -176,6 +203,8 @@ class DomainsController extends AppController
                     $xRet = $this->localAvailability($domain);
                 }
                 if ($this->isAvailabilityResult($xRet)) {
+                    $primaryTlds = (array)Configure::read('DomainSearch.primary_tlds', ['cm']);
+                    $xRet = DomainName::sortAvailabilityResults($xRet, $primaryTlds);
                     Cache::writes($domain, $xRet, '_camoo_hosting_1hour');
                 }
             }

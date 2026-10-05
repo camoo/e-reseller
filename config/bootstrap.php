@@ -35,7 +35,7 @@ if (is_file($distConfigPath) && is_readable($distConfigPath)) {
 }
 
 if (is_array($distConfig)) {
-    foreach (['HomeContent', 'DomainPricing', 'DomainAvailability', 'WellKnown'] as $configSection) {
+    foreach (['HomeContent', 'DomainPricing', 'DomainAvailability', 'WellKnown', 'DomainSearch'] as $configSection) {
         if (!isset($distConfig[$configSection]) || !is_array($distConfig[$configSection])) {
             continue;
         }
@@ -95,6 +95,16 @@ if (!is_array($existingFeatures)) {
     Configure::write('Features', $defaultFeatures);
 } else {
     Configure::write('Features', array_merge($defaultFeatures, $existingFeatures));
+}
+
+$existingDomainSearch = Configure::read('DomainSearch');
+if (!is_array($existingDomainSearch)) {
+    Configure::write('DomainSearch', [
+        'primary_tlds' => array_values(array_filter(array_map(
+            static fn (string $tld): string => strtolower(ltrim(trim($tld), '.')),
+            explode(',', (string)(getenv('PRIMARY_TLD') ?: getenv('PRIMARY_TLDS') ?: 'cm')),
+        ))),
+    ]);
 }
 
 // CakePHP's translation helpers are function-based and are not guaranteed to

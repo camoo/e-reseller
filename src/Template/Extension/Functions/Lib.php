@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Template\Extension\Functions;
 
+use App\Lib\DomainName;
 use Camoo\Cache\Cache;
 use CAMOO\Template\Extension\FunctionHelper;
 use CAMOO\Utils\Cart as BasketRepository;
@@ -42,6 +43,8 @@ final class Lib extends FunctionHelper
 
         $result = '';
         if (($xRet = Cache::reads($inp, '_camoo_hosting_1hour')) !== false && is_array($xRet)) {
+            $primaryTlds = (array)Configure::read('DomainSearch.primary_tlds', ['cm']);
+            $xRet = DomainName::sortAvailabilityResults($xRet, $primaryTlds);
             foreach ($xRet as $domain => $value) {
                 if (!is_array($value) || !array_key_exists('status', $value)) {
                     continue;

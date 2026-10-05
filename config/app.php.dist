@@ -60,6 +60,13 @@ return [
         'enabled' => filter_var(getenv('DOMAIN_PRICES_FROM_SDK') ?: 'true', FILTER_VALIDATE_BOOL),
         'tlds' => ['cm', 'com', 'net', 'org'],
     ],
+    'DomainSearch' => [
+        // Prioritized TLD(s) displayed first in domain search results.
+        'primary_tlds' => array_values(array_filter(array_map(
+            static fn (string $tld): string => strtolower(ltrim(trim($tld), '.')),
+            explode(',', (string)(getenv('PRIMARY_TLD') ?: getenv('PRIMARY_TLDS') ?: 'cm')),
+        ))),
+    ],
     // Homepage copy and merchandising defaults. Resellers can override this
     // tree from the hosting configuration API or with HOME_CONTENT_JSON.
     'HomeContent' => [
