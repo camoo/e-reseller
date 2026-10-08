@@ -271,6 +271,15 @@ class WellKnownController extends AppController
         if ($this->isFeatureEnabled('hosting')) {
             $urls[] = ['loc' => $baseUrl . '/packages', 'priority' => 0.9, 'changefreq' => 'weekly'];
         }
+        if ($this->isFeatureEnabled('servers')) {
+            $urls[] = ['loc' => $baseUrl . '/packages/vps', 'priority' => 0.8, 'changefreq' => 'weekly'];
+        }
+        if ($this->isFeatureEnabled('emails')) {
+            $urls[] = ['loc' => $baseUrl . '/packages/email', 'priority' => 0.8, 'changefreq' => 'weekly'];
+        }
+        if ($this->isFeatureEnabled('ssl')) {
+            $urls[] = ['loc' => $baseUrl . '/packages/ssl', 'priority' => 0.8, 'changefreq' => 'weekly'];
+        }
 
         $urls[] = ['loc' => $baseUrl . '/about-us', 'priority' => 0.8, 'changefreq' => 'monthly'];
         $urls[] = ['loc' => $baseUrl . '/contact', 'priority' => 0.8, 'changefreq' => 'monthly'];

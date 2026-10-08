@@ -35,6 +35,10 @@ return [
         $routeCollector->addRoute(['POST', 'GET'], '/contact', ['controller' => 'Contact', 'action' => 'overview']);
         $routeCollector->addRoute('POST', '/newsletter/subscribe', ['controller' => 'Newsletter', 'action' => 'subscribe']);
         $routeCollector->addRoute('GET', '/packages', ['controller' => 'Packages', 'action' => 'overview']);
+        $routeCollector->addRoute('GET', '/packages/vps', ['controller' => 'Packages', 'action' => 'vps']);
+        $routeCollector->addRoute('GET', '/packages/email', ['controller' => 'Packages', 'action' => 'email']);
+        $routeCollector->addRoute('GET', '/packages/emails', ['controller' => 'Packages', 'action' => 'email']);
+        $routeCollector->addRoute('GET', '/packages/ssl', ['controller' => 'Packages', 'action' => 'ssl']);
         $routeCollector->addRoute('GET', '/support', ['controller' => 'Support', 'action' => 'overview']);
         $routeCollector->addRoute('GET', '/support/terms', ['controller' => 'Support', 'action' => 'terms']);
         $routeCollector->addRoute('GET', '/support/privacy', ['controller' => 'Support', 'action' => 'privacy']);

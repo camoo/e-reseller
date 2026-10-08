@@ -1,0 +1,23 @@
+{% extends "Layouts/pages.twig" %}
+{% block content %}
+    {% set productContent = showcaseContent.pages[product_type]|default({}) %}
+    <div class="package_prsing_area">
+        <div class="container">
+            {% if productContent.description|default('') is not empty %}
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="section_title text-center mb-60">
+                            <p>{{ t(productContent.description) }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="row">
+                {{ product_plans(product_type)|raw }}
+            </div>
+        </div>
+    </div>
+
+    <div id="rs-support">{% include 'Layouts/Blocks/Layouts/support.twig' %}</div>
+    <div id="have-question">{% include 'Layouts/Blocks/Layouts/havequestion.twig' %}</div>
+{% endblock %}

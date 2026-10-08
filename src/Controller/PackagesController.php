@@ -16,4 +16,31 @@ final class PackagesController extends AppController
 
         return $this->render();
     }
+
+    public function vps(): ResponseInterface
+    {
+        $this->requireFeature('servers');
+        $this->set('page_title', $this->showcaseText('pages.vps.title', __('VPS')));
+        $this->set('product_type', 'vps');
+
+        return $this->render();
+    }
+
+    public function email(): ResponseInterface
+    {
+        $this->requireFeature('emails');
+        $this->set('page_title', $this->showcaseText('pages.emails.title', __('Professional Email')));
+        $this->set('product_type', 'emails');
+
+        return $this->render();
+    }
+
+    public function ssl(): ResponseInterface
+    {
+        $this->requireFeature('ssl');
+        $this->set('page_title', $this->showcaseText('pages.ssl.title', __('SSL Certificates')));
+        $this->set('product_type', 'ssl');
+
+        return $this->render();
+    }
 }

@@ -38,12 +38,19 @@
                             <ul>
                                 {% if feature_enabled('domains') %}
                                     <li><a href="/">{{ t('Noms de domaine') }}</a></li>
-                                    <li><a href="/#domainwhois">{{ t('Certificats SSL') }}</a></li>
-                                    <li><a href="/#domainwhois">{{ t('Email Professionnel') }}</a></li>
                                 {% endif %}
                                 {% if feature_enabled('hosting') %}
                                     <li><a href="/packages">{{ t('Hébergement Web') }}</a></li>
                                     <li><a href="/packages#wordpress">{{ t('Wordpress') }}</a></li>
+                                {% endif %}
+                                {% if feature_enabled('servers') %}
+                                    <li><a href="/packages/vps">{{ t('VPS') }}</a></li>
+                                {% endif %}
+                                {% if feature_enabled('emails') %}
+                                    <li><a href="/packages/email">{{ t('Email Professionnel') }}</a></li>
+                                {% endif %}
+                                {% if feature_enabled('ssl') %}
+                                    <li><a href="/packages/ssl">{{ t('Certificats SSL') }}</a></li>
                                 {% endif %}
                             </ul>
 
@@ -59,6 +66,8 @@
                                 <li><a href="/support">{{ t('Support') }}</a></li>
                                 <li><a href="/about-us">{{ t('About') }}</a></li>
                                 <li><a href="/contact">{{ t('Contact') }}</a></li>
+                                <li><a href="/support/privacy">{{ t('Privacy') }}</a></li>
+                                <li><a href="/support/terms">{{ t('Terms') }}</a></li>
                             </ul>
                         </div>
                     </div>
